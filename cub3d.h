@@ -6,12 +6,13 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/01/20 14:27:55 by averheij      ########   odam.nl         */
+/*   Updated: 2020/01/21 12:42:12 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
+# define FOV	60
 
 typedef struct	s_data {
 	void		*img;
@@ -21,11 +22,18 @@ typedef struct	s_data {
 	int			endian;
 }				t_data;
 
+typedef struct	s_world {
+	char		**map;
+	int			playerx;
+	int			playery;
+	short		lookdir;
+}				t_world;
+
 typedef struct	s_vars {
 	void		*mlx;
 	void		*win;
 	t_data		img;
-	int			active;
+	t_world		world;
 }				t_vars;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
