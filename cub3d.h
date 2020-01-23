@@ -6,13 +6,16 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/01/21 12:42:12 by averheij      ########   odam.nl         */
+/*   Updated: 2020/01/23 11:52:55 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 # define FOV	60
+# define HALF_FOV	30
+# define FRAME_WIDTH	1920
+# define FRAME_HEIGHT	1080
 
 typedef struct	s_data {
 	void		*img;
@@ -26,7 +29,8 @@ typedef struct	s_world {
 	char		**map;
 	int			playerx;
 	int			playery;
-	short		lookdir;
+	float		lookdir;
+	float		pxdeg;
 }				t_world;
 
 typedef struct	s_vars {
