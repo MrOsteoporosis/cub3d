@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/01/23 12:17:06 by averheij      ########   odam.nl         */
+/*   Updated: 2020/01/23 14:29:47 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,87 +18,115 @@
 
 #include <stdio.h>
 
-int		distanceanddraw(t_vars *vars)
-{
-	printf("WALL!\n");
+//Cant just alternate horizontal and vertical and assume itll result in the shortest? Maybe you can depending on the order/angle
+
+int		distanceanddraw(t_vars *vars, t_caster *caster, t_ray *ray)
+{//Calculate both ray distances and choose shorter of the two rays
+	float	temp;
+	float	dist;
+	int		height;
+	int		i;
+	
+	printf("\nWALL! y%d x%d ", caster->gridy, caster->gridx);
+	printf("column %d ", caster->column);
+	dist = (vars->world.playery - ray->y) / sin(((vars->world.lookdir + caster->raydir) * M_PI) / 180.0);//change for native radians
+	if (dist < 0)
+		dist *= -1;
+	dist = dist * cos((caster->raydir * M_PI) / 180.0);//change for native radians
+	printf("dist %f ", dist);
+	height = (64 / dist) * vars->world.proj_plane_dist;
+	printf("height %d ", height);
+	my_mlx_sliver_put(&(vars->img), caster->column, HALF_HEIGHT - (height / 2), height, create_trgb(0, 255, 0, 0));
 	return (1);
 }
 
-int		extendray(t_vars *vars)
-{
-	printf("EXTEND\n");
-	return (0);
+int		extendray(t_vars *vars, t_caster *caster)
+{//Call distance check after both rays resolved
+	while (1)
+	{
+		caster->a.y = caster->a.y + caster->a.yincr;
+		caster->a.x = caster->a.x + caster->a.xincr;
+		caster->gridx = caster->a.y / 64;
+		caster->gridy = caster->a.x / 64;
+		printf("	ext |%.1f| ", caster->raydir);
+		printf("ay |%.0f| ax |%.0f| ", caster->a.y, caster->a.x);
+		printf("|%d||%d| ", caster->gridy, caster->gridx);
+		if (vars->world.map[caster->gridy][caster->gridx] == 1)
+		// {
+		// 	my_mlx_pixel_put(&(vars->img), caster->a.x, caster->a.y, create_trgb(0, 255, 0, 0));
+		// 	return (0);
+		// }
+			return(distanceanddraw(vars, caster, &(caster->a)));
+		caster->b.y = caster->b.y + caster->b.yincr;
+		caster->b.x = caster->b.x + caster->b.xincr;
+		caster->gridx = caster->b.y / 64;
+		caster->gridy = caster->b.x / 64;
+		printf("by |%.0f| bx |%.0f| ", caster->b.y, caster->b.x);
+		printf("|%d||%d| ", caster->gridy, caster->gridx);
+		if (vars->world.map[caster->gridy][caster->gridx] == 1)
+		// {
+		// 	my_mlx_pixel_put(&(vars->img), caster->b.x, caster->b.y, create_trgb(0, 0, 255, 0));
+		// 	return (0);
+		// }
+			return(distanceanddraw(vars, caster, &(caster->b)));
+	}
 }
 
 int		render(t_vars *vars)
-{//Compile vars into struct,  pass to distance and draw, calc distance and draw pixels based on height
-	float		raydir;
-	float		ay;
-	float		ax;
-	float		ayincr; // 64 down -64 up
-	float		axincr; // 64 / tan(angle)
-	float		by;
-	float		bx;
-	float		byincr; // 64 / tan(angle)
-	float		bxincr; // 64 right -64 left
-	int			gridy;
-	int			gridx;
+{//Rewrite into a single raycast function that checks horizontal or vetical depending on parameters
+	t_caster	caster;
 	float		temp;
-	int			foundwall;
 
 
-	raydir = -30;
-	while (raydir < HALF_FOV)
+	caster.raydir = -30;
+	caster.column = 1;
+	while (caster.column <= FRAME_WIDTH)
 	{//Use shift ops, right shift by 8 to divide by 64
-		foundwall = 0;
-		ayincr = 64;
-		if (vars->world.lookdir + raydir < 180 && vars->world.lookdir + raydir > 0)
+		caster.foundwall = 0;
+		caster.a.yincr = 64;//SUBFUNCTION
+		if (vars->world.lookdir + caster.raydir < 180 && vars->world.lookdir + caster.raydir > 0)
 		{
-			ay = ((vars->world.playery / 64) * 64) - 1;
-			ayincr = -64;
+			caster.a.y = ((vars->world.playery / 64) * 64) - 1;
+			caster.a.yincr = -64;
 		}
 		else
-			ay = ((vars->world.playery / 64) * 64) + 64;
-		temp = tan(((vars->world.lookdir + raydir) * M_PI) / 180.0);
-		ax = vars->world.playerx + ((vars->world.playery - ay) / temp);
-		axincr = 64 / temp;
-		gridy = ay / 64;
-		gridx = ax / 64;
-		my_mlx_pixel_put(&(vars->img), ax, ay, create_trgb(0, 255, 0, raydir + 30));
-		// printf("ray |%f| ", raydir);
-		// printf("ay |%f| ax |%f| ", ay, ax);
-		// printf("gy |%d| gx |%d| ", gridy, gridx);
-		// printf("grid |%d| ", vars->world.map[gridy][gridx]);
-		if (vars->world.map[gridy][gridx] == 1)
-			foundwall = distanceanddraw(vars/*, ray */);
+			caster.a.y = ((vars->world.playery / 64) * 64) + 64;
+		temp = tan(((vars->world.lookdir + caster.raydir) * M_PI) / 180.0);//change for native radians
+		caster.a.x = vars->world.playerx + ((vars->world.playery - caster.a.y) / temp);
+		caster.a.xincr = 64 / temp;
+		caster.gridx = caster.a.y / 64;
+		caster.gridy = caster.a.x / 64;
+		printf("\nray |%.1f| ", caster.raydir);
+		printf("ay |%.0f| ax |%.0f| ", caster.a.y, caster.a.x);
+		printf("|%d||%d| ", caster.gridy, caster.gridx);
+		if (vars->world.map[caster.gridy][caster.gridx] == 1)
+			// my_mlx_pixel_put(&(vars->img), caster.a.x, caster.a.y, create_trgb(0, 255, 0, 0));
+			caster.foundwall = distanceanddraw(vars, &caster, &(caster.a));//SUBFUNCTION END
 		else 
 		{
-			bxincr = 64;
-			if (vars->world.lookdir + raydir < 270 && vars->world.lookdir + raydir > 90)
+			caster.b.xincr = 64;//SUBFUNCTION
+			if (vars->world.lookdir + caster.raydir < 270 && vars->world.lookdir + caster.raydir > 90)
 			{
-				bx = ((vars->world.playerx / 64) * 64) + 64;
-				bxincr = -64;
+				caster.b.x = ((vars->world.playerx / 64) * 64) + 64;
+				caster.b.xincr = -64;
 			}
 			else
-				bx = ((vars->world.playerx / 64) * 64) - 1;
-			by = vars->world.playery + ((vars->world.playerx - bx) / temp);
-			byincr = axincr; 
-			gridy = by / 64;
-			gridx = bx / 64;
-			my_mlx_pixel_put(&(vars->img), bx, by, create_trgb(0, 0, 255, raydir + 30));
-			// printf("by |%f| bx |%f| ", by, bx);
-			// printf("gy |%d| gx |%d| ", gridy, gridx);
-			// printf("grid |%d| ", vars->world.map[gridy][gridx]);
-			if (vars->world.map[gridy][gridx] == 1)
-				foundwall = distanceanddraw(vars/*, ray */);
+				caster.b.x = ((vars->world.playerx / 64) * 64) - 1;
+			caster.b.y = vars->world.playery + ((vars->world.playerx - caster.b.x) / temp);
+			caster.b.yincr = caster.a.xincr; 
+			caster.gridy = caster.b.y / 64;
+			caster.gridx = caster.b.x / 64;
+			printf("by |%.0f| bx |%.0f| ", caster.b.y, caster.b.x);
+			printf("|%d||%d| ", caster.gridy, caster.gridx);
+			if (vars->world.map[caster.gridy][caster.gridx] == 1)
+				// my_mlx_pixel_put(&(vars->img), caster.b.x, caster.b.y, create_trgb(0, 0, 255, 0));
+				caster.foundwall = distanceanddraw(vars, &caster, &(caster.b));//SUBFUNCTION END
 		}
-		if (!foundwall)
-			extendray(vars/*, ray */);
-		raydir = raydir + vars->world.pxdeg;
+		if (!caster.foundwall)
+			extendray(vars, &caster);
+		caster.raydir += vars->world.pxdeg;
+		caster.column++;
 	}
-	//Get distance
-	//Draw sliver
-	//Loop
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
 	return (0);
 }
@@ -145,16 +173,17 @@ int		main(void)
 
 	//Window setup
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, 1920, 1080, "cub3d");
+	vars.win = mlx_new_window(vars.mlx, FRAME_WIDTH, FRAME_HEIGHT, "cub3d");
 	//Basic event hooks
 	// mlx_hook(vars.win, 3, 0L, key_release, &vars);//KeyRelease
 	// mlx_hook(vars.win, 6, (1L << 6), mouse_move, NULL);//MotionNotify
 	mlx_hook(vars.win, 17, 0L, close, &vars);//DestroyNotify
 	//Finish vars
-	vars.img.img = mlx_new_image(vars.mlx, 1920, 1080);
+	vars.img.img = mlx_new_image(vars.mlx, FRAME_WIDTH, FRAME_HEIGHT);
 	vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
 	vars.world.map = statictodynamic();
-	vars.world.pxdeg = (float)(FOV) / (float)(FRAME_HEIGHT);
+	vars.world.pxdeg = (float)(FOV) / (float)(FRAME_WIDTH);
+	vars.world.proj_plane_dist = (FRAME_WIDTH / 2) / tan(((FOV / 2) * M_PI) / 180.0);
 	vars.world.playerx = 128 + 32;
 	vars.world.playery = 192 + 32;
 	vars.world.lookdir = 90;
