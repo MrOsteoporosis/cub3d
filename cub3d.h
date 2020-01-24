@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/01/24 14:45:57 by averheij      ########   odam.nl         */
+/*   Updated: 2020/01/24 15:10:32 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ typedef struct	s_ray {
 	float		y;
 	float		xincr;
 	float		yincr;
-	short		gridx;
-	short		gridy;
+	int			gridx;
+	int			gridy;
 	short		foundwall;
 }				t_ray;
 
@@ -71,9 +71,10 @@ int		key_release(int keycode, t_vars *vars);
 int		mouse_move(int var, int var2, int var3);
 
 int		render(t_vars *vars);
-int		extendray(t_vars *vars, t_caster *caster);
+int		extendray(t_vars *vars, t_ray *ray);
 int		distanceanddraw(t_vars *vars, t_caster *caster, t_ray *ray);
 
-int		check_map(t_world *world, t_caster *caster);
+int		check_wall(t_world *world, t_ray *ray);
+int		check_bounds(t_world *world, t_ray *ray);
 char	**statictodynamic(void);
 #endif
