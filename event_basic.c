@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 12:58:52 by averheij       #+#    #+#                */
-/*   Updated: 2020/01/20 13:44:23 by averheij      ########   odam.nl         */
+/*   Updated: 2020/01/28 12:36:10 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,22 @@ int		key_release(int keycode, t_vars *vars)
 	{
 		mlx_destroy_window(vars->mlx, vars->win);
 		exit(0);
+	}
+	else if (keycode == 13)
+	{
+		vars->world.playery++;
+	}
+	else if (keycode == 1)
+	{
+		vars->world.playery--;
+	}
+	else if (keycode == 0)
+	{
+		vars->world.playerx--;
+	}
+	else if (keycode == 2)
+	{
+		vars->world.playerx++;
 	}
 	return (0);
 }

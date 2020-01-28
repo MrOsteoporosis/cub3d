@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/01/28 12:10:50 by averheij      ########   odam.nl         */
+/*   Updated: 2020/01/28 12:37:22 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,17 @@ int		distanceanddraw(t_vars *vars, t_caster *caster)
 	temp = (vars->world.playery - caster->v.y) / sin_a;
 	if (temp < 0)
 		temp *= -1;
+	// printf("sin_a%8.4f ", sin_a);//DEBUGP
+	// printf("h |%.0f,%.0f|%.0f| ", caster->h.x, caster->h.y, dist);//DEBUGP
+	// printf("v |%.0f,%.0f|%.0f| ", caster->v.x, caster->v.y, temp);//DEBUGP
 	if (dist > temp)
 		dist = temp;
-	printf("h %d v %d", dist, temp);//DEBUGP
 	dist = dist * cos(caster->raydir);
 	height = (64 / dist) * vars->world.proj_plane_dist;
 	if  (height > FRAME_HEIGHT)
 		height = FRAME_HEIGHT;
-	my_mlx_sliver_put(&(vars->img), caster->column, HALF_FRAME_HEIGHT - (height / 2), height, create_trgb(0, 100, 100, 100));
+	my_mlx_pixel_put(&(vars->img), caster->column, height, create_trgb(0, 100, 100, 100));
+	// my_mlx_sliver_put(&(vars->img), caster->column, HALF_FRAME_HEIGHT - (height / 2), height, create_trgb(0, 100, 100, 100));
 	return (1);
 }
 
@@ -52,9 +55,9 @@ int		extendray(t_vars *vars, t_ray *ray)
 		ray->gridx = ray->x / 64;
 		ray->gridy = ray->y / 64;
 		check_bounds(&(vars->world), ray);
-		printf("|%.0f,%.0f|", ray->x, ray->y);//DEBUGP
-		printf("%d,%d| ", ray->gridx, ray->gridy);//DEBUGP
-		if (ray->safe)//DEBUGA
+		// printf("|%.0f,%.0f|", ray->x, ray->y);//DEBUGP
+		// printf("%d,%d| ", ray->gridx, ray->gridy);//DEBUGP
+		if (ray->foundwall)//DEBUGA
 			my_mlx_pixel_put(&(vars->img), ray->x, ray->y, create_trgb(0, 0, 0, 255));//DEBUGA
 	}
 	return (0);
@@ -65,8 +68,8 @@ int		render(t_vars *vars)
 	t_caster	caster;
 	float		tan_a;
 
-	if (vars->stop == 1)//DEBUGL
-		while(1);//DEBUGL
+	// if (vars->stop == 1)//DEBUGL
+		// while(1);//DEBUGL
 	caster.raydir = 0.5236;
 	caster.column = 1;
 	while (caster.column <= FRAME_WIDTH)
@@ -89,12 +92,12 @@ int		render(t_vars *vars)
 		caster.h.gridx = caster.h.x / 64;
 		caster.h.gridy = caster.h.y / 64;
 		check_bounds(&(vars->world), &(caster.h));
-		printf("\nray%7.4f ", caster.raydir);//DEBUGP
-		printf("tan%8.4f ", tan_a);//DEBUGP
-		printf("h |%.0f,%.0f|", caster.h.x, caster.h.y);//DEBUGP
-		printf("%d,%d| ", caster.h.gridx, caster.h.gridy);//DEBUGP
-		printf("(%.0f,%.0f) ", caster.h.xincr, caster.h.yincr);//DEBUGP
-		if (caster.h.safe)//DEBUGA
+		// printf("\nray%7.4f ", caster.raydir);//DEBUGP
+		// printf("tan%8.4f ", tan_a);//DEBUGP
+		// printf("h |%.0f,%.0f|", caster.h.x, caster.h.y);//DEBUGP
+		// printf("%d,%d| ", caster.h.gridx, caster.h.gridy);//DEBUGP
+		// printf("(%.0f,%.0f) ", caster.h.xincr, caster.h.yincr);//DEBUGP
+		if (caster.h.foundwall)//DEBUGA
 			my_mlx_pixel_put(&(vars->img), caster.h.x, caster.h.y, create_trgb(0, 255, 0, 0));//DEBUGA
 		if(!caster.h.foundwall)
 			extendray(vars, &(caster.h));
@@ -114,10 +117,10 @@ int		render(t_vars *vars)
 		caster.v.gridx = caster.v.x / 64;
 		caster.v.gridy = caster.v.y / 64;
 		check_bounds(&(vars->world), &(caster.v));
-		printf("v |%.0f,%.0f|", caster.v.x, caster.v.y);//DEBUGP
-		printf("%d,%d| ", caster.v.gridx, caster.v.gridy);//DEBUGP
-		printf("(%.0f,%.0f) ", caster.v.xincr, caster.v.yincr);//DEBUGP
-		if (caster.v.safe)//DEBUGA
+		// printf("v |%.0f,%.0f|", caster.v.x, caster.v.y);//DEBUGP
+		// printf("%d,%d| ", caster.v.gridx, caster.v.gridy);//DEBUGP
+		// printf("(%.0f,%.0f) ", caster.v.xincr, caster.v.yincr);//DEBUGP
+		if (caster.v.foundwall)//DEBUGA
 			my_mlx_pixel_put(&(vars->img), caster.v.x, caster.v.y, create_trgb(0, 0, 255, 0));//DEBUGA
 		if(!caster.v.foundwall)
 			extendray(vars, &(caster.v));
@@ -126,7 +129,7 @@ int		render(t_vars *vars)
 		caster.column++;
 	}
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
-	vars->stop = 1;//DEBUGL
+	// vars->stop = 1;//DEBUGL
 	return (0);
 }
 
@@ -194,7 +197,7 @@ int		main(void)
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, FRAME_WIDTH, FRAME_HEIGHT, "cub3d");
 	//Basic event hooks
-	// mlx_hook(vars.win, 3, 0L, key_release, &vars);//KeyRelease
+	mlx_hook(vars.win, 3, 0L, key_release, &vars);//KeyRelease
 	// mlx_hook(vars.win, 6, (1L << 6), mouse_move, NULL);//MotionNotify
 	mlx_hook(vars.win, 17, 0L, close, &vars);//DestroyNotify
 	//Finish vars
