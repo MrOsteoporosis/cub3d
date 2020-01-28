@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/01/24 15:10:32 by averheij      ########   odam.nl         */
+/*   Updated: 2020/01/28 11:54:19 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,16 @@ typedef struct	s_ray {
 	float		yincr;
 	int			gridx;
 	int			gridy;
+	short		safe;
 	short		foundwall;
 }				t_ray;
 
 typedef struct	s_caster {
 	float		raydir;
 	int			column;
-	t_ray		a;
-	t_ray		b;
+	float		a;
+	t_ray		v;
+	t_ray		h;
 }				t_caster;
 
 typedef struct	s_vars {
@@ -72,9 +74,9 @@ int		mouse_move(int var, int var2, int var3);
 
 int		render(t_vars *vars);
 int		extendray(t_vars *vars, t_ray *ray);
-int		distanceanddraw(t_vars *vars, t_caster *caster, t_ray *ray);
+int		distanceanddraw(t_vars *vars, t_caster *caster);
 
-int		check_wall(t_world *world, t_ray *ray);
+float	ray_angle(float lookdir, float raydir);
 int		check_bounds(t_world *world, t_ray *ray);
 char	**statictodynamic(void);
 #endif

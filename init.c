@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/01/24 15:33:34 by averheij      ########   odam.nl         */
+/*   Updated: 2020/01/28 12:10:50 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,39 +18,44 @@
 
 #include <stdio.h>
 
-int		distanceanddraw(t_vars *vars, t_caster *caster, t_ray *ray)
+int		distanceanddraw(t_vars *vars, t_caster *caster)
 {//Calculate both ray distances and choose shorter of the two rays
 	float	temp;
 	float	dist;
 	int		height;
-	int		i;
+	float	sin_a;
 	
-	printf("\nWALL! y%d x%d ", ray->gridy, ray->gridx);//DEBUG
-	printf("column %d ", caster->column);//DEBUG
-	dist = (vars->world.playery - ray->y) / sin(vars->world.lookdir + caster->raydir);
+	sin_a = sin(caster->a);
+	dist = (vars->world.playery - caster->h.y) / sin_a;
 	if (dist < 0)
 		dist *= -1;
+	temp = (vars->world.playery - caster->v.y) / sin_a;
+	if (temp < 0)
+		temp *= -1;
+	if (dist > temp)
+		dist = temp;
+	printf("h %d v %d", dist, temp);//DEBUGP
 	dist = dist * cos(caster->raydir);
-	printf("dist %f ", dist);//DEBUG
 	height = (64 / dist) * vars->world.proj_plane_dist;
-	printf("height %d ", height);//DEBUG
-	my_mlx_sliver_put(&(vars->img), caster->column, HALF_FRAME_HEIGHT - (height / 2), height, create_trgb(0, 255, 0, 0));
+	if  (height > FRAME_HEIGHT)
+		height = FRAME_HEIGHT;
+	my_mlx_sliver_put(&(vars->img), caster->column, HALF_FRAME_HEIGHT - (height / 2), height, create_trgb(0, 100, 100, 100));
 	return (1);
 }
-//This checking done could and should be done with more efficiency/ less repeat operations
+
 int		extendray(t_vars *vars, t_ray *ray)
 {
-	while (!ray->foundwall && check_bounds(&(vars->world), ray))
+	while (!ray->foundwall && ray->safe)
 	{
 		ray->x = ray->x + ray->xincr;
 		ray->y = ray->y + ray->yincr;
 		ray->gridx = ray->x / 64;
 		ray->gridy = ray->y / 64;
-		printf("|%.0f,%.0f|", ray->x, ray->y);//DEBUG
-		printf("%d,%d| ", ray->gridx, ray->gridy);//DEBUG
-		if (check_bounds(&(vars->world), ray))//DEBUG
-			my_mlx_pixel_put(&(vars->img), ray->x, ray->y, create_trgb(0, 0, 0, 255));//DEBUG
-		ray->foundwall = check_wall(&(vars->world), ray);
+		check_bounds(&(vars->world), ray);
+		printf("|%.0f,%.0f|", ray->x, ray->y);//DEBUGP
+		printf("%d,%d| ", ray->gridx, ray->gridy);//DEBUGP
+		if (ray->safe)//DEBUGA
+			my_mlx_pixel_put(&(vars->img), ray->x, ray->y, create_trgb(0, 0, 0, 255));//DEBUGA
 	}
 	return (0);
 }
@@ -60,100 +65,99 @@ int		render(t_vars *vars)
 	t_caster	caster;
 	float		tan_a;
 
-	if (vars->stop == 1)//DEBUG
-		while(1);//DEBUG
-	caster.raydir = -0.5236;
+	if (vars->stop == 1)//DEBUGL
+		while(1);//DEBUGL
+	caster.raydir = 0.5236;
 	caster.column = 1;
 	while (caster.column <= FRAME_WIDTH)
 	{//Use shift ops, right shift by 8 to divide by 64
-		tan_a = tan(vars->world.lookdir + caster.raydir);
-		caster.a.yincr = 64;
-		caster.a.xincr = 64 / tan_a;
-		if (vars->world.lookdir + caster.raydir < 3.14159 && vars->world.lookdir + caster.raydir > 0)
+		caster.a = ray_angle(vars->world.lookdir, caster.raydir);
+		tan_a = tan(caster.a);
+		caster.h.yincr = 64;
+		caster.h.xincr = 64 / tan_a;
+		if (caster.a < 3.14159 && caster.a > 0)
 		{
-			caster.a.y = ((vars->world.playery / 64) * 64) - 1;
-			caster.a.yincr *= -1;
+			caster.h.y = ((vars->world.playery / 64) * 64) - 1;
+			caster.h.yincr *= -1;
 		}
 		else
 		{
-			caster.a.y = ((vars->world.playery / 64) * 64) + 64;
-			caster.a.xincr *= -1;
+			caster.h.y = ((vars->world.playery / 64) * 64) + 64;
+			caster.h.xincr *= -1;
 		}
-		caster.a.x = vars->world.playerx + ((vars->world.playery - caster.a.y) / tan_a);
-		caster.a.gridx = caster.a.x / 64;
-		caster.a.gridy = caster.a.y / 64;
-		printf("\nray%7.4f ", caster.raydir);//DEBUG
-		printf("tan%8.4f ", tan_a);//DEBUG
-		printf("h |%.0f,%.0f|", caster.a.x, caster.a.y);//DEBUG
-		printf("%d,%d| ", caster.a.gridx, caster.a.gridy);//DEBUG
-		printf("(%.0f,%.0f) ", caster.a.xincr, caster.a.yincr);//DEBUG
-		caster.a.foundwall = check_wall(&(vars->world), &(caster.a));
-		if (check_bounds(&(vars->world), &(caster.a)))//DEBUG
-			my_mlx_pixel_put(&(vars->img), caster.a.x, caster.a.y, create_trgb(0, 255, 0, 0));//DEBUG
-		if(!caster.a.foundwall)
-			extendray(vars, &(caster.a));
-		caster.b.xincr = 64;
-		caster.b.yincr = 64 * tan_a; 
-		if (vars->world.lookdir + caster.raydir < 4.71239 && vars->world.lookdir + caster.raydir > 1.5708)
+		caster.h.x = vars->world.playerx + ((vars->world.playery - caster.h.y) / tan_a);
+		caster.h.gridx = caster.h.x / 64;
+		caster.h.gridy = caster.h.y / 64;
+		check_bounds(&(vars->world), &(caster.h));
+		printf("\nray%7.4f ", caster.raydir);//DEBUGP
+		printf("tan%8.4f ", tan_a);//DEBUGP
+		printf("h |%.0f,%.0f|", caster.h.x, caster.h.y);//DEBUGP
+		printf("%d,%d| ", caster.h.gridx, caster.h.gridy);//DEBUGP
+		printf("(%.0f,%.0f) ", caster.h.xincr, caster.h.yincr);//DEBUGP
+		if (caster.h.safe)//DEBUGA
+			my_mlx_pixel_put(&(vars->img), caster.h.x, caster.h.y, create_trgb(0, 255, 0, 0));//DEBUGA
+		if(!caster.h.foundwall)
+			extendray(vars, &(caster.h));
+		caster.v.xincr = 64;
+		caster.v.yincr = 64 * tan_a; 
+		if (caster.a < 4.71239 && caster.a > 1.5708)
 		{
-			caster.b.x = ((vars->world.playerx / 64) * 64) - 1;
-			caster.b.xincr *= -1;
+			caster.v.x = ((vars->world.playerx / 64) * 64) - 1;
+			caster.v.xincr *= -1;
 		}
 		else
 		{
-			caster.b.x = ((vars->world.playerx / 64) * 64) + 64;
-			caster.b.yincr *= -1;
+			caster.v.x = ((vars->world.playerx / 64) * 64) + 64;
+			caster.v.yincr *= -1;
 		}
-		caster.b.y = vars->world.playery + ((vars->world.playerx - caster.b.x) * tan_a);
-		caster.b.gridx = caster.b.x / 64;
-		caster.b.gridy = caster.b.y / 64;
-		printf("v |%.0f,%.0f|", caster.b.x, caster.b.y);//DEBUG
-		printf("%d,%d| ", caster.b.gridx, caster.b.gridy);//DEBUG
-		printf("(%.0f,%.0f) ", caster.b.xincr, caster.b.yincr);//DEBUG
-		caster.b.foundwall = check_wall(&(vars->world), &(caster.b));
-		if (check_bounds(&(vars->world), &(caster.b)))//DEBUG
-			my_mlx_pixel_put(&(vars->img), caster.b.x, caster.b.y, create_trgb(0, 0, 255, 0));//DEBUG
-		if(!caster.b.foundwall)
-			extendray(vars, &(caster.b));
-		caster.raydir += vars->world.radians_per_pixel;
+		caster.v.y = vars->world.playery + ((vars->world.playerx - caster.v.x) * tan_a);
+		caster.v.gridx = caster.v.x / 64;
+		caster.v.gridy = caster.v.y / 64;
+		check_bounds(&(vars->world), &(caster.v));
+		printf("v |%.0f,%.0f|", caster.v.x, caster.v.y);//DEBUGP
+		printf("%d,%d| ", caster.v.gridx, caster.v.gridy);//DEBUGP
+		printf("(%.0f,%.0f) ", caster.v.xincr, caster.v.yincr);//DEBUGP
+		if (caster.v.safe)//DEBUGA
+			my_mlx_pixel_put(&(vars->img), caster.v.x, caster.v.y, create_trgb(0, 0, 255, 0));//DEBUGA
+		if(!caster.v.foundwall)
+			extendray(vars, &(caster.v));
+		distanceanddraw(vars, &caster);
+		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
-	vars->stop = 1;
+	vars->stop = 1;//DEBUGL
 	return (0);
 }
 
-
-int		check_wall(t_world *world, t_ray *ray)
+float	ray_angle(float lookdir, float raydir)
 {
-	if (ray->gridx < 0 || ray->gridx >= world->map_width)
-		return (0);
-	else if (ray->gridy < 0 || ray->gridy >= world->map_height)
-		return (0);
-	//Store boundcheck in var in here???
-	return (world->map[ray->gridy][ray->gridx]);
+	float a;
+
+	a = lookdir + raydir;
+	if (a > M_PI * 2)
+		a-= M_PI * 2;
+	return (a);
 }
 
 int		check_bounds(t_world *world, t_ray *ray)
 {
+	ray->foundwall = 0;
+	ray->safe = 0;
 	if (ray->gridx < 0 || ray->gridx >= world->map_width)
 		return (0);
 	else if (ray->gridy < 0 || ray->gridy >= world->map_height)
 		return (0);
+	ray->foundwall = world->map[ray->gridy][ray->gridx];
+	ray->safe = 1;
 	return (1);
 }
-
-/*
-** because
-** warning: incompatible pointer types assigning to 'char **' from 'char [5][5]'
-**      vars.world.map = tempmap;
-*/
 
 char	**statictodynamic(void)
 {
 	char	tempmap[7][7] = 
 		{{1,1,1,1,1,1,1},
-		{1,0,0,0,0,0,1},
+		{1,0,1,0,0,1,1},
 		{1,0,0,0,0,0,1},
 		{1,0,0,'N',0,0,1},
 		{1,0,0,0,0,0,1},
@@ -164,12 +168,12 @@ char	**statictodynamic(void)
 	char	**res;
 
 
-	res = ft_calloc(sizeof(tempmap[0]), 5);
-	while (ia < 5)
+	res = ft_calloc(sizeof(tempmap[0]), 7);
+	while (ia < 7)
 	{
 		ib = 0;
-		res[ia] = ft_calloc(sizeof(tempmap[0][0]), 5);
-		while (ib < 5)
+		res[ia] = ft_calloc(sizeof(tempmap[0][0]), 7);
+		while (ib < 7)
 		{
 			res[ia][ib] = tempmap[ia][ib];
 			ib++;
@@ -203,7 +207,7 @@ int		main(void)
 	vars.world.proj_plane_dist = (FRAME_WIDTH / 2) / tan(HALF_FOV);
 	vars.world.playerx = 64 * 3 + 32;
 	vars.world.playery = 64 * 3 + 32;
-	vars.world.lookdir = 1.5708 * 2;
+	vars.world.lookdir = 1.5708 * 1;
 	vars.stop = 0;
 	mlx_loop_hook(vars.mlx, render, &vars);
 	mlx_loop(vars.mlx);
