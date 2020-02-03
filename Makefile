@@ -15,8 +15,8 @@ CFILES	=	init.c event_basic.c util_pixel.c
 OFILES	=	$(CFILES:.c=.o)
 FLAGS	=	#-Werror -Wall -Wextra
 FLAGS	+= 	-g 
-CC	=	gcc $(FLAGS)
-MLX_DIR	=	minilibx2
+CC		=	gcc $(FLAGS)
+MLX_DIR	=	minilibxlinux
 MLX_NAME=	minilibx
 
 BOLD	=	\033[1m
@@ -33,6 +33,7 @@ $(NAME): $(OFILES)
 	@echo ""
 	@#$(CC)-L$(MLX_DIR) -l$(MLX_NAME) -Llibft -lft -framework OpenGL -framework AppKit -o $(NAME) $(OFILES)
 	$(CC) -o $(NAME) $(OFILES) -L$(MLX_DIR) -l$(MLX_NAME) -Llibft -lft -lm -lX11 -lXext 
+
 %.o: %.c
 	@printf "Compiling $<	| "
 	$(CC) -I$(MLX_DIR)/includes -Ilibft -c $< -o $@
