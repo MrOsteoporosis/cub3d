@@ -41,7 +41,7 @@ void	my_mlx_clear_frame(t_data *data, int width, int height)
 
 	i = height * data->line_length + width * (data->bits_per_pixel / 8);
 	dst = data->addr + i;
-	while (dst <= data->addr)
+	while (dst >= data->addr)
 	{
 		*(unsigned int*)dst = create_trgb(0, 255, 0, 0);
 		i--;

@@ -70,7 +70,7 @@ int		render(t_vars *vars)
 
 	// if (vars->stop == 1)//DEBUGL
 		// while(1);//DEBUGL
-	/*my_mlx_clear_frame(&(vars->img), FRAME_WIDTH, FRAME_HEIGHT);*/
+    my_mlx_clear_frame(&(vars->img), FRAME_WIDTH, FRAME_HEIGHT);
 	caster.raydir = 0.5236;
 	caster.column = 1;
 	while (caster.column <= FRAME_WIDTH)
@@ -201,8 +201,8 @@ int		main(void)
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, FRAME_WIDTH, FRAME_HEIGHT, "cub3d");
 	//Basic event hooks
-	mlx_hook(vars.win, 3, 0L, key_release, &vars);//KeyRelease
-	// mlx_hook(vars.win, 6, (1L << 6), mouse_move, NULL);//MotionNotify
+    mlx_hook(vars.win, 3, (1L << 1), key_release, &vars);//KeyRelease
+    mlx_hook(vars.win, 6, (1L << 6), mouse_move, NULL);//MotionNotify
 	mlx_hook(vars.win, 17, 0L, close, &vars);//DestroyNotify
 	//Finish vars
 	vars.img.img = mlx_new_image(vars.mlx, FRAME_WIDTH, FRAME_HEIGHT);

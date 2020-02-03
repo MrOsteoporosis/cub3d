@@ -73,7 +73,7 @@ int		create_trgb(int t, int r, int g, int b);
 
 int		close(t_vars *vars);
 int		key_release(int keycode, t_vars *vars);
-int		mouse_move(int var, int var2, int var3);
+int		mouse_move(int x, int y);
 
 int		render(t_vars *vars);
 int		extendray(t_vars *vars, t_ray *ray);
