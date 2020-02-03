@@ -57,8 +57,8 @@ int		extendray(t_vars *vars, t_ray *ray)
 		check_bounds(&(vars->world), ray);
 		// printf("|%.0f,%.0f|", ray->x, ray->y);//DEBUGP
 		// printf("%d,%d| ", ray->gridx, ray->gridy);//DEBUGP
-		if (ray->foundwall)//DEBUGA
-			my_mlx_pixel_put(&(vars->img), ray->x, ray->y, create_trgb(0, 0, 0, 255));//DEBUGA
+		/*if (ray->foundwall)//DEBUGA*/
+			/*my_mlx_pixel_put(&(vars->img), ray->x, ray->y, create_trgb(0, 0, 0, 255));//DEBUGA*/
 	}
 	return (0);
 }
@@ -70,7 +70,7 @@ int		render(t_vars *vars)
 
 	// if (vars->stop == 1)//DEBUGL
 		// while(1);//DEBUGL
-	my_mlx_clear_frame(&(vars->img), FRAME_WIDTH, FRAME_HEIGHT);
+	/*my_mlx_clear_frame(&(vars->img), FRAME_WIDTH, FRAME_HEIGHT);*/
 	caster.raydir = 0.5236;
 	caster.column = 1;
 	while (caster.column <= FRAME_WIDTH)
@@ -98,8 +98,8 @@ int		render(t_vars *vars)
 		// printf("h |%.0f,%.0f|", caster.h.x, caster.h.y);//DEBUGP
 		// printf("%d,%d| ", caster.h.gridx, caster.h.gridy);//DEBUGP
 		// printf("(%.0f,%.0f) ", caster.h.xincr, caster.h.yincr);//DEBUGP
-		if (caster.h.foundwall)//DEBUGA
-			my_mlx_pixel_put(&(vars->img), caster.h.x, caster.h.y, create_trgb(0, 255, 0, 0));//DEBUGA
+		/*if (caster.h.foundwall)//DEBUGA*/
+			/*my_mlx_pixel_put(&(vars->img), caster.h.x, caster.h.y, create_trgb(0, 255, 0, 0));//DEBUGA*/
 		if(!caster.h.foundwall)
 			extendray(vars, &(caster.h));
         caster.v.xincr = 64;
@@ -121,8 +121,8 @@ int		render(t_vars *vars)
 		// printf("v |%.0f,%.0f|", caster.v.x, caster.v.y);//DEBUGP
 		// printf("%d,%d| ", caster.v.gridx, caster.v.gridy);//DEBUGP
 		// printf("(%.0f,%.0f) ", caster.v.xincr, caster.v.yincr);//DEBUGP
-		if (caster.v.foundwall)//DEBUGA
-			my_mlx_pixel_put(&(vars->img), caster.v.x, caster.v.y, create_trgb(0, 0, 255, 0));//DEBUGA
+		/*if (caster.v.foundwall)//DEBUGA*/
+			/*my_mlx_pixel_put(&(vars->img), caster.v.x, caster.v.y, create_trgb(0, 0, 255, 0));//DEBUGA*/
 		if(!caster.v.foundwall)
 			extendray(vars, &(caster.v));
 		distanceanddraw(vars, &caster);
