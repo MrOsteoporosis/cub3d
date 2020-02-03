@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/01/28 12:37:22 by averheij      ########   odam.nl         */
+/*   Updated: 2020/02/03 13:34:55 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		distanceanddraw(t_vars *vars, t_caster *caster)
 	height = (64 / dist) * vars->world.proj_plane_dist;
 	if  (height > FRAME_HEIGHT)
 		height = FRAME_HEIGHT;
-	//my_mlx_pixel_put(&(vars->img), caster->column, height, create_trgb(0, 100, 100, 100));
+	// my_mlx_pixel_put(&(vars->img), caster->column, height, create_trgb(0, 100, 100, 100));
 	my_mlx_sliver_put(&(vars->img), caster->column, HALF_FRAME_HEIGHT - (height / 2), height, create_trgb(0, 100, 100, 100));
 	return (1);
 }
@@ -57,10 +57,10 @@ int		extendray(t_vars *vars, t_ray *ray)
 		check_bounds(&(vars->world), ray);
 		// printf("|%.0f,%.0f|", ray->x, ray->y);//DEBUGP
 		// printf("%d,%d| ", ray->gridx, ray->gridy);//DEBUGP
-        if (ray->foundwall)//DEBUGA
-            my_mlx_pixel_put(&(vars->img), ray->x, ray->y, create_trgb(0, 0, 0, 255));//DEBUGA
-    }
-    return (0);
+		if (ray->foundwall)//DEBUGA
+			my_mlx_pixel_put(&(vars->img), ray->x, ray->y, create_trgb(0, 0, 0, 255));//DEBUGA
+	}
+	return (0);
 }
 
 int		render(t_vars *vars)
@@ -70,6 +70,7 @@ int		render(t_vars *vars)
 
 	// if (vars->stop == 1)//DEBUGL
 		// while(1);//DEBUGL
+	my_mlx_clear_frame(&(vars->img), FRAME_WIDTH, FRAME_HEIGHT);
 	caster.raydir = 0.5236;
 	caster.column = 1;
 	while (caster.column <= FRAME_WIDTH)
@@ -97,12 +98,12 @@ int		render(t_vars *vars)
 		// printf("h |%.0f,%.0f|", caster.h.x, caster.h.y);//DEBUGP
 		// printf("%d,%d| ", caster.h.gridx, caster.h.gridy);//DEBUGP
 		// printf("(%.0f,%.0f) ", caster.h.xincr, caster.h.yincr);//DEBUGP
-		//if (caster.h.foundwall)//DEBUGA
-		//	my_mlx_pixel_put(&(vars->img), caster.h.x, caster.h.y, create_trgb(0, 255, 0, 0));//DEBUGA
+		if (caster.h.foundwall)//DEBUGA
+			my_mlx_pixel_put(&(vars->img), caster.h.x, caster.h.y, create_trgb(0, 255, 0, 0));//DEBUGA
 		if(!caster.h.foundwall)
 			extendray(vars, &(caster.h));
-		caster.v.xincr = 64;
-		caster.v.yincr = 64 * tan_a;
+        caster.v.xincr = 64;
+        caster.v.yincr = 64 * tan_a;
 		if (caster.a < 4.71239 && caster.a > 1.5708)
 		{
 			caster.v.x = ((vars->world.playerx / 64) * 64) - 1;
@@ -114,14 +115,14 @@ int		render(t_vars *vars)
 			caster.v.yincr *= -1;
 		}
 		caster.v.y = vars->world.playery + ((vars->world.playerx - caster.v.x) * tan_a);
-		caster.v.gridx = caster.v.x / 64;//Values from 0 to -64 will come out as zero fooling boundcheck
+		caster.v.gridx = caster.v.x / 64;
 		caster.v.gridy = caster.v.y / 64;
 		check_bounds(&(vars->world), &(caster.v));
 		// printf("v |%.0f,%.0f|", caster.v.x, caster.v.y);//DEBUGP
 		// printf("%d,%d| ", caster.v.gridx, caster.v.gridy);//DEBUGP
 		// printf("(%.0f,%.0f) ", caster.v.xincr, caster.v.yincr);//DEBUGP
-		//if (caster.v.foundwall)//DEBUGA
-		//	my_mlx_pixel_put(&(vars->img), caster.v.x, caster.v.y, create_trgb(0, 0, 255, 0));//DEBUGA
+		if (caster.v.foundwall)//DEBUGA
+			my_mlx_pixel_put(&(vars->img), caster.v.x, caster.v.y, create_trgb(0, 0, 255, 0));//DEBUGA
 		if(!caster.v.foundwall)
 			extendray(vars, &(caster.v));
 		distanceanddraw(vars, &caster);
@@ -147,10 +148,14 @@ int		check_bounds(t_world *world, t_ray *ray)
 {
 	ray->foundwall = 0;
 	ray->safe = 0;
-	if (ray->gridx < 0 || ray->gridx >= world->map_width)
+	if (ray->x < 0 || ray->x >= world->max_x)
 		return (0);
-	else if (ray->gridy < 0 || ray->gridy >= world->map_height)
+	if (ray->y < 0 || ray->y >= world->max_y)
 		return (0);
+	// if (ray->gridx < 0 || ray->gridx >= world->map_width)
+	// 	return (0);
+	// else if (ray->gridy < 0 || ray->gridy >= world->map_height)
+	// 	return (0);
 	ray->foundwall = world->map[ray->gridy][ray->gridx];
 	ray->safe = 1;
 	return (1);
@@ -192,7 +197,6 @@ int		main(void)
 	t_vars	vars;
 	t_data	img;
 
-
 	//Window setup
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, FRAME_WIDTH, FRAME_HEIGHT, "cub3d");
@@ -203,9 +207,11 @@ int		main(void)
 	//Finish vars
 	vars.img.img = mlx_new_image(vars.mlx, FRAME_WIDTH, FRAME_HEIGHT);
 	vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
-    vars.world.map = statictodynamic();
+	vars.world.map = statictodynamic();
 	vars.world.map_height = 7;
 	vars.world.map_width = 7;
+	vars.world.max_x = vars.world.map_width * 64;
+	vars.world.max_y = vars.world.map_height * 64;
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(FRAME_WIDTH);
 	vars.world.proj_plane_dist = (FRAME_WIDTH / 2) / tan(HALF_FOV);
 	vars.world.playerx = 64 * 3 + 32;

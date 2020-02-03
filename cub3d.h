@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/01/28 11:54:19 by averheij      ########   odam.nl         */
+/*   Updated: 2020/02/03 12:42:24 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ typedef struct	s_world {
 	char		**map;
 	int			map_width;
 	int			map_height;
+	int			max_x;
+	int			max_y;
 	int			playerx;
 	int			playery;
 	float		lookdir;
@@ -66,6 +68,7 @@ typedef struct	s_vars {
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	my_mlx_sliver_put(t_data *data, int x, int y, int height, int color);
+void	my_mlx_clear_frame(t_data *data, int width, int height);
 int		create_trgb(int t, int r, int g, int b);
 
 int		close(t_vars *vars);

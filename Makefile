@@ -6,7 +6,7 @@
 #    By: averheij <averheij@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/01/15 15:20:06 by averheij       #+#    #+#                 #
-#    Updated: 2020/01/28 11:10:23 by averheij      ########   odam.nl          #
+#    Updated: 2020/02/03 11:32:15 by averheij      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,17 @@ OFILES	=	$(CFILES:.c=.o)
 FLAGS	=	#-Werror -Wall -Wextra
 FLAGS	+= 	-g 
 CC		=	gcc $(FLAGS)
-MLX_DIR	=	minilibxlinux
-MLX_NAME=	minilibx
+
+# LINUX
+# MLX_DIR	=	minilibxlinux
+# MLX_NAME=	minilibx
+# MLX_INCLUDE	=	minilibx/includes
+# EXTRA_FLAGs	=	-lm -lX11 -lXext
+#MAC
+MLX_DIR	=	mlx
+MLX_NAME=	mlx
+MLX_INCLUDE	=	mlx
+EXTRA_FLAGs	=	-framework OpenGL -framework AppKit
 
 BOLD	=	\033[1m
 CLEAR	=	\033[0m
@@ -27,16 +36,16 @@ all: $(NAME)
 $(NAME): $(OFILES)
 	@echo "$(BOLD)/--------     mlx     --------\\ $(CLEAR)"
 	make -C $(MLX_DIR)
+	cp $(MLX_DIR)/libmlx.dylib .
 	@echo ""
 	@echo "$(BOLD)/--------    libft    --------\\ $(CLEAR)"
 	make -C libft
 	@echo ""
-	@#$(CC)-L$(MLX_DIR) -l$(MLX_NAME) -Llibft -lft -framework OpenGL -framework AppKit -o $(NAME) $(OFILES)
-	$(CC) -o $(NAME) $(OFILES) -L$(MLX_DIR) -l$(MLX_NAME) -Llibft -lft -lm -lX11 -lXext 
+	$(CC) -o $(NAME) $(OFILES) -L$(MLX_DIR) -l$(MLX_NAME) -Llibft -lft $(EXTRA_FLAGS) libmlx.dylib
 
 %.o: %.c
 	@printf "Compiling $<	| "
-	$(CC) -I$(MLX_DIR)/includes -Ilibft -c $< -o $@
+	$(CC) -I$(MLX_INCLUDE) -Ilibft -c $< -o $@
 
 clean:
 	@echo "Cleaning objects:"

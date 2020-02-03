@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 12:58:52 by averheij       #+#    #+#                */
-/*   Updated: 2020/01/28 12:36:10 by averheij      ########   odam.nl         */
+/*   Updated: 2020/02/03 12:51:44 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,27 @@ int		key_release(int keycode, t_vars *vars)
 	}
 	else if (keycode == 13)
 	{
-		vars->world.playery++;
+		vars->world.playery+= 10;
+		if (vars->world.playery > vars->world.max_y)
+			vars->world.playery = vars->world.max_y;
 	}
 	else if (keycode == 1)
 	{
-		vars->world.playery--;
+		vars->world.playery-= 10;
+		if (vars->world.playery < 0)
+			vars->world.playery = 0;
 	}
 	else if (keycode == 0)
 	{
-		vars->world.playerx--;
+		vars->world.playerx-= 10;
+		if (vars->world.playerx < 0)
+			vars->world.playerx = 0;
 	}
 	else if (keycode == 2)
 	{
-		vars->world.playerx++;
+		vars->world.playerx+= 10;
+        if (vars->world.playerx > vars->world.max_x)
+			vars->world.playerx = vars->world.max_x;
 	}
 	return (0);
 }
