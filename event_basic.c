@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <mlx.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "cub3d.h"
@@ -58,6 +59,18 @@ int		key_release(int keycode, t_vars *vars)
         if (vars->world.playerx > vars->world.max_x)
 			vars->world.playerx = vars->world.max_x;
 	}
+    else if (keycode == 65361)
+    {
+        vars->world.lookdir+= 0.05;
+        if (vars->world.lookdir > M_PI * 2)
+            vars->world.lookdir-= M_PI * 2;
+    }
+    else if (keycode == 65363)
+    {
+        vars->world.lookdir-= 0.05;
+        if (vars->world.lookdir < 0)
+            vars->world.lookdir+= M_PI * 2;
+    }
 	return (0);
 }
 
