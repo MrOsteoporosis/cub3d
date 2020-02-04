@@ -19,7 +19,7 @@
 #include <stdio.h>
 
 int		distanceanddraw(t_vars *vars, t_caster *caster)
-{//Calculate both ray distances and choose shorter of the two rays
+{
 	float	temp;
 	float	dist;
 	int		height;
@@ -38,7 +38,9 @@ int		distanceanddraw(t_vars *vars, t_caster *caster)
 	height = (64 / dist) * vars->world.proj_plane_dist;
 	if  (height > FRAME_HEIGHT)
 		height = FRAME_HEIGHT;
-	my_mlx_sliver_put(&(vars->img), caster->column, HALF_FRAME_HEIGHT - (height / 2), height, create_trgb(0, 100, 100, 100));
+	my_mlx_sliver_put(&(vars->img), caster->column,
+            HALF_FRAME_HEIGHT - (height >> 1), height,
+            create_trgb(0, 100, 100, 100));
 	return (1);
 }
 
@@ -61,12 +63,12 @@ int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a)
     caster->v.yincr = 64 * tan_a;
     if (caster->a < 4.71239 && caster->a > 1.5708)
     {
-        caster->v.x = ((vars->world.playerx / 64) * 64) - 1;
+        caster->v.x = ((vars->world.playerx >> 6) << 6) - 1;
         caster->v.xincr *= -1;
     }
     else
     {
-        caster->v.x = ((vars->world.playerx / 64) * 64) + 64;
+        caster->v.x = ((vars->world.playerx >> 6) << 6) + 64;
         caster->v.yincr *= -1;
     }
     caster->v.y = vars->world.playery + ((vars->world.playerx - caster->v.x) * tan_a);
@@ -84,12 +86,12 @@ int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a)
     caster->h.xincr = 64 / tan_a;
     if (caster->a < 3.14159 && caster->a > 0)
     {
-        caster->h.y = ((vars->world.playery / 64) * 64) - 1;
+        caster->h.y = ((vars->world.playery >> 6) << 6) - 1;
         caster->h.yincr *= -1;
     }
     else
     {
-        caster->h.y = ((vars->world.playery / 64) * 64) + 64;
+        caster->h.y = ((vars->world.playery >> 6) << 6) + 64;
         caster->h.xincr *= -1;
     }
     caster->h.x = vars->world.playerx + ((vars->world.playery - caster->h.y) / tan_a);
@@ -132,9 +134,17 @@ int     do_movement(t_vars *vars)
     else if (vars->move.straferight)
         vars->world.playerx += 1;
     if (vars->move.lookleft)
+    {
         vars->world.lookdir += 0.002;
+        if (vars->world.lookdir > (M_PI * 2))
+            vars->world.lookdir = 0;
+    }
     else if (vars->move.lookright)
+    {
         vars->world.lookdir -= 0.002;
+        if (vars->world.lookdir < 0)
+            vars->world.lookdir = (M_PI * 2);
+    }
     return (0);
 }
 

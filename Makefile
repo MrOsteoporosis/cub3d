@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME	=	cub3d
-CFILES	=	init.c event_basic.c util_pixel.c
+CFILES	=	init.c event_basic.c util_pixel.c raycast.c util_ray.c
 OFILES	=	$(CFILES:.c=.o)
 FLAGS	=	#-Werror -Wall -Wextra
 FLAGS	+= 	-g
