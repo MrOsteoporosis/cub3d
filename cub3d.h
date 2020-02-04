@@ -76,6 +76,9 @@ int		key_release(int keycode, t_vars *vars);
 int		mouse_move(int x, int y);
 
 int		render(t_vars *vars);
+int     cast_ray(t_vars *vars);
+int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a);
+int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a);
 int		extendray(t_vars *vars, t_ray *ray);
 int		distanceanddraw(t_vars *vars, t_caster *caster);
 

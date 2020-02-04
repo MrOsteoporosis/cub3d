@@ -36,17 +36,14 @@ void	my_mlx_sliver_put(t_data *data, int x, int y, int height, int color)
 
 void	my_mlx_clear_frame(t_data *data, int width, int height)
 {
-	char	*dst;
-	int		i;
+    int i;
 
-	i = height * data->line_length + width * (data->bits_per_pixel / 8);
-	dst = data->addr + i;
-	while (dst >= data->addr)
-	{
-		*(unsigned int*)dst = create_trgb(0, 255, 0, 0);
-		i--;
-		dst--;
-	}
+    i = 0;
+    while (i < width)
+    {
+        my_mlx_sliver_put(data, i, 0, height, create_trgb(0, 0, 0, 0));
+        i++;
+    }
 }
 
 int		create_trgb(int t, int r, int g, int b)
