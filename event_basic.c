@@ -23,57 +23,45 @@ int		close(t_vars *vars)
 	exit(0);
 }
 
+int     key_press(int keycode, t_vars *vars)
+{
+	printf("PRESS code: %d\n", keycode);
+    if (keycode == WKEY)
+        vars->move.forward = 1;
+    else if (keycode == AKEY)
+		vars->move.strafeleft = 1;
+    else if (keycode == SKEY)
+        vars->move.backward = 1;
+    else if (keycode == DKEY)
+		vars->move.straferight = 1;
+    else if (keycode == LAKEY)
+        vars->move.lookleft = 1;
+    else if (keycode == RAKEY)
+        vars->move.lookright = 1;
+	return (0);
+}
+
 int		key_release(int keycode, t_vars *vars)
 {
-	printf("keycode: %d\n", keycode);
-    if (keycode == 53)
-	/*if (keycode == 65307)*/
+	printf("RELEASE code: %d\n", keycode);
+    /*if (keycode == 53)*/
+    if (keycode == 65307)
 	{
 		mlx_destroy_window(vars->mlx, vars->win);
 		exit(0);
 	}
-    else if (keycode == 13)
-    /*else if (keycode == 119)*/
-    {
-        vars->world.playery-= 10;
-        if (vars->world.playery < 0)
-            vars->world.playery = 0;
-    }
-    else if (keycode == 0)
-	/*else if (keycode == 97)*/
-	{
-		vars->world.playerx-= 10;
-		if (vars->world.playerx < 0)
-			vars->world.playerx = 0;
-	}
-    else if (keycode == 1)
-    /*else if (keycode == 115)*/
-    {
-        vars->world.playery+= 10;
-        if (vars->world.playery > vars->world.max_y)
-            vars->world.playery = vars->world.max_y;
-    }
-    else if (keycode == 2)
-	/*else if (keycode == 100)*/
-	{
-		vars->world.playerx+= 10;
-        if (vars->world.playerx > vars->world.max_x)
-			vars->world.playerx = vars->world.max_x;
-	}
-    else if (keycode == 123)
-    /*else if (keycode == 65361)*/
-    {
-        vars->world.lookdir+= 0.05;
-        if (vars->world.lookdir > M_PI * 2)
-            vars->world.lookdir-= M_PI * 2;
-    }
-    else if (keycode == 124)
-    /*else if (keycode == 65363)*/
-    {
-        vars->world.lookdir-= 0.05;
-        if (vars->world.lookdir < 0)
-            vars->world.lookdir+= M_PI * 2;
-    }
+    else if (keycode == WKEY)
+        vars->move.forward = 0;
+    else if (keycode == AKEY)
+		vars->move.strafeleft = 0;
+    else if (keycode == SKEY)
+        vars->move.backward = 0;
+    else if (keycode == DKEY)
+		vars->move.straferight = 0;
+    else if (keycode == LAKEY)
+        vars->move.lookleft = 0;
+    else if (keycode == RAKEY)
+        vars->move.lookright = 0;
 	return (0);
 }
 

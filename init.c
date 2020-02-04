@@ -121,11 +121,29 @@ int     cast_ray(t_vars *vars)
     return (0);
 }
 
+int     do_movement(t_vars *vars)
+{
+    if (vars->move.forward)
+        vars->world.playery -= 1;
+    else if (vars->move.backward)
+        vars->world.playery += 1;
+    if (vars->move.strafeleft)
+        vars->world.playerx -= 1;
+    else if (vars->move.straferight)
+        vars->world.playerx += 1;
+    if (vars->move.lookleft)
+        vars->world.lookdir += 0.002;
+    else if (vars->move.lookright)
+        vars->world.lookdir -= 0.002;
+    return (0);
+}
+
 int		render(t_vars *vars)
 {
 	// if (vars->stop == 1)//DEBUGL
 		// while(1);//DEBUGL
     my_mlx_clear_frame(&(vars->img), FRAME_WIDTH, FRAME_HEIGHT);
+    do_movement(vars);
 	cast_ray(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
 	// vars->stop = 1;//DEBUGL
@@ -195,6 +213,7 @@ int		main(void)
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, FRAME_WIDTH, FRAME_HEIGHT, "cub3d");
 	//Basic event hooks
+    mlx_hook(vars.win, 2, (1L << 0), key_press, &vars);//KeyPress
     mlx_hook(vars.win, 3, (1L << 1), key_release, &vars);//KeyRelease
     mlx_hook(vars.win, 6, (1L << 6), mouse_move, NULL);//MotionNotify
 	mlx_hook(vars.win, 17, 0L, close, &vars);//DestroyNotify
@@ -211,6 +230,12 @@ int		main(void)
 	vars.world.playerx = 64 * 3 + 32;
 	vars.world.playery = 64 * 3 + 32;
 	vars.world.lookdir = 1.5708 * 1;
+    vars.move.backward = 0;
+    vars.move.forward = 0;
+    vars.move.lookleft = 0;
+    vars.move.lookright = 0;
+    vars.move.strafeleft = 0;
+    vars.move.straferight = 0;
 	vars.stop = 0;
 	mlx_loop_hook(vars.mlx, render, &vars);
 	mlx_loop(vars.mlx);
