@@ -48,8 +48,8 @@ typedef struct	s_world {
 	int			map_height;
 	int			max_x;
 	int			max_y;
-	int			playerx;
-	int			playery;
+	float		playerx;
+	float		playery;
 	float		lookdir;
 	float		radians_per_pixel;
 	float		proj_plane_dist;
@@ -62,6 +62,8 @@ typedef struct  s_movement {
     short       straferight;
     short       lookleft;
     short       lookright;
+    float       speedy;
+    float       speedx;
 }               t_movement;
 
 typedef struct	s_vars {

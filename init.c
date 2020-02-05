@@ -63,12 +63,12 @@ int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a)
     caster->v.yincr = 64 * tan_a;
     if (caster->a < 4.71239 && caster->a > 1.5708)
     {
-        caster->v.x = ((vars->world.playerx >> 6) << 6) - 1;
+        caster->v.x = (((int)vars->world.playerx / 64) * 64) - 1;
         caster->v.xincr *= -1;
     }
     else
     {
-        caster->v.x = ((vars->world.playerx >> 6) << 6) + 64;
+        caster->v.x = (((int)vars->world.playerx / 64) * 64) + 64;
         caster->v.yincr *= -1;
     }
     caster->v.y = vars->world.playery + ((vars->world.playerx - caster->v.x) * tan_a);
@@ -86,12 +86,12 @@ int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a)
     caster->h.xincr = 64 / tan_a;
     if (caster->a < 3.14159 && caster->a > 0)
     {
-        caster->h.y = ((vars->world.playery >> 6) << 6) - 1;
+        caster->h.y = (((int)vars->world.playery / 64) * 64) - 1;
         caster->h.yincr *= -1;
     }
     else
     {
-        caster->h.y = ((vars->world.playery >> 6) << 6) + 64;
+        caster->h.y = (((int)vars->world.playery / 64) * 64) + 64;
         caster->h.xincr *= -1;
     }
     caster->h.x = vars->world.playerx + ((vars->world.playery - caster->h.y) / tan_a);
@@ -125,23 +125,33 @@ int     cast_ray(t_vars *vars)
 
 int     do_movement(t_vars *vars)
 {
-    if (vars->move.forward)
-        vars->world.playery -= 1;
-    else if (vars->move.backward)
-        vars->world.playery += 1;
-    if (vars->move.strafeleft)
-        vars->world.playerx -= 1;
-    else if (vars->move.straferight)
-        vars->world.playerx += 1;
+    if (vars->move.forward && vars->move.speedy > -0.5)
+        vars->move.speedy -= 0.02;
+    else if (vars->move.backward && vars->move.speedy < 0.5)
+        vars->move.speedy += 0.02;
+    if (vars->move.strafeleft && vars->move.speedx > -0.5)
+        vars->move.speedx -= 0.02;
+    else if (vars->move.straferight && vars->move.speedx < 0.5)
+        vars->move.speedx += 0.02;
+    if (!vars->move.forward && vars->move.speedy < 0)
+        vars->move.speedy += 0.004;
+    else if (!vars->move.backward && vars->move.speedy > 0)
+        vars->move.speedy -= 0.004;
+    if (!vars->move.strafeleft && vars->move.speedx < 0)
+        vars->move.speedx += 0.004;
+    else if (!vars->move.straferight && vars->move.speedx > 0)
+        vars->move.speedx -= 0.004;
+    vars->world.playerx += vars->move.speedx;
+    vars->world.playery += vars->move.speedy;
     if (vars->move.lookleft)
     {
-        vars->world.lookdir += 0.002;
+        vars->world.lookdir += 0.005;
         if (vars->world.lookdir > (M_PI * 2))
             vars->world.lookdir = 0;
     }
     else if (vars->move.lookright)
     {
-        vars->world.lookdir -= 0.002;
+        vars->world.lookdir -= 0.005;
         if (vars->world.lookdir < 0)
             vars->world.lookdir = (M_PI * 2);
     }
@@ -246,6 +256,8 @@ int		main(void)
     vars.move.lookright = 0;
     vars.move.strafeleft = 0;
     vars.move.straferight = 0;
+    vars.move.speedx = 0;
+    vars.move.speedy = 0;
 	vars.stop = 0;
 	mlx_loop_hook(vars.mlx, render, &vars);
 	mlx_loop(vars.mlx);
