@@ -106,6 +106,7 @@ int		mouse_move(int x, int y);
 
 int		render(t_vars *vars);
 int     do_movement(t_vars *vars);
+int     adjust_speed(t_vars *vars, int dir);
 int     cast_ray(t_vars *vars);
 int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a);
 int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a);

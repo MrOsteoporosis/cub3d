@@ -17,7 +17,7 @@
 #include "cub3d.h"
 
 #include <stdio.h>
-
+//Make more defined constants
 int		distanceanddraw(t_vars *vars, t_caster *caster)
 {
 	float	temp;
@@ -123,24 +123,28 @@ int     cast_ray(t_vars *vars)
     return (0);
 }
 
+int     adjust_speed(t_vars *vars, int dir)
+{
+	float	a;
+
+    a = vars->world.lookdir + (dir * 1.5708);
+	vars->move.speedy += cos(a) * 0.02;
+	vars->move.speedx += sin(a) * 0.02;
+	printf("sy %f sx %f\n", vars->move.speedy, vars->move.speedx);
+}
+
 int     do_movement(t_vars *vars)
 {
-    if (vars->move.forward && vars->move.speedy > -0.5)
-        vars->move.speedy -= 0.02;
-    else if (vars->move.backward && vars->move.speedy < 0.5)
-        vars->move.speedy += 0.02;
-    if (vars->move.strafeleft && vars->move.speedx > -0.5)
-        vars->move.speedx -= 0.02;
-    else if (vars->move.straferight && vars->move.speedx < 0.5)
-        vars->move.speedx += 0.02;
-    if (!vars->move.forward && vars->move.speedy < 0)
-        vars->move.speedy += 0.004;
-    else if (!vars->move.backward && vars->move.speedy > 0)
-        vars->move.speedy -= 0.004;
-    if (!vars->move.strafeleft && vars->move.speedx < 0)
-        vars->move.speedx += 0.004;
-    else if (!vars->move.straferight && vars->move.speedx > 0)
-        vars->move.speedx -= 0.004;
+    if (vars->move.forward)
+		adjust_speed(vars, 1);
+    else if (vars->move.backward)
+		adjust_speed(vars, 3);
+    if (vars->move.strafeleft)
+		adjust_speed(vars, 2);
+    else if (vars->move.straferight)
+		adjust_speed(vars, 0);
+    vars->move.speedx -= vars->move.speedx * 0.04;
+    vars->move.speedy -= vars->move.speedy * 0.04;
     vars->world.playerx += vars->move.speedx;
     vars->world.playery += vars->move.speedy;
     if (vars->move.lookleft)
@@ -160,13 +164,10 @@ int     do_movement(t_vars *vars)
 
 int		render(t_vars *vars)
 {
-	// if (vars->stop == 1)//DEBUGL
-		// while(1);//DEBUGL
     my_mlx_clear_frame(&(vars->img), FRAME_WIDTH, FRAME_HEIGHT);
     do_movement(vars);
 	cast_ray(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
-	// vars->stop = 1;//DEBUGL
 	return (0);
 }
 
