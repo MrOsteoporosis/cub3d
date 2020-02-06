@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 12:58:52 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/03 12:51:44 by averheij      ########   odam.nl         */
+/*   Updated: 2020/02/06 12:51:37 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int		close(t_vars *vars)
 
 int     key_press(int keycode, t_vars *vars)
 {
-	printf("PRESS code: %d\n", keycode);
     if (keycode == WKEY)
         vars->move.forward = 1;
     else if (keycode == AKEY)
@@ -43,14 +42,7 @@ int     key_press(int keycode, t_vars *vars)
 
 int		key_release(int keycode, t_vars *vars)
 {
-	printf("RELEASE code: %d\n", keycode);
-    /*if (keycode == 53)*/
-    if (keycode == 65307)
-	{
-		mlx_destroy_window(vars->mlx, vars->win);
-		exit(0);
-	}
-    else if (keycode == WKEY)
+    if (keycode == WKEY)
         vars->move.forward = 0;
     else if (keycode == AKEY)
 		vars->move.strafeleft = 0;
@@ -62,7 +54,12 @@ int		key_release(int keycode, t_vars *vars)
         vars->move.lookleft = 0;
     else if (keycode == RAKEY)
         vars->move.lookright = 0;
-	return (0);
+    else if (keycode == 53)
+	{
+		mlx_destroy_window(vars->mlx, vars->win);
+		exit(0);
+	}
+    return (0);
 }
 
 int		mouse_move(int x, int y)
