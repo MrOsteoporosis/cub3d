@@ -1,32 +1,32 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                      +:+                     #
 #    By: averheij <averheij@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/01/15 15:20:06 by averheij       #+#    #+#                 #
-#    Updated: 2020/02/03 11:32:15 by averheij      ########   odam.nl          #
+#    Updated: 2020/02/06 11:04:24 by averheij         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	cub3d
-CFILES	=	init.c event_basic.c util_pixel.c raycast.c util_ray.c
+CFILES	=	init.c event_basic.c util_pixel.c raycast.c util_ray.c movement.c
 OFILES	=	$(CFILES:.c=.o)
 FLAGS	=	#-Werror -Wall -Wextra
 FLAGS	+= 	-g
 CC		=	gcc $(FLAGS)
 
 # LINUX
-MLX_DIR	=	minilibxlinux
-MLX_NAME=	minilibx
-MLX_INCLUDE	=	minilibxlinux/includes
-EXTRA_FLAGS	=	-lm -lX11 -lXext
+#MLX_DIR	=	minilibxlinux
+#MLX_NAME=	minilibx
+#MLX_INCLUDE	=	minilibxlinux/includes
+#EXTRA_FLAGS	=	-lm -lX11 -lXext
 #MAC
-#MLX_DIR	=	mlx
-#MLX_NAME=	mlx
-#MLX_INCLUDE	=	mlx
-#EXTRA_FLAGS	=	-framework OpenGL -framework AppKit libmlx.dylib
+MLX_DIR	=	mlx
+MLX_NAME=	mlx
+MLX_INCLUDE	=	mlx
+EXTRA_FLAGS	=	-framework OpenGL -framework AppKit libmlx.dylib
 
 BOLD	=	\033[1m
 CLEAR	=	\033[0m
@@ -36,7 +36,7 @@ all: $(NAME)
 $(NAME): $(OFILES)
 	@echo "$(BOLD)/--------     mlx     --------\\ $(CLEAR)"
 	make -C $(MLX_DIR)
-	#cp $(MLX_DIR)/libmlx.dylib .
+	cp $(MLX_DIR)/libmlx.dylib .
 	@echo ""
 	@echo "$(BOLD)/--------    libft    --------\\ $(CLEAR)"
 	make -C libft

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cub3d.h                                            :+:    :+:            */
+/*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                     +:+                    */
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/03 12:42:24 by averheij      ########   odam.nl         */
+/*   Updated: 2020/02/06 11:23:55 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,31 @@
 # define CUB3D_H
 # define FOV	1.0472
 # define HALF_FOV	0.5236
+# define 90DEG  1.5708
+# define 180DEG 3.14159
+# define 270DEG 4.71239
 # define FRAME_WIDTH	720
 # define FRAME_HEIGHT	480
 # define HALF_FRAME_HEIGHT	240
+# define FRICTION   0.10
+# define MOVESPEED  0.15
+# define LOOKSPEED  0.015
 
 //mac keycodes
-//# define WKEY   13
-//# define AKEY   0
-//# define SKEY   1
-//# define DKEY   2
-//# define LAKEY  123
-//# define RAKEY  124
+# define WKEY   13
+# define AKEY   0
+# define SKEY   1
+# define DKEY   2
+# define LAKEY  123
+# define RAKEY  124
 
 //linux keycodes
-# define WKEY   119
-# define AKEY   97
-# define SKEY   115
-# define DKEY   100
-# define LAKEY  65361
-# define RAKEY  65363
+//# define WKEY   119
+//# define AKEY   97
+//# define SKEY   115
+//# define DKEY   100
+//# define LAKEY  65361
+//# define RAKEY  65363
 
 typedef struct	s_data {
 	void		*img;
@@ -94,24 +100,26 @@ typedef struct	s_caster {
 	t_ray		h;
 }				t_caster;
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	my_mlx_sliver_put(t_data *data, int x, int y, int height, int color);
-void	my_mlx_clear_frame(t_data *data, int width, int height);
-int		create_trgb(int t, int r, int g, int b);
-
 int		close(t_vars *vars);
 int     key_press(int keycode, t_vars *vars);
 int		key_release(int keycode, t_vars *vars);
 int		mouse_move(int x, int y);
 
 int		render(t_vars *vars);
-int     do_movement(t_vars *vars);
-int     adjust_speed(t_vars *vars, int dir);
 int     cast_ray(t_vars *vars);
 int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a);
 int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a);
 int		extendray(t_vars *vars, t_ray *ray);
 int		distanceanddraw(t_vars *vars, t_caster *caster);
+
+int     do_movement(t_vars *vars);
+int     adjust_speed(t_vars *vars, int dir);
+int     adjust_look(t_vars *vars);
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	my_mlx_sliver_put(t_data *data, int x, int y, int height, int color);
+void	my_mlx_clear_frame(t_data *data, int width, int height);
+int		create_trgb(int t, int r, int g, int b);
 
 float	ray_angle(float lookdir, float raydir);
 int		check_bounds(t_world *world, t_ray *ray);
