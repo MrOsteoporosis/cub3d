@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/06 12:53:30 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/06 13:58:58 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,36 @@ int		render(t_vars *vars)
 	cast_ray(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
 	return (0);
+}
+
+char	**statictodynamic(void)
+{
+	char	tempmap[7][7] =
+		{{1,1,1,1,1,1,1},
+		{1,0,1,0,0,1,1},
+		{1,0,0,0,0,0,1},
+		{1,1,1,'N',1,0,1},
+		{1,0,1,0,0,0,1},
+		{1,0,0,0,1,0,1},
+		{1,1,1,1,1,1,1}};
+	int		ia = 0;
+	int		ib = 0;
+	char	**res;
+
+
+	res = ft_calloc(sizeof(tempmap[0]), 7);
+	while (ia < 7)
+	{
+		ib = 0;
+		res[ia] = ft_calloc(sizeof(char), 7);
+		while (ib < 7)
+		{
+			res[ia][ib] = tempmap[ia][ib];
+			ib++;
+		}
+		ia++;
+	}
+	return (res);
 }
 
 int		main(void)

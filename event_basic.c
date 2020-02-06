@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 12:58:52 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/06 12:51:37 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/06 13:56:17 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include <math.h>
 #include <stdlib.h>
 #include "cub3d.h"
-
-#include <stdio.h>
 
 int		close(t_vars *vars)
 {
@@ -64,6 +62,5 @@ int		key_release(int keycode, t_vars *vars)
 
 int		mouse_move(int x, int y)
 {
-	printf("x: %d y: %d\n", x, y);
 	return (0);
 }

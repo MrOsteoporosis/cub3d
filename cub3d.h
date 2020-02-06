@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/06 11:50:21 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/06 13:55:39 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,4 @@ int		create_trgb(int t, int r, int g, int b);
 
 float	ray_angle(float lookdir, float raydir);
 int		check_bounds(t_world *world, t_ray *ray);
-char	**statictodynamic(void);
 #endif
