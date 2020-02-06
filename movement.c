@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:55:59 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/06 11:22:33 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/06 11:31:33 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int     adjust_speed(t_vars *vars, int dir)
 {
 	float	a;
 
-    a = vars->world.lookdir + (dir * 90DEG);
+    a = vars->world.lookdir + (dir * DEG90);
 	vars->move.speedy += cos(a) * MOVESPEED;
 	vars->move.speedx += sin(a) * MOVESPEED;
     return (0);

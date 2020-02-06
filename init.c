@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/06 11:24:50 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/06 11:39:18 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ int		main(void)
 	vars.world.map = statictodynamic();
 	vars.world.map_height = 7;
 	vars.world.map_width = 7;
-	vars.world.max_x = vars.world.map_width * 64;
-	vars.world.max_y = vars.world.map_height * 64;
+	vars.world.max_x = vars.world.map_width * GRID;
+	vars.world.max_y = vars.world.map_height * GRID;
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(FRAME_WIDTH);
 	vars.world.proj_plane_dist = (FRAME_WIDTH / 2) / tan(HALF_FOV);
-	vars.world.playerx = 64 * 3 + 32;
-	vars.world.playery = 64 * 3 + 32;
-	vars.world.lookdir = 90DEG * 1;
+	vars.world.playerx = GRID * 3 + (GRID / 2);
+	vars.world.playery = GRID * 3 + (GRID / 2);
+	vars.world.lookdir = DEG90 * 1;
     vars.move.backward = 0;
     vars.move.forward = 0;
     vars.move.lookleft = 0;

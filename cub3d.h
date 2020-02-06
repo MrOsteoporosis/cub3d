@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/06 11:23:55 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/06 11:44:27 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 # define CUB3D_H
 # define FOV	1.0472
 # define HALF_FOV	0.5236
-# define 90DEG  1.5708
-# define 180DEG 3.14159
-# define 270DEG 4.71239
+# define DEG90  1.5708
+# define DEG180 3.14159
+# define DEG270 4.71239
 # define FRAME_WIDTH	720
 # define FRAME_HEIGHT	480
 # define HALF_FRAME_HEIGHT	240
-# define FRICTION   0.10
-# define MOVESPEED  0.15
-# define LOOKSPEED  0.015
+# define FRICTION   0.04
+# define MOVESPEED  1
+# define LOOKSPEED  0.02
+# define GRID   512
 
 //mac keycodes
 # define WKEY   13

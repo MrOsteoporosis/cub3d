@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:51:20 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/06 11:24:02 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/06 11:36:09 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		distanceanddraw(t_vars *vars, t_caster *caster)
 	if (dist > temp)
 		dist = temp;
 	dist = dist * cos(caster->raydir);
-	height = (64 / dist) * vars->world.proj_plane_dist;
+	height = (GRID / dist) * vars->world.proj_plane_dist;
 	if  (height > FRAME_HEIGHT)
 		height = FRAME_HEIGHT;
 	my_mlx_sliver_put(&(vars->img), caster->column,
@@ -45,8 +45,8 @@ int		extendray(t_vars *vars, t_ray *ray)
 	{
 		ray->x = ray->x + ray->xincr;
 		ray->y = ray->y + ray->yincr;
-		ray->gridx = ray->x / 64;
-		ray->gridy = ray->y / 64;
+		ray->gridx = ray->x / GRID;
+		ray->gridy = ray->y / GRID;
 		check_bounds(&(vars->world), ray);
 	}
 	return (0);
@@ -54,21 +54,21 @@ int		extendray(t_vars *vars, t_ray *ray)
 
 int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a)
 {
-    caster->v.xincr = 64;
-    caster->v.yincr = 64 * tan_a;
-    if (caster->a < 270DEG && caster->a > 90DEG)
+    caster->v.xincr = GRID;
+    caster->v.yincr = GRID * tan_a;
+    if (caster->a < DEG270 && caster->a > DEG90)
     {
-        caster->v.x = (((int)vars->world.playerx / 64) * 64) - 1;
+        caster->v.x = (((int)vars->world.playerx / GRID) * GRID) - 1;
         caster->v.xincr *= -1;
     }
     else
     {
-        caster->v.x = (((int)vars->world.playerx / 64) * 64) + 64;
+        caster->v.x = (((int)vars->world.playerx / GRID) * GRID) + GRID;
         caster->v.yincr *= -1;
     }
     caster->v.y = vars->world.playery + ((vars->world.playerx - caster->v.x) * tan_a);
-    caster->v.gridx = caster->v.x / 64;
-    caster->v.gridy = caster->v.y / 64;
+    caster->v.gridx = caster->v.x / GRID;
+    caster->v.gridy = caster->v.y / GRID;
     check_bounds(&(vars->world), &(caster->v));
     if(!caster->v.foundwall)
         extendray(vars, &(caster->v));
@@ -77,21 +77,21 @@ int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a)
 
 int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a)
 {
-    caster->h.yincr = 64;
-    caster->h.xincr = 64 / tan_a;
-    if (caster->a < 180DEG && caster->a > 0)
+    caster->h.yincr = GRID;
+    caster->h.xincr = GRID / tan_a;
+    if (caster->a < DEG180 && caster->a > 0)
     {
-        caster->h.y = (((int)vars->world.playery / 64) * 64) - 1;
+        caster->h.y = (((int)vars->world.playery / GRID) * GRID) - 1;
         caster->h.yincr *= -1;
     }
     else
     {
-        caster->h.y = (((int)vars->world.playery / 64) * 64) + 64;
+        caster->h.y = (((int)vars->world.playery / GRID) * GRID) + GRID;
         caster->h.xincr *= -1;
     }
     caster->h.x = vars->world.playerx + ((vars->world.playery - caster->h.y) / tan_a);
-    caster->h.gridx = caster->h.x / 64;
-    caster->h.gridy = caster->h.y / 64;
+    caster->h.gridx = caster->h.x / GRID;
+    caster->h.gridy = caster->h.y / GRID;
     check_bounds(&(vars->world), &(caster->h));
     if(!caster->h.foundwall)
         extendray(vars, &(caster->h));
@@ -106,7 +106,7 @@ int     cast_ray(t_vars *vars)
     caster.raydir = HALF_FOV;
 	caster.column = 1;
 	while (caster.column <= FRAME_WIDTH)
-	{//Use shift ops, right shift by 8 to divide by 64
+	{//Use shift ops, right shift by 8 to divide by GRID
 		caster.a = ray_angle(vars->world.lookdir, caster.raydir);
 		tan_a = tan(caster.a);
         cast_horizontal(vars, &caster, tan_a);
