@@ -6,21 +6,21 @@
 #    By: averheij <averheij@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/01/15 15:20:06 by averheij       #+#    #+#                 #
-#    Updated: 2020/02/06 11:04:24 by averheij         ###   ########.fr        #
+#    Updated: 2020/02/06 12:41:14 by averheij         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	cub3d
 CFILES	=	init.c event_basic.c util_pixel.c raycast.c util_ray.c movement.c
-OFILES	=	$(CFILES:.c=.o)
+OFILES	=	$(CFILES:%.c=objects/%.o)
 FLAGS	=	#-Werror -Wall -Wextra
 FLAGS	+= 	-g
 CC		=	gcc $(FLAGS)
 
 # LINUX
-#MLX_DIR	=	minilibxlinux
+#MLX_DIR	=	mlxlinux
 #MLX_NAME=	minilibx
-#MLX_INCLUDE	=	minilibxlinux/includes
+#MLX_INCLUDE	=	mlxlinux/includes
 #EXTRA_FLAGS	=	-lm -lX11 -lXext
 #MAC
 MLX_DIR	=	mlx
@@ -43,7 +43,7 @@ $(NAME): $(OFILES)
 	@echo ""
 	$(CC) -o $(NAME) $(OFILES) -L$(MLX_DIR) -l$(MLX_NAME) -Llibft -lft $(EXTRA_FLAGS)
 
-%.o: %.c
+objects/%.o: %.c
 	@printf "Compiling $<	| "
 	$(CC) -I$(MLX_INCLUDE) -Ilibft -c $< -o $@
 
