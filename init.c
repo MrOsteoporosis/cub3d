@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/06 13:58:58 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/06 14:36:51 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include "cub3d.h"
+
+#include <stdio.h>
 
 int		render(t_vars *vars)
 {
@@ -76,6 +78,9 @@ int		main(void)
 	vars.world.map_width = 7;
 	vars.world.max_x = vars.world.map_width * GRID;
 	vars.world.max_y = vars.world.map_height * GRID;
+    vars.no.path = "./textures/wood.png";
+    vars.no.img.img = mlx_png_file_to_image(vars.mlx, vars.no.path, &vars.no.width, &vars.no.height);
+    vars.no.img.addr = mlx_get_data_addr(vars.no.img.img, &vars.no.img.bits_per_pixel, &vars.no.img.line_length, &vars.no.img.endian);
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(FRAME_WIDTH);
 	vars.world.proj_plane_dist = (FRAME_WIDTH / 2) / tan(HALF_FOV);
     vars.move.backward = 0;
@@ -86,7 +91,6 @@ int		main(void)
     vars.move.straferight = 0;
     vars.move.speedx = 0;
     vars.move.speedy = 0;
-	vars.stop = 0;
 	mlx_loop_hook(vars.mlx, render, &vars);
 	mlx_loop(vars.mlx);
 	return (0);

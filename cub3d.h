@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/06 13:55:39 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/06 14:28:05 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@ typedef struct	s_data {
 	int			endian;
 }				t_data;
 
+typedef struct  s_tex {
+    t_data      img;
+    char        *path;
+    int         width;
+    int         height;
+}               t_tex;
+
 typedef struct	s_world {
 	char		**map;
 	int			map_width;
@@ -80,7 +87,11 @@ typedef struct	s_vars {
 	t_data		img;
 	t_world		world;
     t_movement  move;
-	int			stop;
+    t_tex       no;
+    t_tex       so;
+    t_tex       we;
+    t_tex       ea;
+    t_tex       s;
 }				t_vars;
 
 typedef struct	s_ray {
