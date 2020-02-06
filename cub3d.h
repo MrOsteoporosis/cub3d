@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/06 11:44:27 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/06 11:50:21 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define MOVESPEED  1
 # define LOOKSPEED  0.02
 # define GRID   512
+# define GRIDPOW    9
 
 //mac keycodes
 # define WKEY   13

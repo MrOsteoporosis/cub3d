@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:51:20 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/06 11:36:09 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/06 11:52:35 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,12 @@ int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a)
     caster->v.yincr = GRID * tan_a;
     if (caster->a < DEG270 && caster->a > DEG90)
     {
-        caster->v.x = (((int)vars->world.playerx / GRID) * GRID) - 1;
+        caster->v.x = (((int)vars->world.playerx >> GRIDPOW) << GRIDPOW) - 1;
         caster->v.xincr *= -1;
     }
     else
     {
-        caster->v.x = (((int)vars->world.playerx / GRID) * GRID) + GRID;
+        caster->v.x = (((int)vars->world.playerx >> GRIDPOW) << GRIDPOW) + GRID;
         caster->v.yincr *= -1;
     }
     caster->v.y = vars->world.playery + ((vars->world.playerx - caster->v.x) * tan_a);
@@ -81,12 +81,12 @@ int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a)
     caster->h.xincr = GRID / tan_a;
     if (caster->a < DEG180 && caster->a > 0)
     {
-        caster->h.y = (((int)vars->world.playery / GRID) * GRID) - 1;
+        caster->h.y = (((int)vars->world.playery >> GRIDPOW) << GRIDPOW) - 1;
         caster->h.yincr *= -1;
     }
     else
     {
-        caster->h.y = (((int)vars->world.playery / GRID) * GRID) + GRID;
+        caster->h.y = (((int)vars->world.playery >> GRIDPOW) << GRIDPOW) + GRID;
         caster->h.xincr *= -1;
     }
     caster->h.x = vars->world.playerx + ((vars->world.playery - caster->h.y) / tan_a);
