@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/10 12:58:32 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/10 13:23:42 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ char	**statictodynamic(void)
 {
 	char	tempmap[7][7] =
 		{{1,1,1,1,1,1,1},
-		{1,0,1,0,0,1,1},
-		{1,0,0,0,0,0,1},
-		{1,1,1,'N',1,0,1},
-		{1,0,1,0,0,0,1},
 		{1,0,0,0,1,0,1},
+		{1,1,1,0,1,0,1},
+		{1,0,0,0,0,0,1},
+		{1,0,1,0,1,0,1},
+		{1,0,0,0,0,'N',1},
 		{1,1,1,1,1,1,1}};
 	int		ia = 0;
 	int		ib = 0;
@@ -71,8 +71,8 @@ int		main(void)
 	vars.img.img = mlx_new_image(vars.mlx, FRAME_WIDTH, FRAME_HEIGHT);
 	vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
 	vars.world.map = statictodynamic();//Add map parsing here
-    vars.world.playerx = GRID * 3 + (GRID / 2);
-	vars.world.playery = GRID * 3 + (GRID / 2);
+    vars.world.playerx = GRID * 5 + (GRID / 2);
+	vars.world.playery = GRID * 5 + (GRID / 2);
 	vars.world.lookdir = DEG90 * 1;
 	vars.world.map_height = 7;
 	vars.world.map_width = 7;

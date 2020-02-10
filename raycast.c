@@ -6,12 +6,37 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:51:20 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/10 12:42:27 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/10 13:48:38 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "cub3d.h"
+
+int     draw_texture_column(t_vars *vars, t_caster *caster)
+{
+    char	        *dst;
+    char            *color;
+    int		        i;
+    int             y;
+    int             tex_height;
+    int             tex_column;
+    int             tex_h_offset;
+
+    tex_column = (vars->no.width * caster->near->tex_offset) >> GRIDPOW;
+    tex_height = ((vars->no.height * caster->near->height) / caster->near->real_height);
+    tex_h_offset = (((caster->near->real_height - caster->near->height) >> 1) * vars->no.height) / caster->near->real_height;
+    y = HALF_FRAME_HEIGHT - (caster->near->height >> 1);
+    i = 0;
+    while (i < caster->near->height)
+    {
+        dst = vars->img.addr + ((y + i) * vars->img.line_length + caster->column * (vars->img.bits_per_pixel / 8));
+        color = vars->no.img.addr + ((((tex_height * i) / caster->near->height) + tex_h_offset) * vars->no.img.line_length + tex_column * (vars->no.img.bits_per_pixel / 8));
+        *(unsigned int*)dst = *(unsigned int*)color;
+        i++;
+    }
+    return (0);
+}
 
 int		distanceanddraw(t_vars *vars, t_caster *caster)
 {
@@ -35,36 +60,20 @@ int		distanceanddraw(t_vars *vars, t_caster *caster)
     caster->near->real_height = caster->near->height;
 	if (caster->near->height > FRAME_HEIGHT)
 		caster->near->height = FRAME_HEIGHT;
-	/*my_mlx_sliver_put(&(vars->img), caster->column,*/
-        /*HALF_FRAME_HEIGHT - (caster->near->height >> 1), caster->near->height,*/
-        /*create_trgb(0, 100, 100, 100));*/
     draw_texture_column(vars, caster);
 	return (1);
 }
 
-int     draw_texture_column(t_vars *vars, t_caster *caster)
+int     calc_offsets(t_caster *caster)
 {
-    char	        *dst;
-    char            *color;
-    int		        i;
-    int             y;
-    int             tex_height;
-    int             tex_column;
-    int             tex_offset;
-
-    tex_column = (vars->no.width * caster->near->tex_offset) >> GRIDPOW;
-    tex_height = ((vars->no.height * caster->near->height) / caster->near->real_height);
-    tex_offset = (((caster->near->real_height - caster->near->height) >> 1) * vars->no.height) / caster->near->real_height;
-    y = HALF_FRAME_HEIGHT - (caster->near->height >> 1);
-    /*printf("a|%.4f|x|%.0f|y|%.0f|t%%|%f|tc|%d|tw|%d|\n", caster->raydir, caster->near->x, caster->near->y, (float)caster->near->tex_offset / (float)GRID, tex_column, vars->no.width);*/
-    i = 0;
-    while (i < caster->near->height)
-    {
-        dst = vars->img.addr + ((y + i) * vars->img.line_length + caster->column * (vars->img.bits_per_pixel / 8));
-        color = vars->no.img.addr + ((((tex_height * i) / caster->near->height) + tex_offset) * vars->no.img.line_length + tex_column * (vars->no.img.bits_per_pixel / 8));
-        *(unsigned int*)dst = *(unsigned int*)color;
-        i++;
-    }
+    if (caster->a < DEG270 && caster->a > DEG90)
+        caster->v.tex_offset = (int)caster->v.y % GRID;
+    else
+        caster->v.tex_offset = GRID - ((int)caster->v.y % GRID);
+    if (caster->a < DEG180 && caster->a > 0)
+        caster->h.tex_offset = (int)caster->h.x % GRID;
+    else
+        caster->h.tex_offset = GRID - ((int)caster->h.x % GRID);
     return (0);
 }
 
@@ -98,10 +107,6 @@ int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a)
     caster->v.y = vars->world.playery + ((vars->world.playerx - caster->v.x) * tan_a);
     caster->v.gridx = caster->v.x / GRID;
     caster->v.gridy = caster->v.y / GRID;
-    if (caster->a < DEG270 && caster->a > DEG90)
-        caster->v.tex_offset = (int)caster->v.y % GRID;
-    else
-        caster->v.tex_offset = GRID - ((int)caster->v.y % GRID);
     check_bounds(&(vars->world), &(caster->v));
     if(!caster->v.foundwall)
         extendray(vars, &(caster->v));
@@ -125,10 +130,6 @@ int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a)
     caster->h.x = vars->world.playerx + ((vars->world.playery - caster->h.y) / tan_a);
     caster->h.gridx = caster->h.x / GRID;
     caster->h.gridy = caster->h.y / GRID;
-    if (caster->a < DEG180 && caster->a > 0)
-        caster->h.tex_offset = (int)caster->h.x % GRID;
-    else
-        caster->h.tex_offset = GRID - ((int)caster->h.x % GRID);
     check_bounds(&(vars->world), &(caster->h));
     if(!caster->h.foundwall)
         extendray(vars, &(caster->h));
@@ -148,6 +149,7 @@ int     cast_ray(t_vars *vars)
 		tan_a = tan(caster.a);
         cast_horizontal(vars, &caster, tan_a);
         cast_vertical(vars, &caster, tan_a);
+        calc_offsets(&caster);
         distanceanddraw(vars, &caster);
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
