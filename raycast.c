@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:51:20 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/10 13:48:38 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/10 14:47:36 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int     draw_texture_column(t_vars *vars, t_caster *caster)
     tex_height = ((vars->no.height * caster->near->height) / caster->near->real_height);
     tex_h_offset = (((caster->near->real_height - caster->near->height) >> 1) * vars->no.height) / caster->near->real_height;
     y = HALF_FRAME_HEIGHT - (caster->near->height >> 1);
-    i = 0;
+    i = 0;//Change this loop to function based on real height, rather than adjusted height and do a check to see if a pixel is valid to write
     while (i < caster->near->height)
     {
         dst = vars->img.addr + ((y + i) * vars->img.line_length + caster->column * (vars->img.bits_per_pixel / 8));
