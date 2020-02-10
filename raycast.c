@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:51:20 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/10 10:19:01 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/10 11:58:17 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,40 +21,51 @@ int		distanceanddraw(t_vars *vars, t_caster *caster)
 	float	sin_a;
 
 	sin_a = sin(caster->a);
-	dist = (vars->world.playery - caster->h.y) / sin_a;
-	if (dist < 0)
-		dist *= -1;
-	temp = (vars->world.playery - caster->v.y) / sin_a;
-	if (temp < 0)
-		temp *= -1;
-	if (dist > temp)
-		dist = temp;
-	dist = dist * cos(caster->raydir);
-	height = (GRID / dist) * vars->world.proj_plane_dist;
-	if  (height > FRAME_HEIGHT)
-		height = FRAME_HEIGHT;
-	my_mlx_sliver_put(&(vars->img), caster->column,
-            HALF_FRAME_HEIGHT - (height >> 1), height,
-            create_trgb(0, 100, 100, 100));
+	caster->h.dist = (vars->world.playery - caster->h.y) / sin_a;
+	if (caster->h.dist < 0)
+		caster->h.dist *= -1;
+	caster->v.dist = (vars->world.playery - caster->v.y) / sin_a;
+	if (caster->v.dist < 0)
+		caster->v.dist *= -1;
+    caster->near = &(caster->v);
+	if (caster->h.dist < caster->v.dist)
+		caster->near = &(caster->h);
+	caster->near->dist = caster->near->dist * cos(caster->raydir);
+	caster->near->height = (GRID / caster->near->dist) * vars->world.proj_plane_dist;
+    caster->near->real_height = caster->near->height;
+	if (caster->near->height > FRAME_HEIGHT)
+		caster->near->height = FRAME_HEIGHT;
+	/*my_mlx_sliver_put(&(vars->img), caster->column,*/
+        /*HALF_FRAME_HEIGHT - (caster->near->height >> 1), caster->near->height,*/
+        /*create_trgb(0, 100, 100, 100));*/
+    draw_texture_column(vars, caster);
 	return (1);
 }
 
-/*int     draw_texture_column(t_vars *vars, t_caster *caster, )*/
-/*{*/
-	/*char	*dst;*/
-	/*int		i;*/
-/*//Figure out which NESW youre looking at with lookdir and x y? or incr and x y*/
-/*//get texture column with distance from left side of wall to current drawing column*/
-/*//calculate texture to wall height ratio and incr appropriatley,*/
-/*//  use a seperate pointer to texture pixel and move that around*/
-	/*i = 0;*/
-	/*while (i < height)*/
-	/*{*/
-		/*dst = data->addr + ((y + i) * data->line_length + caster->column * (data->bits_per_pixel / 8));*/
-		/**(unsigned int*)dst = color;*/
-		/*i++;*/
-	/*}*/
-/*}*/
+int     draw_texture_column(t_vars *vars, t_caster *caster)
+{
+    char	        *dst;
+    char            *color;
+    int		        i;
+    int             y;
+    int             tex_column;
+//Figure out which NESW youre looking at with lookdir and x y? or incr and x y
+//get texture column with distance from left side of wall to current drawing column
+//calculate texture to wall height ratio and incr appropriatley,
+//  use a seperate pointer to texture pixel and move that around
+    tex_column = (vars->no.width * caster->near->tex_offset) / GRID;
+    y = HALF_FRAME_HEIGHT - (caster->near->height >> 1);
+    /*printf("a|%.4f|x|%.0f|y|%.0f|t%%|%f|tc|%d|tw|%d|\n", caster->raydir, caster->near->x, caster->near->y, (float)caster->near->tex_offset / (float)GRID, tex_column, vars->no.width);*/
+    i = 0;
+    while (i < caster->near->height)
+    {
+        dst = vars->img.addr + ((y + i) * vars->img.line_length + caster->column * (vars->img.bits_per_pixel / 8));
+        color = vars->no.img.addr + (((vars->no.height * i) / caster->near->height) * vars->no.img.line_length + tex_column * (vars->no.img.bits_per_pixel / 8));
+        *(unsigned int*)dst = *(unsigned int*)color;
+        i++;
+    }
+    return (0);
+}
 
 int		extendray(t_vars *vars, t_ray *ray)
 {
@@ -86,6 +97,10 @@ int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a)
     caster->v.y = vars->world.playery + ((vars->world.playerx - caster->v.x) * tan_a);
     caster->v.gridx = caster->v.x / GRID;
     caster->v.gridy = caster->v.y / GRID;
+    if (caster->a < DEG270 && caster->a > DEG90)
+        caster->v.tex_offset = (int)caster->v.y % GRID;
+    else
+        caster->v.tex_offset = GRID - ((int)caster->v.y % GRID);
     check_bounds(&(vars->world), &(caster->v));
     if(!caster->v.foundwall)
         extendray(vars, &(caster->v));
@@ -109,6 +124,10 @@ int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a)
     caster->h.x = vars->world.playerx + ((vars->world.playery - caster->h.y) / tan_a);
     caster->h.gridx = caster->h.x / GRID;
     caster->h.gridy = caster->h.y / GRID;
+    if (caster->a < DEG180 && caster->a > 0)
+        caster->h.tex_offset = (int)caster->h.x % GRID;
+    else
+        caster->h.tex_offset = GRID - ((int)caster->h.x % GRID);
     check_bounds(&(vars->world), &(caster->h));
     if(!caster->h.foundwall)
         extendray(vars, &(caster->h));

@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/06 14:36:51 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/10 11:42:46 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		main(void)
 	vars.win = mlx_new_window(vars.mlx, FRAME_WIDTH, FRAME_HEIGHT, "cub3d");
     mlx_hook(vars.win, 2, (1L << 0), key_press, &vars);//KeyPress
     mlx_hook(vars.win, 3, (1L << 1), key_release, &vars);//KeyRelease
-	mlx_hook(vars.win, 17, 0L, close, &vars);//DestroyNotify
+	mlx_hook(vars.win, 17, 0L, close, &vars);//DestroyNotifg
     /*mlx_hook(vars.win, 6, (1L << 6), mouse_move, NULL);//MotionNotify*/
 	vars.img.img = mlx_new_image(vars.mlx, FRAME_WIDTH, FRAME_HEIGHT);
 	vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
@@ -78,7 +78,7 @@ int		main(void)
 	vars.world.map_width = 7;
 	vars.world.max_x = vars.world.map_width * GRID;
 	vars.world.max_y = vars.world.map_height * GRID;
-    vars.no.path = "./textures/wood.png";
+    vars.no.path = "./textures/bluestone.png";
     vars.no.img.img = mlx_png_file_to_image(vars.mlx, vars.no.path, &vars.no.width, &vars.no.height);
     vars.no.img.addr = mlx_get_data_addr(vars.no.img.img, &vars.no.img.bits_per_pixel, &vars.no.img.line_length, &vars.no.img.endian);
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(FRAME_WIDTH);

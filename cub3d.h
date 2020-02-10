@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/06 14:28:05 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/10 11:59:41 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,10 @@ typedef struct	s_ray {
 	int			gridy;
 	short		safe;
 	short		foundwall;
+    float       dist;
+    int         real_height;
+    int         height;
+    int         tex_offset;
 }				t_ray;
 
 typedef struct	s_caster {
@@ -111,6 +115,7 @@ typedef struct	s_caster {
 	float		a;
 	t_ray		v;
 	t_ray		h;
+    t_ray       *near;
 }				t_caster;
 
 int		close(t_vars *vars);
@@ -124,6 +129,7 @@ int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a);
 int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a);
 int		extendray(t_vars *vars, t_ray *ray);
 int		distanceanddraw(t_vars *vars, t_caster *caster);
+int     draw_texture_column(t_vars *vars, t_caster *caster);
 
 int     do_movement(t_vars *vars);
 int     adjust_speed(t_vars *vars, int dir);
