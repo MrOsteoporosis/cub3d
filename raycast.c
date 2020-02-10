@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:51:20 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/10 11:58:17 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/10 12:42:27 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,20 @@ int     draw_texture_column(t_vars *vars, t_caster *caster)
     char            *color;
     int		        i;
     int             y;
+    int             tex_height;
     int             tex_column;
-//Figure out which NESW youre looking at with lookdir and x y? or incr and x y
-//get texture column with distance from left side of wall to current drawing column
-//calculate texture to wall height ratio and incr appropriatley,
-//  use a seperate pointer to texture pixel and move that around
-    tex_column = (vars->no.width * caster->near->tex_offset) / GRID;
+    int             tex_offset;
+
+    tex_column = (vars->no.width * caster->near->tex_offset) >> GRIDPOW;
+    tex_height = ((vars->no.height * caster->near->height) / caster->near->real_height);
+    tex_offset = (((caster->near->real_height - caster->near->height) >> 1) * vars->no.height) / caster->near->real_height;
     y = HALF_FRAME_HEIGHT - (caster->near->height >> 1);
     /*printf("a|%.4f|x|%.0f|y|%.0f|t%%|%f|tc|%d|tw|%d|\n", caster->raydir, caster->near->x, caster->near->y, (float)caster->near->tex_offset / (float)GRID, tex_column, vars->no.width);*/
     i = 0;
     while (i < caster->near->height)
     {
         dst = vars->img.addr + ((y + i) * vars->img.line_length + caster->column * (vars->img.bits_per_pixel / 8));
-        color = vars->no.img.addr + (((vars->no.height * i) / caster->near->height) * vars->no.img.line_length + tex_column * (vars->no.img.bits_per_pixel / 8));
+        color = vars->no.img.addr + ((((tex_height * i) / caster->near->height) + tex_offset) * vars->no.img.line_length + tex_column * (vars->no.img.bits_per_pixel / 8));
         *(unsigned int*)dst = *(unsigned int*)color;
         i++;
     }
