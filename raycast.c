@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:51:20 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/06 15:04:40 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/10 10:19:01 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,22 @@ int		distanceanddraw(t_vars *vars, t_caster *caster)
 	return (1);
 }
 
-int     draw_texture_column(t_vars *vars, t_caster *caster, )
-{
-	char	*dst;
-	int		i;
-//Figure out which NESW youre looking at with lookdir and x y? or incr and x y
-//get texture column with distance from left side of wall to current drawing column
-//calculate texture to wall height ratio and incr appropriatley,
-//  use a seperate pointer to texture pixel and move that around
-	i = 0;
-	while (i < height)
-	{
-		dst = data->addr + ((y + i) * data->line_length + caster->column * (data->bits_per_pixel / 8));
-		*(unsigned int*)dst = color;
-		i++;
-	}
-}
+/*int     draw_texture_column(t_vars *vars, t_caster *caster, )*/
+/*{*/
+	/*char	*dst;*/
+	/*int		i;*/
+/*//Figure out which NESW youre looking at with lookdir and x y? or incr and x y*/
+/*//get texture column with distance from left side of wall to current drawing column*/
+/*//calculate texture to wall height ratio and incr appropriatley,*/
+/*//  use a seperate pointer to texture pixel and move that around*/
+	/*i = 0;*/
+	/*while (i < height)*/
+	/*{*/
+		/*dst = data->addr + ((y + i) * data->line_length + caster->column * (data->bits_per_pixel / 8));*/
+		/**(unsigned int*)dst = color;*/
+		/*i++;*/
+	/*}*/
+/*}*/
 
 int		extendray(t_vars *vars, t_ray *ray)
 {

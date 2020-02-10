@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:55:59 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/06 11:31:33 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/10 10:29:41 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ int     adjust_look(t_vars *vars)
     {
         vars->world.lookdir += LOOKSPEED;
         if (vars->world.lookdir > (M_PI * 2))
-            vars->world.lookdir = 0;
+            vars->world.lookdir = LOOKSPEED;
     }
     else if (vars->move.lookright)
     {
         vars->world.lookdir -= LOOKSPEED;
         if (vars->world.lookdir < 0)
-            vars->world.lookdir = (M_PI * 2);
+            vars->world.lookdir = (M_PI * 2) - LOOKSPEED;
     }
     return (0);
 }
