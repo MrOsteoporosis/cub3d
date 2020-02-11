@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/11 09:03:00 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 10:19:36 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,15 @@ int		main(void)
     vars.no.path = "./textures/bluestone.png";
     vars.no.img.img = mlx_png_file_to_image(vars.mlx, vars.no.path, &vars.no.width, &vars.no.height);
     vars.no.img.addr = mlx_get_data_addr(vars.no.img.img, &vars.no.img.bits_per_pixel, &vars.no.img.line_length, &vars.no.img.endian);
+    vars.so.path = "./textures/redbrick.png";
+    vars.so.img.img = mlx_png_file_to_image(vars.mlx, vars.so.path, &vars.so.width, &vars.so.height);
+    vars.so.img.addr = mlx_get_data_addr(vars.so.img.img, &vars.so.img.bits_per_pixel, &vars.so.img.line_length, &vars.so.img.endian);
+    vars.we.path = "./textures/purplestone.png";
+    vars.we.img.img = mlx_png_file_to_image(vars.mlx, vars.we.path, &vars.we.width, &vars.we.height);
+    vars.we.img.addr = mlx_get_data_addr(vars.we.img.img, &vars.we.img.bits_per_pixel, &vars.we.img.line_length, &vars.we.img.endian);
+    vars.ea.path = "./textures/colorstone.png";
+    vars.ea.img.img = mlx_png_file_to_image(vars.mlx, vars.ea.path, &vars.ea.width, &vars.ea.height);
+    vars.ea.img.addr = mlx_get_data_addr(vars.ea.img.img, &vars.ea.img.bits_per_pixel, &vars.ea.img.line_length, &vars.ea.img.endian);
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(FRAME_WIDTH);
 	vars.world.proj_plane_dist = (FRAME_WIDTH / 2) / tan(HALF_FOV);
     vars.move.backward = 0;

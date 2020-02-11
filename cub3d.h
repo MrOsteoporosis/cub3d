@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/11 09:47:23 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 10:22:33 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,9 @@ typedef struct	s_ray {
 	short		safe;
 	short		foundwall;
     float       dist;
-    int         real_height;
     int         height;
+    int         real_height;
+    t_tex       *tex;
     int         tex_offset;
 }				t_ray;
 
@@ -124,8 +125,9 @@ int     cast_ray(t_vars *vars);
 int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a);
 int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a);
 int		extendray(t_vars *vars, t_ray *ray);
+int     calc_offsets(t_vars *vars, t_caster *caster);
 int		calc_distance(t_vars *vars, t_caster *caster);
-int     draw_texture_column(t_vars *vars, t_caster *caster);
+int     draw_texture_column(t_vars *vars, t_caster *caster, t_tex *tex);
 
 int     do_movement(t_vars *vars);
 int     adjust_speed(t_vars *vars, float movedir);
