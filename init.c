@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/10 14:41:12 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 08:16:29 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int		main(void)
 	vars.world.map_width = 7;
 	vars.world.max_x = vars.world.map_width * GRID;
 	vars.world.max_y = vars.world.map_height * GRID;
-    vars.no.path = "./textures/grid32.png";
+    vars.no.path = "./textures/grid16.png";
     vars.no.img.img = mlx_png_file_to_image(vars.mlx, vars.no.path, &vars.no.width, &vars.no.height);
     vars.no.img.addr = mlx_get_data_addr(vars.no.img.img, &vars.no.img.bits_per_pixel, &vars.no.img.line_length, &vars.no.img.endian);
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(FRAME_WIDTH);
