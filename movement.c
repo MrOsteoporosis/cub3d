@@ -6,18 +6,18 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:55:59 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 09:27:32 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 09:47:37 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "cub3d.h"
 
-int     adjust_speed(t_vars *vars, int dir)
+int     adjust_speed(t_vars *vars, float movedir)
 {
 	float	a;
 
-    a = vars->world.lookdir + (dir * DEG90);
+    a = vars->world.lookdir + movedir;
 	vars->move.speedy += cos(a) * MOVESPEED;
 	vars->move.speedx += sin(a) * MOVESPEED;
     return (0);
@@ -43,11 +43,11 @@ int     adjust_look(t_vars *vars)
 int     do_movement(t_vars *vars)
 {
     if (vars->move.forward)
-		adjust_speed(vars, 1);
+		adjust_speed(vars, DEG90);
     else if (vars->move.backward)
-		adjust_speed(vars, 3);
+		adjust_speed(vars, DEG270);
     if (vars->move.strafeleft)
-		adjust_speed(vars, 2);
+		adjust_speed(vars, DEG180);
     else if (vars->move.straferight)
 		adjust_speed(vars, 0);
     vars->move.speedx -= vars->move.speedx * FRICTION;

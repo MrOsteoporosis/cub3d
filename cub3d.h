@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/11 09:26:31 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 09:47:23 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int		calc_distance(t_vars *vars, t_caster *caster);
 int     draw_texture_column(t_vars *vars, t_caster *caster);
 
 int     do_movement(t_vars *vars);
-int     adjust_speed(t_vars *vars, int dir);
+int     adjust_speed(t_vars *vars, float movedir);
 int     adjust_look(t_vars *vars);
 
 int		close(t_vars *vars);
