@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:57:33 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 11:52:50 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 12:05:14 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ float	ray_angle(float lookdir, float raydir)
 
 	a = lookdir + raydir;
 	if (a > M_PI2)
-		a-= M_PI2;
+		a -= M_PI2;
 	return (a);
 }
 
@@ -38,7 +38,7 @@ int		check_bounds(t_world *world, t_ray *ray)
 	return (1);
 }
 
-int	 ft_abs(int x)
+int		ft_abs(int x)
 {
 	int y;
 

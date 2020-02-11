@@ -6,21 +6,21 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:51:20 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 11:52:22 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 12:03:21 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "cub3d.h"
 
-void	 draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_tex *tex)
+void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
+		t_tex *tex)
 {
-	char			*dst;
-	char			*color;
-	int				i;
-	int			 y;
-	int			 endy;
-	int			 tex_column;
+	char	*dst;
+	int		i;
+	int		y;
+	int		endy;
+	int		tex_column;
 
 	tex_column = (tex->width * ray->tex_offset) >> GRIDPOW;
 	y = HALF_FRAME_HEIGHT - (ray->height >> 1);
@@ -28,9 +28,11 @@ void	 draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_tex *te
 	i = -1 * (HALF_FRAME_HEIGHT - (ray->real_height >> 1)) + y;
 	while (y < endy)
 	{
-		dst = frame->addr + (y * frame->line_length + frame_column * (frame->bits_per_pixel >> 3));
-		color = tex->img.addr + (((tex->height * i) / ray->real_height) * tex->img.line_length + tex_column * (tex->img.bits_per_pixel >> 3));
-		*(unsigned int*)dst = *(unsigned int*)color;
+		dst = frame->addr + (y * frame->line_length +
+				frame_column * (frame->bits_per_pixel >> 3));
+		*(unsigned int*)dst = *(unsigned int*)(tex->img.addr +
+				(((tex->height * i) / ray->real_height) * tex->img.line_length
+				+ tex_column * (tex->img.bits_per_pixel >> 3)));
 		i++;
 		y++;
 	}
@@ -74,7 +76,7 @@ void	cast_vertical(t_world *world, t_ray *ray, float a, float tan_a)
 	ray->gridx = ray->x / GRID;
 	ray->gridy = ray->y / GRID;
 	check_bounds(world, ray);
-	if(!ray->foundwall)
+	if (!ray->foundwall)
 		extendray(world, ray);
 }
 
@@ -96,7 +98,7 @@ void	cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a)
 	ray->gridx = ray->x / GRID;
 	ray->gridy = ray->y / GRID;
 	check_bounds(world, ray);
-	if(!ray->foundwall)
+	if (!ray->foundwall)
 		extendray(world, ray);
 }
 
@@ -115,7 +117,8 @@ void	cast_ray(t_vars *vars)
 		cast_vertical(&(vars->world), &(caster.v), caster.a, tan_a);
 		calc_offsets(vars, &caster);
 		calc_distance(&(vars->world), &caster);
-		draw_texture_column(&(vars->img), caster.near, caster.column, caster.near->tex);
+		draw_texture_column(&(vars->img), caster.near, caster.column,
+				caster.near->tex);
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}

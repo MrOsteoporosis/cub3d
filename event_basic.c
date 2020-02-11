@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 11:54:02 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 11:54:04 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 11:59:13 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 #include <stdlib.h>
 #include "cub3d.h"
 
-int	 close(t_vars *vars)
+int		close(t_vars *vars)
 {
 	mlx_destroy_window(vars->mlx, vars->win);
 	exit(0);
 	return (0);
 }
 
-int	 key_press(int keycode, t_vars *vars)
+int		key_press(int keycode, t_vars *vars)
 {
 	if (keycode == WKEY)
 		vars->move.forward = 1;
@@ -39,7 +39,7 @@ int	 key_press(int keycode, t_vars *vars)
 	return (0);
 }
 
-int 	key_release(int keycode, t_vars *vars)
+int		key_release(int keycode, t_vars *vars)
 {
 	if (keycode == WKEY)
 		vars->move.forward = 0;

@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 12:58:16 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/11 11:52:38 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 12:04:25 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	clear_frame_color_sky_floor(t_data *data, int sky, int ftfloor)
 {
-	int	 x;
-	int	 y;
+	int		x;
+	int		y;
 	char	*dst;
 
 	x = 0;
@@ -24,19 +24,20 @@ void	clear_frame_color_sky_floor(t_data *data, int sky, int ftfloor)
 		y = 0;
 		while (y < HALF_FRAME_HEIGHT)
 		{
-			dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel >> 3));
+			dst = data->addr + (y * data->line_length +
+					x * (data->bits_per_pixel >> 3));
 			*(unsigned int*)dst = sky;
 			y++;
 		}
 		while (y < FRAME_HEIGHT)
 		{
-			dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel >> 3));
+			dst = data->addr + (y * data->line_length +
+					x * (data->bits_per_pixel >> 3));
 			*(unsigned int*)dst = ftfloor;
 			y++;
 		}
 		x++;
 	}
-
 }
 
 int		create_trgb(int t, int r, int g, int b)

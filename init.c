@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/11 11:52:04 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 12:00:12 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include "cub3d.h"
 
-int	 render(t_vars *vars)
+int		render(t_vars *vars)
 {
 	clear_frame_color_sky_floor(&(vars->img), create_trgb(0, 0, 0, 139), create_trgb(0, 139, 0, 0));
 	do_movement(&(vars->world), &(vars->move));
@@ -38,7 +38,6 @@ char	**statictodynamic(void)
 	int		ia = 0;
 	int		ib = 0;
 	char	**res;
-
 
 	res = ft_calloc(sizeof(tempmap[0]), 7);
 	while (ia < 7)
@@ -102,3 +101,4 @@ int		main(void)
 	mlx_loop(vars.mlx);
 	return (0);
 }
+
