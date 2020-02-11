@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/11 11:34:13 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 11:54:23 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define MOVESPEED  1
 # define LOOKSPEED  0.035
 # define GRID   512
-# define GRIDPOW    9
+# define GRIDPOW	9
 
 //mac keycodes
 # define WKEY   13
@@ -52,11 +52,11 @@ typedef struct	s_data {
 }				t_data;
 
 typedef struct  s_tex {
-    t_data      img;
-    char        *path;
-    int         width;
-    int         height;
-}               t_tex;
+	t_data	  img;
+	char		*path;
+	int		 width;
+	int		 height;
+}			   t_tex;
 
 typedef struct	s_world {
 	char		**map;
@@ -72,27 +72,27 @@ typedef struct	s_world {
 }				t_world;
 
 typedef struct  s_movement {
-    short       forward;
-    short       backward;
-    short       strafeleft;
-    short       straferight;
-    short       lookleft;
-    short       lookright;
-    float       speedy;
-    float       speedx;
-}               t_movement;
+	short	   forward;
+	short	   backward;
+	short	   strafeleft;
+	short	   straferight;
+	short	   lookleft;
+	short	   lookright;
+	float	   speedy;
+	float	   speedx;
+}			   t_movement;
 
 typedef struct	s_vars {
 	void		*mlx;
 	void		*win;
 	t_data		img;
 	t_world		world;
-    t_movement  move;
-    t_tex       no;
-    t_tex       so;
-    t_tex       we;
-    t_tex       ea;
-    t_tex       s;
+	t_movement  move;
+	t_tex	   no;
+	t_tex	   so;
+	t_tex	   we;
+	t_tex	   ea;
+	t_tex	   s;
 }				t_vars;
 
 typedef struct	s_ray {
@@ -104,11 +104,11 @@ typedef struct	s_ray {
 	int			gridy;
 	short		safe;
 	short		foundwall;
-    float       dist;
-    int         height;
-    int         real_height;
-    t_tex       *tex;
-    int         tex_offset;
+	float	   dist;
+	int		 height;
+	int		 real_height;
+	t_tex	   *tex;
+	int		 tex_offset;
 }				t_ray;
 
 typedef struct	s_caster {
@@ -117,30 +117,30 @@ typedef struct	s_caster {
 	float		a;
 	t_ray		v;
 	t_ray		h;
-    t_ray       *near;
+	t_ray	   *near;
 }				t_caster;
 
-int     render(t_vars *vars);
-void    cast_ray(t_vars *vars);
-void    cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a);
-void    cast_vertical(t_world *world, t_ray *ray, float a, float tan_a);
-void    extendray(t_world *world, t_ray *ray);
-void    calc_offsets(t_vars *vars, t_caster *caster);
+int	 render(t_vars *vars);
+void	cast_ray(t_vars *vars);
+void	cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a);
+void	cast_vertical(t_world *world, t_ray *ray, float a, float tan_a);
+void	extendray(t_world *world, t_ray *ray);
+void	calc_offsets(t_vars *vars, t_caster *caster);
 void	calc_distance(t_world *world, t_caster *caster);
-void    draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_tex *tex);
+void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_tex *tex);
 
-void    do_movement(t_world *world, t_movement *move);
-void    adjust_speed(float lookdir, float movedir, t_movement *move);
-void    adjust_look(float *lookdir, t_movement *move);
+void	do_movement(t_world *world, t_movement *move);
+void	adjust_speed(float lookdir, float movedir, t_movement *move);
+void	adjust_look(float *lookdir, t_movement *move);
 
-int     close(t_vars *vars);
-int     key_press(int keycode, t_vars *vars);
-int     key_release(int keycode, t_vars *vars);
+int	 close(t_vars *vars);
+int	 key_press(int keycode, t_vars *vars);
+int	 key_release(int keycode, t_vars *vars);
 
-void    clear_frame_color_sky_floor(t_data *data, int sky, int ftfloor);
+void	clear_frame_color_sky_floor(t_data *data, int sky, int ftfloor);
 int		create_trgb(int t, int r, int g, int b);
 
 float	ray_angle(float lookdir, float raydir);
 int		check_bounds(t_world *world, t_ray *ray);
-int     ft_abs(int x);
+int	 ft_abs(int x);
 #endif

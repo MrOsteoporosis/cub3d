@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:57:33 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 11:29:59 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 11:52:50 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,45 +32,45 @@ int		check_bounds(t_world *world, t_ray *ray)
 		return (0);
 	if (ray->y < 0 || ray->y >= world->max_y)
 		return (0);
-    if (world->map[ray->gridy][ray->gridx] == 1)
-    	ray->foundwall = 1;
+	if (world->map[ray->gridy][ray->gridx] == 1)
+		ray->foundwall = 1;
 	ray->safe = 1;
 	return (1);
 }
 
-int     ft_abs(int x)
+int	 ft_abs(int x)
 {
-    int y;
+	int y;
 
-    y = (x >> 31);
-    return ((x ^ y) - y);
+	y = (x >> 31);
+	return ((x ^ y) - y);
 }
 
-void    calc_offsets(t_vars *vars, t_caster *caster)
+void	calc_offsets(t_vars *vars, t_caster *caster)
 {
-    if (caster->a < DEG270 && caster->a > DEG90)
-    {
-        caster->v.tex_offset = (int)caster->v.y % GRID;
-        caster->v.tex = &(vars->we);
-    }
-    else
-    {
-        caster->v.tex_offset = GRID - ((int)caster->v.y % GRID);
-        caster->v.tex = &(vars->ea);
-    }
-    if (caster->a < DEG180 && caster->a > 0)
-    {
-        caster->h.tex_offset = (int)caster->h.x % GRID;
-        caster->h.tex = &(vars->so);
-    }
-    else
-    {
-        caster->h.tex_offset = GRID - ((int)caster->h.x % GRID);
-        caster->h.tex = &(vars->no);
-    }
+	if (caster->a < DEG270 && caster->a > DEG90)
+	{
+		caster->v.tex_offset = (int)caster->v.y % GRID;
+		caster->v.tex = &(vars->we);
+	}
+	else
+	{
+		caster->v.tex_offset = GRID - ((int)caster->v.y % GRID);
+		caster->v.tex = &(vars->ea);
+	}
+	if (caster->a < DEG180 && caster->a > 0)
+	{
+		caster->h.tex_offset = (int)caster->h.x % GRID;
+		caster->h.tex = &(vars->so);
+	}
+	else
+	{
+		caster->h.tex_offset = GRID - ((int)caster->h.x % GRID);
+		caster->h.tex = &(vars->no);
+	}
 }
 
-void    extendray(t_world *world, t_ray *ray)
+void	extendray(t_world *world, t_ray *ray)
 {
 	while (!ray->foundwall && ray->safe)
 	{
