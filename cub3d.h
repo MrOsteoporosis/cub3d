@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/11 10:58:39 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 11:34:13 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,23 +120,22 @@ typedef struct	s_caster {
     t_ray       *near;
 }				t_caster;
 
-int		render(t_vars *vars);
-int     cast_ray(t_vars *vars);
-int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a);
-int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a);
-int		extendray(t_vars *vars, t_ray *ray);
-int     calc_offsets(t_vars *vars, t_caster *caster);
-int		calc_distance(t_vars *vars, t_caster *caster);
-int     draw_texture_column(t_vars *vars, t_caster *caster, t_tex *tex);
+int     render(t_vars *vars);
+void    cast_ray(t_vars *vars);
+void    cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a);
+void    cast_vertical(t_world *world, t_ray *ray, float a, float tan_a);
+void    extendray(t_world *world, t_ray *ray);
+void    calc_offsets(t_vars *vars, t_caster *caster);
+void	calc_distance(t_world *world, t_caster *caster);
+void    draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_tex *tex);
 
-int     do_movement(t_world *world, t_movement *move);
-int     adjust_speed(float lookdir, float movedir, t_movement *move);
-int     adjust_look(float *lookdir, t_movement *move);
+void    do_movement(t_world *world, t_movement *move);
+void    adjust_speed(float lookdir, float movedir, t_movement *move);
+void    adjust_look(float *lookdir, t_movement *move);
 
-int		close(t_vars *vars);
+int     close(t_vars *vars);
 int     key_press(int keycode, t_vars *vars);
-int		key_release(int keycode, t_vars *vars);
-int		mouse_move(int x, int y);
+int     key_release(int keycode, t_vars *vars);
 
 void    clear_frame_color_sky_floor(t_data *data, int sky, int ftfloor);
 int		create_trgb(int t, int r, int g, int b);

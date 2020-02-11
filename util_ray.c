@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:57:33 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 10:42:20 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 11:29:59 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int     ft_abs(int x)
     return ((x ^ y) - y);
 }
 
-int     calc_offsets(t_vars *vars, t_caster *caster)
+void    calc_offsets(t_vars *vars, t_caster *caster)
 {
     if (caster->a < DEG270 && caster->a > DEG90)
     {
@@ -68,10 +68,9 @@ int     calc_offsets(t_vars *vars, t_caster *caster)
         caster->h.tex_offset = GRID - ((int)caster->h.x % GRID);
         caster->h.tex = &(vars->no);
     }
-    return (0);
 }
 
-int		extendray(t_vars *vars, t_ray *ray)
+void    extendray(t_world *world, t_ray *ray)
 {
 	while (!ray->foundwall && ray->safe)
 	{
@@ -79,8 +78,7 @@ int		extendray(t_vars *vars, t_ray *ray)
 		ray->y = ray->y + ray->yincr;
 		ray->gridx = ray->x / GRID;
 		ray->gridy = ray->y / GRID;
-		check_bounds(&(vars->world), ray);
+		check_bounds(world, ray);
 	}
-	return (0);
 }
 

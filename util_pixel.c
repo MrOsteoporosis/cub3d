@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 12:58:16 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/11 10:50:34 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 11:38:06 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,3 +43,4 @@ int		create_trgb(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
 }
+
