@@ -6,44 +6,37 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 12:58:16 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/11 08:53:33 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 10:50:34 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void    clear_frame_color_sky_floor(t_data *data, int sky, int ftfloor)
 {
-	char	*dst;
+    int     x;
+    int     y;
+    char    *dst;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel >> 3));
-	*(unsigned int*)dst = color;
-}
-
-void	my_mlx_sliver_put(t_data *data, int x, int y, int height, int color)
-{
-	char	*dst;
-	int		i;
-
-	i = 0;
-	while (i < height)
-	{
-		dst = data->addr + ((y + i) * data->line_length + x * (data->bits_per_pixel >> 3));
-		*(unsigned int*)dst = color;
-		i++;
-	}
-}
-
-void	my_mlx_clear_frame(t_data *data, int width, int height)
-{
-    int i;
-
-    i = 0;
-    while (i < width)
+    x = 0;
+    while (x < FRAME_WIDTH)
     {
-        my_mlx_sliver_put(data, i, 0, height, create_trgb(0, 0, 0, 0));
-        i++;
+        y = 0;
+        while (y < HALF_FRAME_HEIGHT)
+        {
+            dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel >> 3));
+            *(unsigned int*)dst = sky;
+            y++;
+        }
+        while (y < FRAME_HEIGHT)
+        {
+            dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel >> 3));
+            *(unsigned int*)dst = ftfloor;
+            y++;
+        }
+        x++;
     }
+
 }
 
 int		create_trgb(int t, int r, int g, int b)

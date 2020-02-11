@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/11 10:22:33 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 10:58:39 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define HALF_FRAME_HEIGHT	240
 # define FRICTION   0.04
 # define MOVESPEED  1
-# define LOOKSPEED  0.02
+# define LOOKSPEED  0.035
 # define GRID   512
 # define GRIDPOW    9
 
@@ -129,18 +129,16 @@ int     calc_offsets(t_vars *vars, t_caster *caster);
 int		calc_distance(t_vars *vars, t_caster *caster);
 int     draw_texture_column(t_vars *vars, t_caster *caster, t_tex *tex);
 
-int     do_movement(t_vars *vars);
-int     adjust_speed(t_vars *vars, float movedir);
-int     adjust_look(t_vars *vars);
+int     do_movement(t_world *world, t_movement *move);
+int     adjust_speed(float lookdir, float movedir, t_movement *move);
+int     adjust_look(float *lookdir, t_movement *move);
 
 int		close(t_vars *vars);
 int     key_press(int keycode, t_vars *vars);
 int		key_release(int keycode, t_vars *vars);
 int		mouse_move(int x, int y);
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	my_mlx_sliver_put(t_data *data, int x, int y, int height, int color);
-void	my_mlx_clear_frame(t_data *data, int width, int height);
+void    clear_frame_color_sky_floor(t_data *data, int sky, int ftfloor);
 int		create_trgb(int t, int r, int g, int b);
 
 float	ray_angle(float lookdir, float raydir);

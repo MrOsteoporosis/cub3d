@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:57:33 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 09:26:43 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 10:42:20 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,3 +45,42 @@ int     ft_abs(int x)
     y = (x >> 31);
     return ((x ^ y) - y);
 }
+
+int     calc_offsets(t_vars *vars, t_caster *caster)
+{
+    if (caster->a < DEG270 && caster->a > DEG90)
+    {
+        caster->v.tex_offset = (int)caster->v.y % GRID;
+        caster->v.tex = &(vars->we);
+    }
+    else
+    {
+        caster->v.tex_offset = GRID - ((int)caster->v.y % GRID);
+        caster->v.tex = &(vars->ea);
+    }
+    if (caster->a < DEG180 && caster->a > 0)
+    {
+        caster->h.tex_offset = (int)caster->h.x % GRID;
+        caster->h.tex = &(vars->so);
+    }
+    else
+    {
+        caster->h.tex_offset = GRID - ((int)caster->h.x % GRID);
+        caster->h.tex = &(vars->no);
+    }
+    return (0);
+}
+
+int		extendray(t_vars *vars, t_ray *ray)
+{
+	while (!ray->foundwall && ray->safe)
+	{
+		ray->x = ray->x + ray->xincr;
+		ray->y = ray->y + ray->yincr;
+		ray->gridx = ray->x / GRID;
+		ray->gridy = ray->y / GRID;
+		check_bounds(&(vars->world), ray);
+	}
+	return (0);
+}
+

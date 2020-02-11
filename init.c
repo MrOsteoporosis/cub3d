@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/11 10:19:36 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 10:59:30 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@
 
 int		render(t_vars *vars)
 {
-    my_mlx_clear_frame(&(vars->img), FRAME_WIDTH, FRAME_HEIGHT);
-    do_movement(vars);
+    /*my_mlx_clear_frame(&(vars->img), FRAME_WIDTH, FRAME_HEIGHT);*/
+    clear_frame_color_sky_floor(&(vars->img), create_trgb(0, 0, 0, 0), create_trgb(0, 255, 255, 255));
+    do_movement(&(vars->world), &(vars->move));
 	cast_ray(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
 	return (0);

@@ -6,55 +6,55 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:55:59 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 09:47:37 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 10:58:02 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "cub3d.h"
 
-int     adjust_speed(t_vars *vars, float movedir)
+int     adjust_speed(float lookdir, float movedir, t_movement *move)
 {
 	float	a;
 
-    a = vars->world.lookdir + movedir;
-	vars->move.speedy += cos(a) * MOVESPEED;
-	vars->move.speedx += sin(a) * MOVESPEED;
+    a = lookdir + movedir;
+	move->speedy += cos(a) * MOVESPEED;
+	move->speedx += sin(a) * MOVESPEED;
     return (0);
 }
 
-int     adjust_look(t_vars *vars)
+int     adjust_look(float *lookdir, t_movement *move)
 {
-    if (vars->move.lookleft)
+    if (move->lookleft)
     {
-        vars->world.lookdir += LOOKSPEED;
-        if (vars->world.lookdir > (M_PI2))
-            vars->world.lookdir = LOOKSPEED;
+        *lookdir += LOOKSPEED;
+        if (*lookdir > (M_PI2))
+            *lookdir = LOOKSPEED;
     }
-    else if (vars->move.lookright)
+    else if (move->lookright)
     {
-        vars->world.lookdir -= LOOKSPEED;
-        if (vars->world.lookdir < 0)
-            vars->world.lookdir = (M_PI2) - LOOKSPEED;
+        *lookdir -= LOOKSPEED;
+        if (*lookdir < 0)
+            *lookdir = (M_PI2) - LOOKSPEED;
     }
     return (0);
 }
 
-int     do_movement(t_vars *vars)
+int     do_movement(t_world *world, t_movement *move)
 {
-    if (vars->move.forward)
-		adjust_speed(vars, DEG90);
-    else if (vars->move.backward)
-		adjust_speed(vars, DEG270);
-    if (vars->move.strafeleft)
-		adjust_speed(vars, DEG180);
-    else if (vars->move.straferight)
-		adjust_speed(vars, 0);
-    vars->move.speedx -= vars->move.speedx * FRICTION;
-    vars->move.speedy -= vars->move.speedy * FRICTION;
-    vars->world.playerx += vars->move.speedx;
-    vars->world.playery += vars->move.speedy;
-    adjust_look(vars);
+    if (move->forward)
+		adjust_speed(world->lookdir, DEG90, move);
+    else if (move->backward)
+		adjust_speed(world->lookdir, DEG270, move);
+    if (move->strafeleft)
+		adjust_speed(world->lookdir, DEG180, move);
+    else if (move->straferight)
+		adjust_speed(world->lookdir, 0, move);
+    move->speedx -= move->speedx * FRICTION;
+    move->speedy -= move->speedy * FRICTION;
+    world->playerx += move->speedx;
+    world->playery += move->speedy;
+    adjust_look(&(world->lookdir), move);
     return (0);
 }
 
