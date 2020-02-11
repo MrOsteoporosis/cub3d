@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 12:58:16 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/03 12:54:53 by averheij      ########   odam.nl         */
+/*   Updated: 2020/02/11 08:53:33 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel >> 3));
 	*(unsigned int*)dst = color;
 }
 
@@ -28,7 +28,7 @@ void	my_mlx_sliver_put(t_data *data, int x, int y, int height, int color)
 	i = 0;
 	while (i < height)
 	{
-		dst = data->addr + ((y + i) * data->line_length + x * (data->bits_per_pixel / 8));
+		dst = data->addr + ((y + i) * data->line_length + x * (data->bits_per_pixel >> 3));
 		*(unsigned int*)dst = color;
 		i++;
 	}

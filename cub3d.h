@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/10 14:46:11 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 09:26:31 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CUB3D_H
 # define FOV	1.0472
 # define HALF_FOV	0.5236
+# define M_PI2  6.28318530718
 # define DEG90  1.5708
 # define DEG180 3.14159
 # define DEG270 4.71239
@@ -118,22 +119,22 @@ typedef struct	s_caster {
     t_ray       *near;
 }				t_caster;
 
-int		close(t_vars *vars);
-int     key_press(int keycode, t_vars *vars);
-int		key_release(int keycode, t_vars *vars);
-int		mouse_move(int x, int y);
-
 int		render(t_vars *vars);
 int     cast_ray(t_vars *vars);
 int     cast_vertical(t_vars *vars, t_caster *caster, float tan_a);
 int     cast_horizontal(t_vars *vars, t_caster *caster, float tan_a);
 int		extendray(t_vars *vars, t_ray *ray);
-int		distanceanddraw(t_vars *vars, t_caster *caster);
+int		calc_distance(t_vars *vars, t_caster *caster);
 int     draw_texture_column(t_vars *vars, t_caster *caster);
 
 int     do_movement(t_vars *vars);
 int     adjust_speed(t_vars *vars, int dir);
 int     adjust_look(t_vars *vars);
+
+int		close(t_vars *vars);
+int     key_press(int keycode, t_vars *vars);
+int		key_release(int keycode, t_vars *vars);
+int		mouse_move(int x, int y);
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	my_mlx_sliver_put(t_data *data, int x, int y, int height, int color);
@@ -142,4 +143,5 @@ int		create_trgb(int t, int r, int g, int b);
 
 float	ray_angle(float lookdir, float raydir);
 int		check_bounds(t_world *world, t_ray *ray);
+int     ft_abs(int x);
 #endif

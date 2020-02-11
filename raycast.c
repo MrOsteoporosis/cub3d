@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:51:20 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 08:43:23 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/11 09:23:28 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,13 @@ int     draw_texture_column(t_vars *vars, t_caster *caster)
     int             tex_column;
 
     tex_column = (vars->no.width * caster->near->tex_offset) >> GRIDPOW;
-    y = HALF_FRAME_HEIGHT - (caster->near->real_height >> 1);
+    y = HALF_FRAME_HEIGHT - (caster->near->height >> 1);
     endy = HALF_FRAME_HEIGHT + (caster->near->height >> 1);
-    i = -1 * y;
-    y = 0;
+    i = -1 * (HALF_FRAME_HEIGHT - (caster->near->real_height >> 1)) + y;
     while (y < endy)
     {
-        dst = vars->img.addr + (y * vars->img.line_length + caster->column * (vars->img.bits_per_pixel / 8));
-        color = vars->no.img.addr + (((vars->no.height * i) / caster->near->real_height) * vars->no.img.line_length + tex_column * (vars->no.img.bits_per_pixel / 8));
+        dst = vars->img.addr + (y * vars->img.line_length + caster->column * (vars->img.bits_per_pixel >> 3));
+        color = vars->no.img.addr + (((vars->no.height * i) / caster->near->real_height) * vars->no.img.line_length + tex_column * (vars->no.img.bits_per_pixel >> 3));
         *(unsigned int*)dst = *(unsigned int*)color;
         i++;
         y++;
@@ -38,7 +37,7 @@ int     draw_texture_column(t_vars *vars, t_caster *caster)
     return (0);
 }
 
-int		distanceanddraw(t_vars *vars, t_caster *caster)
+int		calc_distance(t_vars *vars, t_caster *caster)
 {
 	float	temp;
 	float	dist;
@@ -46,12 +45,8 @@ int		distanceanddraw(t_vars *vars, t_caster *caster)
 	float	sin_a;
 
 	sin_a = sin(caster->a);
-	caster->h.dist = (vars->world.playery - caster->h.y) / sin_a;
-	if (caster->h.dist < 0)
-		caster->h.dist *= -1;
-	caster->v.dist = (vars->world.playery - caster->v.y) / sin_a;
-	if (caster->v.dist < 0)
-		caster->v.dist *= -1;
+    caster->h.dist = ft_abs((vars->world.playery - caster->h.y) / sin_a);
+    caster->v.dist = ft_abs((vars->world.playery - caster->v.y) / sin_a);
     caster->near = &(caster->v);
 	if (caster->h.dist < caster->v.dist)
 		caster->near = &(caster->h);
@@ -60,7 +55,6 @@ int		distanceanddraw(t_vars *vars, t_caster *caster)
     caster->near->real_height = caster->near->height;
 	if (caster->near->height > FRAME_HEIGHT)
 		caster->near->height = FRAME_HEIGHT;
-    draw_texture_column(vars, caster);
 	return (1);
 }
 
@@ -150,7 +144,8 @@ int     cast_ray(t_vars *vars)
         cast_horizontal(vars, &caster, tan_a);
         cast_vertical(vars, &caster, tan_a);
         calc_offsets(&caster);
-        distanceanddraw(vars, &caster);
+        calc_distance(vars, &caster);
+        draw_texture_column(vars, &caster);
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}
