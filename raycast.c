@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:51:20 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 12:03:21 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/24 11:03:04 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 	int		endy;
 	int		tex_column;
 
+	if (ray->height > frame->resy)
+		ray->height = frame->resy;
 	tex_column = (tex->width * ray->tex_offset) >> GRIDPOW;
-	y = HALF_FRAME_HEIGHT - (ray->height >> 1);
-	endy = HALF_FRAME_HEIGHT + (ray->height >> 1);
-	i = -1 * (HALF_FRAME_HEIGHT - (ray->real_height >> 1)) + y;
+	y = frame->halfresy - (ray->height >> 1);
+	endy = frame->halfresy + (ray->height >> 1);
+	i = -1 * (frame->halfresy - (ray->real_height >> 1)) + y;
 	while (y < endy)
 	{
 		dst = frame->addr + (y * frame->line_length +
@@ -54,8 +56,6 @@ void	calc_distance(t_world *world, t_caster *caster)
 	caster->near->dist = caster->near->dist * cos(caster->raydir);
 	caster->near->height = (GRID / caster->near->dist) * world->proj_plane_dist;
 	caster->near->real_height = caster->near->height;
-	if (caster->near->height > FRAME_HEIGHT)
-		caster->near->height = FRAME_HEIGHT;
 }
 
 void	cast_vertical(t_world *world, t_ray *ray, float a, float tan_a)
@@ -109,7 +109,7 @@ void	cast_ray(t_vars *vars)
 
 	caster.raydir = HALF_FOV;
 	caster.column = 1;
-	while (caster.column <= FRAME_WIDTH)
+	while (caster.column <= vars->img.resx)
 	{
 		caster.a = ray_angle(vars->world.lookdir, caster.raydir);
 		tan_a = tan(caster.a);
@@ -122,5 +122,6 @@ void	cast_ray(t_vars *vars)
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}
+	/*vars->waitframe = 0;*/
 }
 

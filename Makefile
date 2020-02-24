@@ -6,12 +6,14 @@
 #    By: averheij <averheij@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/01/15 15:20:06 by averheij       #+#    #+#                 #
-#    Updated: 2020/02/06 12:41:14 by averheij         ###   ########.fr        #
+#    Updated: 2020/02/24 09:36:30 by averheij         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	cub3d
-CFILES	=	init.c event_basic.c util_pixel.c raycast.c util_ray.c movement.c
+CFILES	=	init.c event_basic.c util_pixel.c raycast.c util_ray.c movement.c\
+			map_parser.c get_next_line/get_next_line.c\
+			get_next_line/get_next_line_utils.c
 OFILES	=	$(CFILES:%.c=objects/%.o)
 FLAGS	=	#-Werror -Wall -Wextra
 FLAGS	+= 	-g
@@ -45,7 +47,7 @@ $(NAME): $(OFILES)
 
 objects/%.o: %.c
 	@printf "Compiling $<	| "
-	$(CC) -I$(MLX_INCLUDE) -Ilibft -c $< -o $@
+	$(CC) -I$(MLX_INCLUDE) -Ilibft -Iget_next_line -c $< -o $@
 
 clean:
 	@echo "Cleaning objects:"

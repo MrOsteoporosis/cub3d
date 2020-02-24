@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 11:54:02 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 11:59:13 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/24 09:34:39 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include "cub3d.h"
 
-int		close(t_vars *vars)
+int		close_window(t_vars *vars)
 {
 	mlx_destroy_window(vars->mlx, vars->win);
 	exit(0);
