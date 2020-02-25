@@ -11,9 +11,10 @@
 # **************************************************************************** #
 
 NAME	=	cub3d
-CFILES	=	init.c event_basic.c util_pixel.c raycast.c util_ray.c movement.c\
+CFILES	=	init.c util_pixel.c\
 			map_parser.c get_next_line/get_next_line.c\
 			get_next_line/get_next_line_utils.c
+			#event_basic.c raycast.c util_ray.c movement.c
 OFILES	=	$(CFILES:%.c=objects/%.o)
 FLAGS	=	#-Werror -Wall -Wextra
 FLAGS	+= 	-g
@@ -37,13 +38,15 @@ all: $(NAME)
 
 $(NAME): $(OFILES)
 	@echo "$(BOLD)/--------     mlx     --------\\ $(CLEAR)"
-	make -C $(MLX_DIR)
-	cp $(MLX_DIR)/libmlx.dylib .
+	#make -C $(MLX_DIR)
+	#cp $(MLX_DIR)/libmlx.dylib .
 	@echo ""
 	@echo "$(BOLD)/--------    libft    --------\\ $(CLEAR)"
 	make -C libft
 	@echo ""
-	$(CC) -o $(NAME) $(OFILES) -L$(MLX_DIR) -l$(MLX_NAME) -Llibft -lft $(EXTRA_FLAGS)
+	#$(CC) -o $(NAME) $(OFILES) -L$(MLX_DIR) -l$(MLX_NAME) -Llibft -lft $(EXTRA_FLAGS)
+	#TEMP REPLACED BY NEXT LINE
+	$(CC) -o $(NAME) $(OFILES) -Llibft -lft
 
 objects/%.o: %.c
 	@printf "Compiling $<	| "
@@ -53,7 +56,7 @@ clean:
 	@echo "Cleaning objects:"
 	rm -f $(OFILES)
 	@echo "$(BOLD)/--------     mlx     --------\\ $(CLEAR)"
-	make clean -C $(MLX_DIR)
+	#make clean -C $(MLX_DIR)
 	@echo ""
 	@echo "$(BOLD)/--------    libft    --------\\ $(CLEAR)"
 	make clean -C libft

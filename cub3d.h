@@ -128,7 +128,8 @@ typedef struct	s_caster {
 typedef int	    (*t_isfunc)(int c);
 typedef int     (*t_efunc)(t_vars *vars, char *line);
 
-void    parse_cub(t_vars *vars, char *map_path);
+int     parse_cub(t_vars *vars, char *map_path);
+int     call_element_parser(t_vars *vars, char *line, int *elecount);
 int     parse_res(t_vars *vars, char *line);
 int     parse_tex(t_vars *vars, char *line);
 int     parse_color(t_vars *vars, char *line);

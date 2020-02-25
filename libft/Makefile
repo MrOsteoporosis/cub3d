@@ -35,7 +35,7 @@ $(NAME): $(OFILES)
 
 %.o: %.c
 	@echo "Compiling: $<"
-	@gcc -o $@ -c $< $(FLAGS) -I$(INCLUDES)
+	@gcc -o $@ -c $< $(FLAGS) #-I$(INCLUDES)
 
 clean:
 	@echo "Cleaning: Objects"
