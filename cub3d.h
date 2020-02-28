@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/28 10:26:58 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/28 13:49:04 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ typedef struct	s_vars {
 	void		*mlx;
 	void		*win;
 	t_data		img;
-	t_data		img2;
-	t_data		*activeimg;
 	t_world		world;
 	t_movement  move;
 	t_tex	   	no;
@@ -125,10 +123,15 @@ int     call_element_parser(t_vars *vars, char *line, int *elecount);
 int     parse_res(t_vars *vars, char *line);
 int     parse_tex(t_vars *vars, char *line);
 int     parse_color(t_vars *vars, char *line);
+int     map_line_sanitize(char **line, int *ft_width);
+int     parse_map(t_vars *vars, int fd);
 
+int     free_strings_and_close(t_vars *vars, int fd, char *line);
+int     free_everything(t_vars *vars, int fd, char *line);
 int		ft_iswhitespace(int c);
 int     ft_skip_comma(char **str);
 int     ft_skip_passed_func(char **str, t_isfunc is);
+int     array_append(char ***map, char *line, int currentlength);
 
 int	 	render(t_vars *vars);
 void	cast_ray(t_vars *vars);

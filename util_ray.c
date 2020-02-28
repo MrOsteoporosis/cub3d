@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:57:33 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 12:05:14 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/28 12:49:54 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		check_bounds(t_world *world, t_ray *ray)
 		return (0);
 	if (ray->y < 0 || ray->y >= world->max_y)
 		return (0);
-	if (world->map[ray->gridy][ray->gridx] == 1)
+	if (world->map[ray->gridy][ray->gridx] == '1')
 		ray->foundwall = 1;
 	ray->safe = 1;
 	return (1);

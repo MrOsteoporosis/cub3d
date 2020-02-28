@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 10:55:59 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/11 11:53:01 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/28 13:16:12 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,13 @@ void	adjust_speed(float lookdir, float movedir, t_movement *move)
 void	adjust_look(float *lookdir, t_movement *move)
 {
 	if (move->lookleft)
-	{
 		*lookdir += LOOKSPEED;
-		if (*lookdir > (M_PI2))
-			*lookdir = LOOKSPEED;
-	}
 	else if (move->lookright)
-	{
 		*lookdir -= LOOKSPEED;
-		if (*lookdir < 0)
-			*lookdir = (M_PI2) - LOOKSPEED;
-	}
+	if (*lookdir > (M_PI2))
+		*lookdir = LOOKSPEED;
+	else if (*lookdir < 0)
+		*lookdir = (M_PI2) - LOOKSPEED;
 }
 
 void	do_movement(t_world *world, t_movement *move)

@@ -6,15 +6,14 @@
 #    By: averheij <averheij@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/01/15 15:20:06 by averheij       #+#    #+#                 #
-#    Updated: 2020/02/28 10:39:40 by averheij         ###   ########.fr        #
+#    Updated: 2020/02/28 14:47:06 by averheij         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	cub3d
-CFILES	=	init.c util_pixel.c\
-			map_parser.c get_next_line/get_next_line.c\
-			get_next_line/get_next_line_utils.c\
-			event_basic.c raycast.c util_ray.c movement.c
+CFILES	=	init.c event_basic.c movement.c raycast.c util_ray.c util_pixel.c\
+			cub_parser.c cub_parse_meta.c cub_parse_map.c util_map.c\
+			get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 OFILES	=	$(CFILES:%.c=objects/%.o)
 FLAGS	=	#-Werror -Wall -Wextra
 FLAGS	+= 	-g
