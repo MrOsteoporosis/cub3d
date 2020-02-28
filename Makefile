@@ -6,26 +6,20 @@
 #    By: averheij <averheij@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/01/15 15:20:06 by averheij       #+#    #+#                 #
-#    Updated: 2020/02/24 09:36:30 by averheij         ###   ########.fr        #
+#    Updated: 2020/02/28 10:39:40 by averheij         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	cub3d
 CFILES	=	init.c util_pixel.c\
 			map_parser.c get_next_line/get_next_line.c\
-			get_next_line/get_next_line_utils.c
-			#event_basic.c raycast.c util_ray.c movement.c
+			get_next_line/get_next_line_utils.c\
+			event_basic.c raycast.c util_ray.c movement.c
 OFILES	=	$(CFILES:%.c=objects/%.o)
 FLAGS	=	#-Werror -Wall -Wextra
 FLAGS	+= 	-g
 CC		=	gcc $(FLAGS)
 
-# LINUX
-#MLX_DIR	=	mlxlinux
-#MLX_NAME=	minilibx
-#MLX_INCLUDE	=	mlxlinux/includes
-#EXTRA_FLAGS	=	-lm -lX11 -lXext
-#MAC
 MLX_DIR	=	mlx
 MLX_NAME=	mlx
 MLX_INCLUDE	=	mlx
@@ -38,15 +32,13 @@ all: $(NAME)
 
 $(NAME): $(OFILES)
 	@echo "$(BOLD)/--------     mlx     --------\\ $(CLEAR)"
-	#make -C $(MLX_DIR)
-	#cp $(MLX_DIR)/libmlx.dylib .
+	make -C $(MLX_DIR)
+	cp $(MLX_DIR)/libmlx.dylib .
 	@echo ""
 	@echo "$(BOLD)/--------    libft    --------\\ $(CLEAR)"
 	make -C libft
 	@echo ""
-	#$(CC) -o $(NAME) $(OFILES) -L$(MLX_DIR) -l$(MLX_NAME) -Llibft -lft $(EXTRA_FLAGS)
-	#TEMP REPLACED BY NEXT LINE
-	$(CC) -o $(NAME) $(OFILES) -Llibft -lft
+	$(CC) -o $(NAME) $(OFILES) -L$(MLX_DIR) -l$(MLX_NAME) -Llibft -lft $(EXTRA_FLAGS)
 
 objects/%.o: %.c
 	@printf "Compiling $<	| "
@@ -56,7 +48,7 @@ clean:
 	@echo "Cleaning objects:"
 	rm -f $(OFILES)
 	@echo "$(BOLD)/--------     mlx     --------\\ $(CLEAR)"
-	#make clean -C $(MLX_DIR)
+	make clean -C $(MLX_DIR)
 	@echo ""
 	@echo "$(BOLD)/--------    libft    --------\\ $(CLEAR)"
 	make clean -C libft

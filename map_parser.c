@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/24 11:07:05 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/28 10:42:36 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <sys/stat.h>
 #include <get_next_line.h>
 #include <libft.h>
-/*#include <mlx.h>*/
+#include <mlx.h>
 #include "cub3d.h"
 
 int     free_strings_and_close(t_vars *vars, int fd, char *line)
@@ -125,6 +125,9 @@ int     parse_res(t_vars *vars, char *line)
     if (vars->img.resy > MAX_RESY)
         vars->img.resy = MAX_RESY;
 	vars->img.halfresy = vars->img.resy / 2;
+	vars->img2.resx = vars->img.resx;
+	vars->img2.resy = vars->img.resy;
+	vars->img2.halfresy = vars->img.halfresy;
     printf("resx: %d resy: %d\n", vars->img.resx, vars->img.resy);
     return (0);
 }
@@ -148,12 +151,12 @@ int     parse_tex(t_vars *vars, char *line)
     if (ft_skip_passed_func(&line, &ft_iswhitespace))
         return (1);
     tex->path = ft_strdup(line);
-	/*tex->img.img = mlx_png_file_to_image(vars->mlx, tex->path, &tex->width, &tex->height);*/
-	/*if (!tex->img.img)*/
-		/*return (1);*/
-	/*tex->img.addr = mlx_get_data_addr(tex->img.img, &tex->img.bits_per_pixel, &tex->img.line_length, &tex->img.endian);*/
-	/*if (!tex->img.addr)*/
-		/*return (1);*/
+	tex->img.img = mlx_png_file_to_image(vars->mlx, tex->path, &tex->width, &tex->height);
+	if (!tex->img.img)
+		return (1);
+	tex->img.addr = mlx_get_data_addr(tex->img.img, &tex->img.bits_per_pixel, &tex->img.line_length, &tex->img.endian);
+	if (!tex->img.addr)
+		return (1);
     printf("tex path: %s width%d height%d\n", tex->path, tex->width, tex->height);
     return (0);
 }
@@ -256,11 +259,12 @@ int     parse_map(t_vars *vars, int fd)
             free_everything(vars, fd, line);
         printf("OUT _%d_%d_%s_\n", fd, ret, line);
         if (map_line_sanitize(&line))
-            free_everything(vars, fd, line);
+            return (free_everything(vars, fd, line));
         if (array_append(&(vars->world.map), line, vars->world.map_height))
-            free_everything(vars, fd, line);
+            return (free_everything(vars, fd, line));
         vars->world.map_height++;
     }
+	return (0);
 }
 
 int     parse_cub(t_vars *vars, char *map_path)
@@ -290,4 +294,5 @@ int     parse_cub(t_vars *vars, char *map_path)
     //Write an array append to parse map
     //Remember to validate closed edges, consistent lengths?
     //Assign struct vars: playerx etc.
+	return (0);
 }

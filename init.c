@@ -6,26 +6,31 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/24 11:03:06 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/28 10:39:00 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*#include <mlx.h>*/
+#include <mlx.h>
 #include <libft.h>
 #include <math.h>
 #include <stdlib.h>
 #include "cub3d.h"
 
-/*int		render(t_vars *vars)*/
-/*{*/
-	/*[>vars->waitframe = 1;<]*/
-	/*clear_frame_color_sky_floor(&(vars->img), vars->world.colorceiling, vars->world.colorfloor);*/
-	/*do_movement(&(vars->world), &(vars->move));*/
-	/*cast_ray(vars);*/
-	/*[>while (vars->waitframe);<]*/
-	/*mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);*/
-	/*return (0);*/
-/*}*/
+#include <stdio.h>
+
+int		render(t_vars *vars)
+{
+	//Do img swap here
+	if (vars->activeimg == &(vars->img))
+		vars->activeimg = &(vars->img2);
+	else if (vars->activeimg == &(vars->img2))
+		vars->activeimg = &(vars->img);
+	clear_frame_color_sky_floor(vars->activeimg, vars->world.colorceiling, vars->world.colorfloor);
+	do_movement(&(vars->world), &(vars->move));
+	cast_ray(vars);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+	return (0);
+}
 
 char	**statictodynamic(void)
 {
@@ -59,16 +64,15 @@ char	**statictodynamic(void)
 int		main(void)
 {
 	t_vars	vars;
-	t_data	img;
 
-	/*vars.mlx = mlx_init();*/
+	vars.mlx = mlx_init();
     ft_bzero((void *)(&vars), sizeof(vars));
 	if (parse_cub(&vars, "map_basic.cub"))
-        printf("OH NO SPAGHETTIOES");
-	/*vars.win = mlx_new_window(vars.mlx, vars.img.resx, vars.img.resy, "cub3d");*/
-	/*mlx_hook(vars.win, 2, (1L << 0), key_press, &vars);//KeyPress*/
-	/*mlx_hook(vars.win, 3, (1L << 1), key_release, &vars);//KeyRelease*/
-	/*mlx_hook(vars.win, 17, 0L, close_window, &vars);//DestroyNotifg*/
+        printf("OH NO SPAGHETTIOES");//Free here
+	vars.win = mlx_new_window(vars.mlx, vars.img.resx, vars.img.resy, "cub3d");
+	mlx_hook(vars.win, 2, (1L << 0), key_press, &vars);//KeyPress
+	mlx_hook(vars.win, 3, (1L << 1), key_release, &vars);//KeyRelease
+	mlx_hook(vars.win, 17, 0L, close_window, &vars);//DestroyNotifg
 	/*mlx_hook(vars.win, 6, (1L << 6), mouse_move, NULL);//MotionNotify*/
 	vars.world.map = statictodynamic();//Add map parsing here
 	vars.world.playerx = GRID * 5 + (GRID / 2);
@@ -78,8 +82,11 @@ int		main(void)
 	vars.world.map_width = 7;
 	vars.world.max_x = vars.world.map_width * GRID;
 	vars.world.max_y = vars.world.map_height * GRID;
-	/*vars.img.img = mlx_new_image(vars.mlx, vars.img.resx, vars.img.resy);*/
-	/*vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);*/
+	vars.img.img = mlx_new_image(vars.mlx, vars.img.resx, vars.img.resy);
+	vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
+	vars.img2.img = mlx_new_image(vars.mlx, vars.img.resx, vars.img.resy);
+	vars.img2.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
+	vars.activeimg = &(vars.img);
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(vars.img.resx);
 	vars.world.proj_plane_dist = (vars.img.resx / 2) / tan(HALF_FOV);
 	vars.move.backward = 0;
@@ -90,8 +97,8 @@ int		main(void)
 	vars.move.straferight = 0;
 	vars.move.speedx = 0;
 	vars.move.speedy = 0;
-	/*mlx_loop_hook(vars.mlx, render, &vars);*/
-	/*mlx_loop(vars.mlx);*/
+	mlx_loop_hook(vars.mlx, render, &vars);
+	mlx_loop(vars.mlx);
 	return (0);
 }
 

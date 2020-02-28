@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/24 11:00:25 by averheij         ###   ########.fr       */
+/*   Updated: 2020/02/28 10:26:58 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,12 @@
 # define GRID   512
 # define GRIDPOW	9
 
-//mac keycodes
 # define WKEY   13
 # define AKEY   0
 # define SKEY   1
 # define DKEY   2
 # define LAKEY  123
 # define RAKEY  124
-
-//linux keycodes
-//# define WKEY   119
-//# define AKEY   97
-//# define SKEY   115
-//# define DKEY   100
-//# define LAKEY  65361
-//# define RAKEY  65363
 
 typedef struct	s_data {
 	void		*img;
@@ -90,7 +81,8 @@ typedef struct	s_vars {
 	void		*mlx;
 	void		*win;
 	t_data		img;
-	char		waitframe;
+	t_data		img2;
+	t_data		*activeimg;
 	t_world		world;
 	t_movement  move;
 	t_tex	   	no;
