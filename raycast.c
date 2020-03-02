@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:43:15 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 14:12:12 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ void	cast_ray(t_vars *vars)
 
 	caster.raydir = HALF_FOV;
 	caster.column = 1;
+	//make a sprite linked list, adding new link in check bounds, should be sorted in reverse render order automatially
+	//yaayy memory management
 	while (caster.column <= vars->img.resx)
 	{
 		caster.a = ray_angle(vars->world.lookdir, caster.raydir);
@@ -119,6 +121,11 @@ void	cast_ray(t_vars *vars)
 		calc_distance(&(vars->world), &caster);
 		draw_texture_column(&(vars->img), caster.near, caster.column,
 				caster.near->tex);
+		//loop over list
+			//calc sprte distance
+			//calc sprite offset
+			//draw sprite column
+			//free
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}

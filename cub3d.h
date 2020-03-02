@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 13:06:01 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 13:21:21 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int		parse_rgb_partial(int *color, char **str, int notlast);
 int		parse_map(t_vars *vars, int fd);
 int		map_line_sanitize(char **lineorigin, char *line, int *ft_width);
 int		array_append(char ***map, char *line, int currentlength);
+int		validate_map(char **map, t_vars *vars);
 
 int		ft_iswhitespace(int c);
 int     ft_skip_comma(char **str);
