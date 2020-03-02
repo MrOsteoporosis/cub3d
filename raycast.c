@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:31:45 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:43:15 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "cub3d.h"
 
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
-		t_tex *tex)
+		t_data *tex)
 {
 	char	*dst;
 	int		i;
@@ -24,7 +24,7 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 
 	if (ray->height > frame->resy)
 		ray->height = frame->resy;
-	tex_column = (tex->width * ray->tex_offset) >> GRIDPOW;
+	tex_column = (tex->resx * ray->tex_offset) >> GRIDPOW;
 	y = frame->halfresy - (ray->height >> 1);
 	endy = frame->halfresy + (ray->height >> 1);
 	i = -1 * (frame->halfresy - (ray->real_height >> 1)) + y;
@@ -32,9 +32,9 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 	{
 		dst = frame->addr + (y * frame->line_length +
 				frame_column * (frame->bits_per_pixel >> 3));
-		*(unsigned int*)dst = *(unsigned int*)(tex->img.addr +
-				(((tex->height * i) / ray->real_height) * tex->img.line_length
-				+ tex_column * (tex->img.bits_per_pixel >> 3)));
+		*(unsigned int*)dst = *(unsigned int*)(tex->addr +
+				(((tex->resy * i) / ray->real_height) * tex->line_length
+				+ tex_column * (tex->bits_per_pixel >> 3)));
 		i++;
 		y++;
 	}

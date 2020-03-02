@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/28 13:27:44 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:31:23 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 13:00:39 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int		parse_res(t_vars *vars, char *line)
 	vars->img.resy = ft_atoi(line);
 	if (!(vars->img.resx) || !(vars->img.resy))
 		return (1);
-	if (vars->img.resx > MAX_RESX)
+	if (vars->img.resx > MAX_RESX)//Use mlx res func
 		vars->img.resx = MAX_RESX;
 	if (vars->img.resy > MAX_RESY)
 		vars->img.resy = MAX_RESY;
@@ -79,7 +79,7 @@ int		parse_res(t_vars *vars, char *line)
 
 int		parse_tex(t_vars *vars, char *line)
 {
-	t_tex	*tex;
+	t_data	*tex;
 
 	if (!ft_strncmp(line, "NO", 2))
 		tex = &(vars->no);
@@ -95,13 +95,12 @@ int		parse_tex(t_vars *vars, char *line)
 		return (1);
 	if (ft_skip_passed_func(&line, &ft_iswhitespace))
 		return (1);
-	tex->img.img = mlx_png_file_to_image(vars->mlx,
-			line, &tex->width, &tex->height);
-	if (!tex->img.img)
+	tex->img = mlx_png_file_to_image(vars->mlx, line, &tex->resx, &tex->resy);
+	if (!tex->img)
 		return (1);
-	tex->img.addr = mlx_get_data_addr(tex->img.img,
-			&tex->img.bits_per_pixel, &tex->img.line_length, &tex->img.endian);
-	if (!tex->img.addr)
+	tex->addr = mlx_get_data_addr(tex->img,
+			&tex->bits_per_pixel, &tex->line_length, &tex->endian);
+	if (!tex->addr)
 		return (1);
 	return (0);
 }

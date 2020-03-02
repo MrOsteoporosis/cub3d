@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:31:09 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 13:07:52 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		map_line_sanitize(char **lineorigin, char *line, int *ft_width)
 	int		valid;
 
 	*ft_width = count_non_whitespace_char(line);
-	res = (char *)ft_calloc(*ft_width, sizeof(char));
+	res = (char *)ft_calloc(*ft_width + 1, sizeof(char));
 	if (!res)
 		return (1);
 	i = 0;
@@ -63,6 +63,15 @@ int		map_line_sanitize(char **lineorigin, char *line, int *ft_width)
 	free(*lineorigin);
 	*lineorigin = res;
 	return (0);
+}
+
+int		validate_map(char **map)
+{
+	//Validate edges
+	//Lengths
+	vars.world.playerx = GRID * 5 + (GRID / 2);
+	vars.world.playery = GRID * 5 + (GRID / 2);
+	vars.world.lookdir = DEG90 * 1;
 }
 
 int		parse_map(t_vars *vars, int fd)
@@ -85,9 +94,9 @@ int		parse_map(t_vars *vars, int fd)
 			return (free_everything(vars, fd, line));
 		vars->world.map_height++;
 	}
-	//Validate closed edjes
-	//Validate map widths same
-	//Set player pos
+	free(line);
+	if (validate_map(vars->world.map))
+		return (free_everything(vars, fd, NULL));
 	vars->world.max_x = vars->world.map_width * GRID;
 	vars->world.max_y = vars->world.map_height * GRID;
 	return (0);

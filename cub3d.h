@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:33:20 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 13:06:01 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,6 @@ typedef struct	s_data {
 	int			halfresy;
 }				t_data;
 
-typedef struct  s_tex {
-	t_data	  	img;
-	int		 	width;
-	int		 	height;
-}			   	t_tex;
-
 typedef struct	s_world {
 	char		**map;
     int         colorfloor;
@@ -80,14 +74,13 @@ typedef struct	s_vars {
 	void		*mlx;
 	void		*win;
 	t_data		img;
-	char		waitframe;
 	t_world		world;
 	t_movement  move;
-	t_tex	   	no;
-	t_tex	   	so;
-	t_tex	   	we;
-	t_tex	   	ea;
-	t_tex	   	s;
+	t_data	   	no;
+	t_data	   	so;
+	t_data	   	we;
+	t_data	   	ea;
+	t_data	   	s;
 }				t_vars;
 
 typedef struct	s_ray {
@@ -102,7 +95,7 @@ typedef struct	s_ray {
 	float	   	dist;
 	int		 	height;
 	int		 	real_height;
-	t_tex	   	*tex;
+	t_data	   	*tex;
 	int		 	tex_offset;
 }				t_ray;
 
@@ -137,13 +130,19 @@ int		free_line_and_close(int fd, char *line);
 int		free_everything(t_vars *vars, int fd, char *line);
 
 int	 	render(t_vars *vars);
+void	clear_frame_color_sky_floor(t_data *data, int sky, int ftfloor);
 void	cast_ray(t_vars *vars);
 void	cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a);
 void	cast_vertical(t_world *world, t_ray *ray, float a, float tan_a);
 void	extendray(t_world *world, t_ray *ray);
 void	calc_offsets(t_vars *vars, t_caster *caster);
 void	calc_distance(t_world *world, t_caster *caster);
-void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_tex *tex);
+void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_data *tex);
+
+int		create_trgb(int t, int r, int g, int b);
+float	ray_angle(float lookdir, float raydir);
+int		check_bounds(t_world *world, t_ray *ray);
+int	 	ft_abs(int x);
 
 void	do_movement(t_world *world, t_movement *move);
 void	adjust_speed(float lookdir, float movedir, t_movement *move);
@@ -153,10 +152,5 @@ int	 	close_window(t_vars *vars);
 int	 	key_press(int keycode, t_vars *vars);
 int	 	key_release(int keycode, t_vars *vars);
 
-void	clear_frame_color_sky_floor(t_data *data, int sky, int ftfloor);
-int		create_trgb(int t, int r, int g, int b);
-
-float	ray_angle(float lookdir, float raydir);
-int		check_bounds(t_world *world, t_ray *ray);
-int	 	ft_abs(int x);
+int		check_argc_argv(int argc, char **argv);
 #endif
