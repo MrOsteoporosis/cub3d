@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:19:01 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:33:20 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,11 @@ int     call_element_parser(t_vars *vars, char *line, int *elecount);
 int     parse_res(t_vars *vars, char *line);
 int     parse_tex(t_vars *vars, char *line);
 int     parse_color(t_vars *vars, char *line);
-int		parse_map(t_vars *vars, int fd);
-
 int		parse_rgb_partial(int *color, char **str, int notlast);
+int		parse_map(t_vars *vars, int fd);
 int		map_line_sanitize(char **lineorigin, char *line, int *ft_width);
 int		array_append(char ***map, char *line, int currentlength);
+
 int		ft_iswhitespace(int c);
 int     ft_skip_comma(char **str);
 int     ft_skip_passed_func(char **str, t_isfunc is);

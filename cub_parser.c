@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 11:15:01 by averheij          #+#    #+#             */
-/*   Updated: 2020/03/02 12:13:10 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:29:14 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,32 @@ int		parse_cub(t_vars *vars, char *map_path)
 		return (1);
 	close(fd);
 	return (0);
+}
+
+int		free_line_and_close(int fd, char *line)
+{
+	if (fd != -1)
+		close(fd);
+	if (line)
+		free(line);
+	return (1);
+}
+
+int		free_everything(t_vars *vars, int fd, char *line)
+{
+	int	i;
+
+	if (vars->world.map)
+	{
+		i = 0;
+		while (i < vars->world.map_height)
+		{
+			if (vars->world.map[i])
+				free(vars->world.map[i]);
+			i++;
+		}
+		free(vars->world.map);
+	}
+	free_line_and_close(fd, line);
+	return (1);
 }

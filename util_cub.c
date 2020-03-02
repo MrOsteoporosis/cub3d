@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   util_map.c                                         :+:      :+:    :+:   */
+/*   util_cub.c                                         :+:      :+:    :+:   */
 /*                                                     +:+                    */
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/28 13:23:26 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:05:21 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:31:29 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,32 @@
 #include <unistd.h>
 #include "cub3d.h"
 
-int		free_line_and_close(int fd, char *line)
+int		is_valid_cub_char(char c)
 {
-	if (fd != -1)
-		close(fd);
-	if (line)
-		free(line);
-	return (1);
+	int			i;
+	static char	set[7] = {'0', '1', '2', 'N', 'S', 'W', 'E'};
+
+	i = 0;
+	while (set[i])
+	{
+		if (set[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
-int		free_everything(t_vars *vars, int fd, char *line)
+int		count_non_whitespace_char(char *line)
 {
-	int	i;
+	int		count;
 
-	if (vars->world.map)
+	while (*line)
 	{
-		i = 0;
-		while (i < vars->world.map_height)
-		{
-			if (vars->world.map[i])
-				free(vars->world.map[i]);
-			i++;
-		}
-		free(vars->world.map);
+		if (*line != ' ')
+			count++;
+		line++;
 	}
-	free_line_and_close(fd, line);
-	return (1);
+	return (count);
 }
 
 int		ft_iswhitespace(int c)
@@ -68,4 +68,3 @@ int		ft_skip_passed_func(char **str, t_isfunc is)
 		return (0);
 	return (1);
 }
-

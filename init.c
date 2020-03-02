@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:10:40 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:31:34 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,3 @@ int		main(int argc, char **argv)
 	mlx_loop(vars.mlx);
 	return (0);
 }
-

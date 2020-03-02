@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   movement.c                                         :+:    :+:            */
+/*   movement.c                                         :+:      :+:    :+:   */
 /*                                                     +:+                    */
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:55:59 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 10:57:46 by averheij      ########   odam.nl         */
+/*   Updated: 2020/03/02 12:31:42 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,3 @@ void	do_movement(t_world *world, t_movement *move)
 	world->playery += move->speedy;
 	adjust_look(&(world->lookdir), move);
 }
-

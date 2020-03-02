@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/28 13:27:44 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:00:41 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:31:23 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,3 @@ int		parse_tex(t_vars *vars, char *line)
 		return (1);
 	return (0);
 }
-

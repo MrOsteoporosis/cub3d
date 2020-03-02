@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:19:27 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:31:09 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,6 @@ int		array_append(char ***map, char *line, int currentlength)
 	free((*map));
 	*map = res;
 	return (0);
-}
-
-int		is_valid_cub_char(char c)
-{
-	int			i;
-	static char	set[7] = {'0', '1', '2', 'N', 'S', 'W', 'E'};
-
-	i = 0;
-	while (set[i])
-	{
-		if (set[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int		count_non_whitespace_char(char *line)
-{
-	int		count;
-
-	while (*line)
-	{
-		if (*line != ' ')
-			count++;
-		line++;
-	}
-	return (count);
 }
 
 int		map_line_sanitize(char **lineorigin, char *line, int *ft_width)
@@ -120,4 +92,3 @@ int		parse_map(t_vars *vars, int fd)
 	vars->world.max_y = vars->world.map_height * GRID;
 	return (0);
 }
-

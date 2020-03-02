@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/11 11:54:02 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 10:57:53 by averheij      ########   odam.nl         */
+/*   Updated: 2020/03/02 12:32:13 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,3 @@ int		key_release(int keycode, t_vars *vars)
 	}
 	return (0);
 }
-
