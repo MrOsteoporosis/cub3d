@@ -6,16 +6,13 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 11:15:01 by averheij          #+#    #+#             */
-/*   Updated: 2020/03/02 12:07:21 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:13:10 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
-/*#include <stdio.h>*/
 #include <fcntl.h>
-/*#include <sys/types.h>*/
-/*#include <sys/stat.h>*/
 #include <get_next_line.h>
 #include <libft.h>
 #include <mlx.h>
