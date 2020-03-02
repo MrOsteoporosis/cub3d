@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/11 11:54:02 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:32:13 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:37:28 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 int		close_window(t_vars *vars)
 {
 	mlx_destroy_window(vars->mlx, vars->win);
+	free_everything(vars, NULL, NULL);
 	exit(0);
 	return (0);
 }
@@ -56,6 +57,7 @@ int		key_release(int keycode, t_vars *vars)
 	else if (keycode == 53)
 	{
 		mlx_destroy_window(vars->mlx, vars->win);
+		free_everything(vars, NULL, NULL);
 		exit(0);
 	}
 	return (0);
