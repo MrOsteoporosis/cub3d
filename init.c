@@ -6,17 +6,15 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/02/28 14:53:00 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:10:40 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
 #include <libft.h>
 #include <math.h>
-#include <stdlib.h>
-#include "cub3d.h"
-
 #include <stdio.h>
+#include "cub3d.h"
 
 int		render(t_vars *vars)
 {
@@ -29,14 +27,19 @@ int		render(t_vars *vars)
 	return (0);
 }
 
-int		main(void)
+int		main(int argc, char **argv)
 {
 	t_vars	vars;
 
-    ft_bzero((void *)(&vars), sizeof(vars));
+	ft_bzero((void *)(&vars), sizeof(vars));
 	vars.mlx = mlx_init();
-	//Pass an arg for map path and do neccesary validation before
-	if (parse_cub(&vars, "map_HD_basic.cub"))
+	if (argc == 1 || (argc == 2 &&
+				ft_strncmp(argv[1] + (ft_strlen(argv[1]) - 4), ".cub", 4)))
+	{
+		perror("No map in arg");
+		return (1);
+	}
+	if (parse_cub(&vars, argv[1]))
 	{
 		perror("Error");
 		return (1);
@@ -47,21 +50,7 @@ int		main(void)
 	mlx_hook(vars.win, 17, 0L, close_window, &vars);//DestroyNotifg
 	vars.world.playerx = GRID * 5 + (GRID / 2);//REMOVE and move to map parse
 	vars.world.playery = GRID * 5 + (GRID / 2);//REMOVE and move to map parse
-	vars.world.lookdir = DEG90 * 1;
-	/*int i = 0;*/
-	/*int i2 = 0;*/
-	/*printf("width%d height%d\n", vars.world.map_width, vars.world.map_height);*/
-	/*while (i < vars.world.map_height)*/
-	/*{*/
-		/*i2 = 0;*/
-		/*while (i2 < vars.world.map_width)*/
-		/*{*/
-			/*printf("%c ", vars.world.map[i][i2]);*/
-			/*i2++;*/
-		/*}*/
-		/*printf("\n");*/
-		/*i++;*/
-	/*}*/
+	vars.world.lookdir = DEG90 * 1;//REMOVE and move to map parse
 	vars.img.img = mlx_new_image(vars.mlx, vars.img.resx, vars.img.resy);
 	vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(vars.img.resx);

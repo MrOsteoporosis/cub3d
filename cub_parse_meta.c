@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   map_meta.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/28 13:27:44 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/28 13:31:57 by averheij         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   cub_parse_meta.c                                   :+:      :+:    :+:   */
+/*                                                     +:+                    */
+/*   By: averheij <marvin@42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/02/28 13:27:44 by averheij       #+#    #+#                */
+/*   Updated: 2020/03/02 12:00:41 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int		parse_rgb_partial(int *color, char **str, int notlast)
 	return (0);
 }
 
-int     parse_color(t_vars *vars, char *line)
+int		parse_color(t_vars *vars, char *line)
 {
-	int     red;
-	int     green;
-	int     blue;
-	int     *colorpointer;
+	int	red;
+	int	green;
+	int	blue;
+	int	*colorpointer;
 
 	if (!ft_strncmp(line, "C", 1))
 		colorpointer = &(vars->world.colorceiling);
@@ -49,11 +49,10 @@ int     parse_color(t_vars *vars, char *line)
 	if (red > 255 || blue > 255 || green > 255)
 		return (1);
 	*colorpointer = create_trgb(0, red, green, blue);
-	/*printf("color: %06X\n", *colorpointer);*/
 	return (0);
 }
 
-int     parse_res(t_vars *vars, char *line)
+int		parse_res(t_vars *vars, char *line)
 {
 	line++;
 	if (ft_skip_passed_func(&line, &ft_iswhitespace))
@@ -75,13 +74,12 @@ int     parse_res(t_vars *vars, char *line)
 	if (vars->img.resy > MAX_RESY)
 		vars->img.resy = MAX_RESY;
 	vars->img.halfresy = vars->img.resy / 2;
-	/*printf("resx: %d resy: %d\n", vars->img.resx, vars->img.resy);*/
 	return (0);
 }
 
-int     parse_tex(t_vars *vars, char *line)
+int		parse_tex(t_vars *vars, char *line)
 {
-	t_tex   *tex;
+	t_tex	*tex;
 
 	if (!ft_strncmp(line, "NO", 2))
 		tex = &(vars->no);
@@ -97,14 +95,14 @@ int     parse_tex(t_vars *vars, char *line)
 		return (1);
 	if (ft_skip_passed_func(&line, &ft_iswhitespace))
 		return (1);
-	tex->path = ft_strdup(line);
-	tex->img.img = mlx_png_file_to_image(vars->mlx, tex->path, &tex->width, &tex->height);
+	tex->img.img = mlx_png_file_to_image(vars->mlx,
+			line, &tex->width, &tex->height);
 	if (!tex->img.img)
 		return (1);
-	tex->img.addr = mlx_get_data_addr(tex->img.img, &tex->img.bits_per_pixel, &tex->img.line_length, &tex->img.endian);
+	tex->img.addr = mlx_get_data_addr(tex->img.img,
+			&tex->img.bits_per_pixel, &tex->img.line_length, &tex->img.endian);
 	if (!tex->img.addr)
 		return (1);
-	/*printf("tex path: %s width%d height%d\n", tex->path, tex->width, tex->height);*/
 	return (0);
 }
 

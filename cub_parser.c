@@ -5,70 +5,70 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/28 14:42:23 by averheij          #+#    #+#             */
-/*   Updated: 2020/02/28 14:43:48 by averheij         ###   ########.fr       */
+/*   Created: 2020/03/02 11:15:01 by averheij          #+#    #+#             */
+/*   Updated: 2020/03/02 12:07:21 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
-#include <stdio.h>
+/*#include <stdio.h>*/
 #include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+/*#include <sys/types.h>*/
+/*#include <sys/stat.h>*/
 #include <get_next_line.h>
 #include <libft.h>
 #include <mlx.h>
 #include "cub3d.h"
 
-int     call_element_parser(t_vars *vars, char *line, int *elecount)
+int		call_element_parser(t_vars *vars, char *line, int *elecount)
 {
-    int     i;
-    char    *ele[8] = {"R", "NO", "SO", "WE", "EA", "S ", "F", "C"};
-    t_efunc efuncs[8] = {&parse_res, &parse_tex, &parse_tex, &parse_tex, &parse_tex, &parse_tex, &parse_color, &parse_color};
+	int				i;
+	static char		*ele[8] = {"R", "NO", "SO", "WE", "EA", "S ", "F", "C"};
+	static t_efunc	efuncs[8] = {&parse_res, &parse_tex, &parse_tex,
+		&parse_tex, &parse_tex, &parse_tex, &parse_color, &parse_color};
 
-    i = 0;
-    if (!*line)
-        return (0);
-    while (i < 9)
-    {
-        if (i == 8)
-            return (1);
-        if(!ft_strncmp(line, ele[i], ft_strlen(ele[i])))
-        {
-            if (efuncs[i](vars, line))
-                return (1);
-            (*elecount)++;
-            return(0);
-        }
-        i++;
-    }
-    return (0);
+	i = 0;
+	if (!*line)
+		return (0);
+	while (i < 9)
+	{
+		if (i == 8)
+			return (1);
+		if (!ft_strncmp(line, ele[i], ft_strlen(ele[i])))
+		{
+			if (efuncs[i](vars, line))
+				return (1);
+			(*elecount)++;
+			return (0);
+		}
+		i++;
+	}
+	return (0);
 }
 
-int     parse_cub(t_vars *vars, char *map_path)
+int		parse_cub(t_vars *vars, char *map_path)
 {
-    char    *line;
-    int     fd;
-    int     ret;
-    int     elecount;
+	char	*line;
+	int		fd;
+	int		ret;
+	int		elecount;
 
-    fd = open(map_path, O_RDONLY);
-    if (!fd)
-        return (1);
-    elecount = 0;
-    ret = 1;
-    while (elecount < 8)
-    {
-        line = NULL;
-        ret = get_next_line(fd, &line);
-        if (ret != 1)
-            return (free_strings_and_close(vars, fd, line));
-        /*printf("OUT _%d_%d_%s_\n", fd, ret, line);*/
-        if (call_element_parser(vars, line, &elecount))
-            return (free_strings_and_close(vars, fd, line));
-        free(line);
-    }
+	fd = open(map_path, O_RDONLY);
+	if (!fd)
+		return (1);
+	elecount = 0;
+	ret = 1;
+	while (elecount < 8)
+	{
+		line = NULL;
+		ret = get_next_line(fd, &line);
+		if (ret != 1)
+			return (free_line_and_close(fd, line));
+		if (call_element_parser(vars, line, &elecount))
+			return (free_line_and_close(fd, line));
+		free(line);
+	}
 	if (parse_map(vars, fd))
 		return (1);
 	close(fd);
