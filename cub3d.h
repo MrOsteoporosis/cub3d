@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:02:32 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:19:01 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,16 +125,16 @@ int     parse_tex(t_vars *vars, char *line);
 int     parse_color(t_vars *vars, char *line);
 int		parse_map(t_vars *vars, int fd);
 
-int		map_line_sanitize(char **line, int *ft_width);
 int		parse_rgb_partial(int *color, char **str, int notlast);
+int		map_line_sanitize(char **lineorigin, char *line, int *ft_width);
 int		array_append(char ***map, char *line, int currentlength);
-int		free_line_and_close(int fd, char *line);
-int		free_everything(t_vars *vars, int fd, char *line);
 int		ft_iswhitespace(int c);
 int     ft_skip_comma(char **str);
 int     ft_skip_passed_func(char **str, t_isfunc is);
 int		count_non_whitespace_char(char *line);
 int		is_valid_cub_char(char c);
+int		free_line_and_close(int fd, char *line);
+int		free_everything(t_vars *vars, int fd, char *line);
 
 int	 	render(t_vars *vars);
 void	cast_ray(t_vars *vars);

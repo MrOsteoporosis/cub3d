@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:06:57 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/02 12:19:27 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,33 +65,31 @@ int		count_non_whitespace_char(char *line)
 	return (count);
 }
 
-int		map_line_sanitize(char **line, int *ft_width)
+int		map_line_sanitize(char **lineorigin, char *line, int *ft_width)
 {
 	char	*res;
 	int		i;
-	int		i2;
 	int		valid;
 
-	*ft_width = count_non_whitespace_char(*line);
+	*ft_width = count_non_whitespace_char(line);
 	res = (char *)ft_calloc(*ft_width, sizeof(char));
 	if (!res)
 		return (1);
 	i = 0;
-	i2 = 0;
-	while (i2 < *ft_width && (*line)[i])
+	while (i < *ft_width && *line)
 	{
-		valid = is_valid_cub_char((*line)[i]);
-		if (valid && ((*line)[i + 1] && (*line)[i + 1] != ' '))
+		valid = is_valid_cub_char(*line);
+		if (valid && (*(line + 1) && *(line + 1) != ' '))
 			return (1);
 		if (valid)
 		{
-			res[i2] = (*line)[i];
-			i2++;
+			res[i] = *line;
+			i++;
 		}
-		i++;
+		line++;
 	}
-	free(*line);
-	*line = res;
+	free(*lineorigin);
+	*lineorigin = res;
 	return (0);
 }
 
@@ -106,10 +104,10 @@ int		parse_map(t_vars *vars, int fd)
 		line = NULL;
 		ret = get_next_line(fd, &line);
 		if (ret == 0)
-			break;
+			break ;
 		if (ret == -1)
 			free_everything(vars, fd, line);
-		if (map_line_sanitize(&line, &(vars->world.map_width)))
+		if (map_line_sanitize(&line, line, &(vars->world.map_width)))
 			return (free_everything(vars, fd, line));
 		if (array_append(&(vars->world.map), line, vars->world.map_height))
 			return (free_everything(vars, fd, line));
