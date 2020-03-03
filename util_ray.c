@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:57:33 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 14:24:01 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/03 14:36:25 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ int		check_bounds(t_world *world, t_ray *ray)
 {
 	ray->foundwall = 0;
 	ray->safe = 0;
-	//ft_strlen(map[gridy]) << GRIDPOW = max_x
-	if (ray->x < 0 || ray->x >= world->max_x)//fix for variable line lengths
+	if (ray->y < 0 || ray->y >= world->max_y)
 		return (0);
-	if (ray->y < 0 || ray->y >= world->max_y)//fix for variable line lengths
+	world->map_width = ft_strlen(world->map[ray->gridy]);
+	world->max_x = world->map_width << GRIDPOW;
+	if (ray->x < 0 || ray->x >= world->max_x)
 		return (0);
-	if (world->map[ray->gridy][ray->gridx] == '1')
+	if (world->map[ray->gridy][ray->gridx] == '1' )
 		ray->foundwall = 1;
 	//check for sprite
 		//save x y in linked lst
@@ -49,26 +50,22 @@ int		ft_abs(int x)
 	return ((x ^ y) - y);
 }
 
-void	calc_offsets(t_vars *vars, t_caster *caster)
+void	set_tex(t_vars *vars, t_caster *caster)
 {
 	if (caster->a < DEG270 && caster->a > DEG90)
 	{
-		caster->v.tex_offset = (int)caster->v.y % GRID;
 		caster->v.tex = &(vars->we);
 	}
 	else
 	{
-		caster->v.tex_offset = GRID - ((int)caster->v.y % GRID);
 		caster->v.tex = &(vars->ea);
 	}
 	if (caster->a < DEG180 && caster->a > 0)
 	{
-		caster->h.tex_offset = (int)caster->h.x % GRID;
 		caster->h.tex = &(vars->so);
 	}
 	else
 	{
-		caster->h.tex_offset = GRID - ((int)caster->h.x % GRID);
 		caster->h.tex = &(vars->no);
 	}
 }
@@ -82,5 +79,27 @@ void	extendray(t_world *world, t_ray *ray)
 		ray->gridx = ray->x / GRID;
 		ray->gridy = ray->y / GRID;
 		check_bounds(world, ray);
+		ray->tex_offset = (int)ray->y % GRID;
+		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
+				ray->gridy + 1 < world->map_height &&
+				world->map[ray->gridy + 1][ray->gridx] != '1')
+			ray->foundwall = 0;
+	}
+}
+
+void	extendray_b(t_world *world, t_ray *ray)
+{
+	while (!ray->foundwall && ray->safe)
+	{
+		ray->x = ray->x + ray->xincr;
+		ray->y = ray->y + ray->yincr;
+		ray->gridx = ray->x / GRID;
+		ray->gridy = ray->y / GRID;
+		check_bounds(world, ray);
+		ray->tex_offset = (int)ray->x % GRID;
+		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
+				ray->gridx + 1 < world->map_height &&
+				world->map[ray->gridy][ray->gridx + 1] != '1')
+			ray->foundwall = 0;
 	}
 }

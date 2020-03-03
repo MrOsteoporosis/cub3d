@@ -6,7 +6,7 @@
 #    By: averheij <averheij@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/01/15 15:20:06 by averheij       #+#    #+#                 #
-#    Updated: 2020/03/02 12:34:26 by averheij         ###   ########.fr        #
+#    Updated: 2020/03/03 11:16:17 by averheij         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ CC		=	gcc $(FLAGS)
 MLX_DIR	=	mlx
 MLX_NAME=	mlx
 MLX_INCLUDE	=	mlx
-EXTRA_FLAGS	=	-framework OpenGL -framework AppKit libmlx.dylib
+EXTRA_FLAGS	=	-framework OpenGL -framework AppKit libmlx.dylib -fsanitize=address
 
 BOLD	=	\033[1m
 CLEAR	=	\033[0m

@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 13:21:21 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/03 14:35:01 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ typedef struct	s_ray {
 	float		yincr;
 	int			gridx;
 	int			gridy;
+	int			nxtwlx;
+	int			nxtwly;
 	short		safe;
 	short		foundwall;
 	float	   	dist;
@@ -97,6 +99,7 @@ typedef struct	s_ray {
 	int		 	real_height;
 	t_data	   	*tex;
 	int		 	tex_offset;
+	int			clip_offset;
 }				t_ray;
 
 typedef struct	s_caster {
@@ -133,10 +136,11 @@ int		free_everything(t_vars *vars, int fd, char *line);
 int	 	render(t_vars *vars);
 void	clear_frame_color_sky_floor(t_data *data, int sky, int ftfloor);
 void	cast_ray(t_vars *vars);
+void	set_tex(t_vars *vars, t_caster *caster);
 void	cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a);
 void	cast_vertical(t_world *world, t_ray *ray, float a, float tan_a);
 void	extendray(t_world *world, t_ray *ray);
-void	calc_offsets(t_vars *vars, t_caster *caster);
+void	extendray_b(t_world *world, t_ray *ray);
 void	calc_distance(t_world *world, t_caster *caster);
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_data *tex);
 

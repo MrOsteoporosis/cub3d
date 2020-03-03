@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 14:12:12 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/03 14:36:36 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 	y = frame->halfresy - (ray->height >> 1);
 	endy = frame->halfresy + (ray->height >> 1);
 	i = -1 * (frame->halfresy - (ray->real_height >> 1)) + y;
+	if (frame_column == frame->resx || frame_column == 0)
+		endy--;
 	while (y < endy)
 	{
 		dst = frame->addr + (y * frame->line_length +
@@ -75,7 +77,12 @@ void	cast_vertical(t_world *world, t_ray *ray, float a, float tan_a)
 	ray->y = world->playery + ((world->playerx - ray->x) * tan_a);
 	ray->gridx = ray->x / GRID;
 	ray->gridy = ray->y / GRID;
+		ray->tex_offset = (int)ray->y % GRID;
 	check_bounds(world, ray);
+	if (ray->foundwall && ray->tex_offset == GRID - 1 &&
+			ray->gridy + 1 < world->map_height &&
+			world->map[ray->gridy + 1][ray->gridx] != '1')
+		ray->foundwall = 0;
 	if (!ray->foundwall)
 		extendray(world, ray);
 }
@@ -98,8 +105,13 @@ void	cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a)
 	ray->gridx = ray->x / GRID;
 	ray->gridy = ray->y / GRID;
 	check_bounds(world, ray);
+	ray->tex_offset = (int)ray->x % GRID;
+	if (ray->foundwall && ray->tex_offset == GRID - 1 &&
+			ray->gridx + 1 < world->map_height &&
+			world->map[ray->gridy][ray->gridx + 1] != '1')
+		ray->foundwall = 0;
 	if (!ray->foundwall)
-		extendray(world, ray);
+		extendray_b(world, ray);
 }
 
 void	cast_ray(t_vars *vars)
@@ -115,9 +127,9 @@ void	cast_ray(t_vars *vars)
 	{
 		caster.a = ray_angle(vars->world.lookdir, caster.raydir);
 		tan_a = tan(caster.a);
+		set_tex(vars, &caster);
 		cast_horizontal(&(vars->world), &(caster.h), caster.a, tan_a);
 		cast_vertical(&(vars->world), &(caster.v), caster.a, tan_a);
-		calc_offsets(vars, &caster);
 		calc_distance(&(vars->world), &caster);
 		draw_texture_column(&(vars->img), caster.near, caster.column,
 				caster.near->tex);
