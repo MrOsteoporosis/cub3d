@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 14:21:25 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/03 14:56:55 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ int		map_line_sanitize(char **lineorigin, char *line, int *ft_width)
 
 int		validate_map(char **map, t_vars *vars)
 {
-	//Validate edges
+	//pathfind around the map to check for 1s?
 	//set player pos
-	vars->world.playerx = GRID * 5 + (GRID / 2);
-	vars->world.playery = GRID * 5 + (GRID / 2);
+	vars->world.playerx = GRID * 1 + (GRID / 2);
+	vars->world.playery = GRID * 1 + (GRID / 2);
 	vars->world.lookdir = DEG90 * 1;
 	return (0);
 }

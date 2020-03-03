@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:57:33 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/03 14:36:25 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/03 14:38:45 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,21 +53,13 @@ int		ft_abs(int x)
 void	set_tex(t_vars *vars, t_caster *caster)
 {
 	if (caster->a < DEG270 && caster->a > DEG90)
-	{
 		caster->v.tex = &(vars->we);
-	}
 	else
-	{
 		caster->v.tex = &(vars->ea);
-	}
 	if (caster->a < DEG180 && caster->a > 0)
-	{
 		caster->h.tex = &(vars->so);
-	}
 	else
-	{
 		caster->h.tex = &(vars->no);
-	}
 }
 
 void	extendray(t_world *world, t_ray *ray)
