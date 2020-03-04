@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/11 11:54:02 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:44:04 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/04 12:34:12 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,6 @@ int		key_release(int keycode, t_vars *vars)
 	else if (keycode == RAKEY)
 		vars->move.lookright = 0;
 	else if (keycode == 53)
-	{
-		mlx_destroy_window(vars->mlx, vars->win);
-		free_everything(vars, -1, NULL);
-		exit(0);
-	}
+		close_window(vars);
 	return (0);
 }

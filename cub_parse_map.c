@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/03 14:56:55 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/04 13:02:24 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		validate_map(char **map, t_vars *vars)
 	//set player pos
 	vars->world.playerx = GRID * 1 + (GRID / 2);
 	vars->world.playery = GRID * 1 + (GRID / 2);
-	vars->world.lookdir = DEG90 * 1;
+	vars->world.lookdir = DEG90 * 0;
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/03 14:35:01 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/04 13:24:04 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ typedef struct	s_caster {
 	float		a;
 	t_ray		v;
 	t_ray		h;
-	t_ray	   *near;
+	t_ray		*near;
+	t_ray		*ftprev;
 }				t_caster;
 
 typedef int	    (*t_isfunc)(int c);

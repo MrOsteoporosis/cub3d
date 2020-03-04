@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/03 14:36:36 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/04 13:15:30 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,26 @@ void	calc_distance(t_world *world, t_caster *caster)
 	float	temp;
 	float	dist;
 	int		height;
-	float	sin_a;
+	float	trig_a;
 
-	sin_a = sin(caster->a);
-	caster->h.dist = ft_abs((world->playery - caster->h.y) / sin_a);
-	caster->v.dist = ft_abs((world->playery - caster->v.y) / sin_a);
-	caster->near = &(caster->v);
-	if (caster->h.dist < caster->v.dist)
-		caster->near = &(caster->h);
+	/*if (caster->a != 0 && caster->a != M_PI)*/
+	/*{*/
+		trig_a = sin(caster->a);
+		caster->h.dist = ft_abs((world->playery - caster->h.y) / trig_a);
+		caster->v.dist = ft_abs((world->playery - caster->v.y) / trig_a);
+	/*}*/
+	/*else*/
+	/*{*/
+		/*trig_a = cos(caster->a);*/
+		/*caster->h.dist = ft_abs((world->playerx - caster->h.x) / trig_a);*/
+		/*caster->v.dist = ft_abs((world->playerx - caster->v.x) / trig_a);*/
+	/*}*/
+	caster->near = &(caster->h);
+	if (caster->v.dist < caster->h.dist)
+		caster->near = &(caster->v);
+	else if (caster->v.dist == caster->h.dist)
+		caster->near = caster->ftprev;
+	caster->ftprev = caster->near;
 	caster->near->dist = caster->near->dist * cos(caster->raydir);
 	caster->near->height = (GRID / caster->near->dist) * world->proj_plane_dist;
 	caster->near->real_height = caster->near->height;
@@ -116,8 +128,8 @@ void	cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a)
 
 void	cast_ray(t_vars *vars)
 {
-	t_caster	caster;
-	float		tan_a;
+	static t_caster	caster;
+	float			tan_a;
 
 	caster.raydir = HALF_FOV;
 	caster.column = 1;
@@ -127,6 +139,7 @@ void	cast_ray(t_vars *vars)
 	{
 		caster.a = ray_angle(vars->world.lookdir, caster.raydir);
 		tan_a = tan(caster.a);
+		printf("col|%4d| tan|%7.4f| raydir|%7.4f| a|%7.4f| lookdir|%.4f|\n",caster.column, tan_a, caster.raydir, caster.a, vars->world.lookdir);
 		set_tex(vars, &caster);
 		cast_horizontal(&(vars->world), &(caster.h), caster.a, tan_a);
 		cast_vertical(&(vars->world), &(caster.v), caster.a, tan_a);
