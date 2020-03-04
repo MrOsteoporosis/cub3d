@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/28 13:27:44 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 13:00:39 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/04 14:21:32 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,19 @@ int		parse_color(t_vars *vars, char *line)
 	return (0);
 }
 
+void	validate_res(t_vars *vars)
+{
+	int		max_resx;
+	int		max_resy;
+
+	mlx_get_screen_size(vars->mlx, &max_resx, &max_resy);
+	max_resy -= 44;
+	if (vars->img.resx > max_resx)
+		vars->img.resx = max_resx;
+	if (vars->img.resy > max_resy)
+		vars->img.resy = max_resy;
+}
+
 int		parse_res(t_vars *vars, char *line)
 {
 	line++;
@@ -69,10 +82,7 @@ int		parse_res(t_vars *vars, char *line)
 	vars->img.resy = ft_atoi(line);
 	if (!(vars->img.resx) || !(vars->img.resy))
 		return (1);
-	if (vars->img.resx > MAX_RESX)//Use mlx res func
-		vars->img.resx = MAX_RESX;
-	if (vars->img.resy > MAX_RESY)
-		vars->img.resy = MAX_RESY;
+	validate_res(vars);
 	vars->img.halfresy = vars->img.resy / 2;
 	return (0);
 }

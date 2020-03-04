@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:57:33 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/03 14:38:45 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/04 14:01:24 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,38 +60,4 @@ void	set_tex(t_vars *vars, t_caster *caster)
 		caster->h.tex = &(vars->so);
 	else
 		caster->h.tex = &(vars->no);
-}
-
-void	extendray(t_world *world, t_ray *ray)
-{
-	while (!ray->foundwall && ray->safe)
-	{
-		ray->x = ray->x + ray->xincr;
-		ray->y = ray->y + ray->yincr;
-		ray->gridx = ray->x / GRID;
-		ray->gridy = ray->y / GRID;
-		check_bounds(world, ray);
-		ray->tex_offset = (int)ray->y % GRID;
-		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
-				ray->gridy + 1 < world->map_height &&
-				world->map[ray->gridy + 1][ray->gridx] != '1')
-			ray->foundwall = 0;
-	}
-}
-
-void	extendray_b(t_world *world, t_ray *ray)
-{
-	while (!ray->foundwall && ray->safe)
-	{
-		ray->x = ray->x + ray->xincr;
-		ray->y = ray->y + ray->yincr;
-		ray->gridx = ray->x / GRID;
-		ray->gridy = ray->y / GRID;
-		check_bounds(world, ray);
-		ray->tex_offset = (int)ray->x % GRID;
-		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
-				ray->gridx + 1 < world->map_height &&
-				world->map[ray->gridy][ray->gridx + 1] != '1')
-			ray->foundwall = 0;
-	}
 }

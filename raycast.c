@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/04 13:15:30 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/04 14:31:00 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,32 @@ void	cast_vertical(t_world *world, t_ray *ray, float a, float tan_a)
 		ray->yincr *= -1;
 	}
 	ray->y = world->playery + ((world->playerx - ray->x) * tan_a);
+	extend_vertical(world, ray);
+}
+
+void	extend_vertical(t_world *world, t_ray *ray)
+{
 	ray->gridx = ray->x / GRID;
 	ray->gridy = ray->y / GRID;
-		ray->tex_offset = (int)ray->y % GRID;
 	check_bounds(world, ray);
+	ray->tex_offset = (int)ray->y % GRID;
 	if (ray->foundwall && ray->tex_offset == GRID - 1 &&
 			ray->gridy + 1 < world->map_height &&
 			world->map[ray->gridy + 1][ray->gridx] != '1')
 		ray->foundwall = 0;
-	if (!ray->foundwall)
-		extendray(world, ray);
+	while (!ray->foundwall && ray->safe)
+	{
+		ray->x = ray->x + ray->xincr;
+		ray->y = ray->y + ray->yincr;
+		ray->gridx = ray->x / GRID;
+		ray->gridy = ray->y / GRID;
+		check_bounds(world, ray);
+		ray->tex_offset = (int)ray->y % GRID;
+		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
+				ray->gridy + 1 < world->map_height &&
+				world->map[ray->gridy + 1][ray->gridx] != '1')
+			ray->foundwall = 0;
+	}
 }
 
 void	cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a)
@@ -114,6 +130,11 @@ void	cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a)
 		ray->xincr *= -1;
 	}
 	ray->x = world->playerx + ((world->playery - ray->y) / tan_a);
+	extend_horizontal(world, ray);
+}
+
+void	extend_horizontal(t_world *world, t_ray *ray)
+{
 	ray->gridx = ray->x / GRID;
 	ray->gridy = ray->y / GRID;
 	check_bounds(world, ray);
@@ -122,10 +143,20 @@ void	cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a)
 			ray->gridx + 1 < world->map_height &&
 			world->map[ray->gridy][ray->gridx + 1] != '1')
 		ray->foundwall = 0;
-	if (!ray->foundwall)
-		extendray_b(world, ray);
+	while (!ray->foundwall && ray->safe)
+	{
+		ray->x = ray->x + ray->xincr;
+		ray->y = ray->y + ray->yincr;
+		ray->gridx = ray->x / GRID;
+		ray->gridy = ray->y / GRID;
+		check_bounds(world, ray);
+		ray->tex_offset = (int)ray->x % GRID;
+		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
+				ray->gridx + 1 < world->map_height &&
+				world->map[ray->gridy][ray->gridx + 1] != '1')
+			ray->foundwall = 0;
+	}
 }
-
 void	cast_ray(t_vars *vars)
 {
 	static t_caster	caster;
@@ -139,7 +170,7 @@ void	cast_ray(t_vars *vars)
 	{
 		caster.a = ray_angle(vars->world.lookdir, caster.raydir);
 		tan_a = tan(caster.a);
-		printf("col|%4d| tan|%7.4f| raydir|%7.4f| a|%7.4f| lookdir|%.4f|\n",caster.column, tan_a, caster.raydir, caster.a, vars->world.lookdir);
+		/*printf("col|%4d| tan|%7.4f| raydir|%7.4f| a|%7.4f| lookdir|%.4f|\n",caster.column, tan_a, caster.raydir, caster.a, vars->world.lookdir);*/
 		set_tex(vars, &caster);
 		cast_horizontal(&(vars->world), &(caster.h), caster.a, tan_a);
 		cast_vertical(&(vars->world), &(caster.v), caster.a, tan_a);

@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/04 13:24:04 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/04 14:30:08 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,15 @@ typedef struct	s_caster {
 typedef int	    (*t_isfunc)(int c);
 typedef int     (*t_efunc)(t_vars *vars, char *line);
 
+int	 	close_window(t_vars *vars);
+int	 	key_press(int keycode, t_vars *vars);
+int	 	key_release(int keycode, t_vars *vars);
+
+int		check_argc_argv(int argc, char **argv);
 int     parse_cub(t_vars *vars, char *map_path);
 int     call_element_parser(t_vars *vars, char *line, int *elecount);
 int     parse_res(t_vars *vars, char *line);
+void	validate_res(t_vars *vars);
 int     parse_tex(t_vars *vars, char *line);
 int     parse_color(t_vars *vars, char *line);
 int		parse_rgb_partial(int *color, char **str, int notlast);
@@ -139,9 +145,9 @@ void	clear_frame_color_sky_floor(t_data *data, int sky, int ftfloor);
 void	cast_ray(t_vars *vars);
 void	set_tex(t_vars *vars, t_caster *caster);
 void	cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a);
+void	extend_horizontal(t_world *world, t_ray *ray);
 void	cast_vertical(t_world *world, t_ray *ray, float a, float tan_a);
-void	extendray(t_world *world, t_ray *ray);
-void	extendray_b(t_world *world, t_ray *ray);
+void	extend_vertical(t_world *world, t_ray *ray);
 void	calc_distance(t_world *world, t_caster *caster);
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_data *tex);
 
@@ -153,10 +159,4 @@ int	 	ft_abs(int x);
 void	do_movement(t_world *world, t_movement *move);
 void	adjust_speed(float lookdir, float movedir, t_movement *move);
 void	adjust_look(float *lookdir, t_movement *move);
-
-int	 	close_window(t_vars *vars);
-int	 	key_press(int keycode, t_vars *vars);
-int	 	key_release(int keycode, t_vars *vars);
-
-int		check_argc_argv(int argc, char **argv);
 #endif
