@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:57:33 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/04 14:01:24 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:15:35 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include <libft.h>
 #include "cub3d.h"
 
-float	ray_angle(float lookdir, float raydir)
+double	ray_angle(double lookdir, double raydir)
 {
-	float a;
+	double a;
 
 	a = lookdir + raydir;
 	if (a > M_PI2)

@@ -6,23 +6,23 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:55:59 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/04 13:23:07 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:15:34 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "cub3d.h"
 
-void	adjust_speed(float lookdir, float movedir, t_movement *move)
+void	adjust_speed(double lookdir, double movedir, t_movement *move)
 {
-	float	a;
+	double	a;
 
 	a = lookdir + movedir;
 	move->speedy += cos(a) * MOVESPEED;
 	move->speedx += sin(a) * MOVESPEED;
 }
 
-void	adjust_look(float *lookdir, t_movement *move)
+void	adjust_look(double *lookdir, t_movement *move)
 {
 	if (move->lookleft)
 		*lookdir += LOOKSPEED;

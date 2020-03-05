@@ -6,12 +6,14 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/04 14:31:00 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:20:29 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "cub3d.h"
+
+#include <stdio.h>
 
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 		t_data *tex)
@@ -44,23 +46,23 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 
 void	calc_distance(t_world *world, t_caster *caster)
 {
-	float	temp;
-	float	dist;
+	double	temp;
+	double	dist;
 	int		height;
-	float	trig_a;
+	double	trig_a;
 
-	/*if (caster->a != 0 && caster->a != M_PI)*/
-	/*{*/
+	if (!caster->taniszero)
+	{
 		trig_a = sin(caster->a);
 		caster->h.dist = ft_abs((world->playery - caster->h.y) / trig_a);
 		caster->v.dist = ft_abs((world->playery - caster->v.y) / trig_a);
-	/*}*/
-	/*else*/
-	/*{*/
-		/*trig_a = cos(caster->a);*/
-		/*caster->h.dist = ft_abs((world->playerx - caster->h.x) / trig_a);*/
-		/*caster->v.dist = ft_abs((world->playerx - caster->v.x) / trig_a);*/
-	/*}*/
+	}
+	else
+	{
+		trig_a = cos(caster->a);
+		caster->h.dist = ft_abs((world->playerx - caster->h.x) / trig_a);
+		caster->v.dist = ft_abs((world->playerx - caster->v.x) / trig_a);
+	}
 	caster->near = &(caster->h);
 	if (caster->v.dist < caster->h.dist)
 		caster->near = &(caster->v);
@@ -72,7 +74,7 @@ void	calc_distance(t_world *world, t_caster *caster)
 	caster->near->real_height = caster->near->height;
 }
 
-void	cast_vertical(t_world *world, t_ray *ray, float a, float tan_a)
+void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a)
 {
 	ray->xincr = GRID;
 	ray->yincr = GRID * tan_a;
@@ -115,7 +117,7 @@ void	extend_vertical(t_world *world, t_ray *ray)
 	}
 }
 
-void	cast_horizontal(t_world *world, t_ray *ray, float a, float tan_a)
+void	cast_horizontal(t_world *world, t_ray *ray, double a, double tan_a)
 {
 	ray->yincr = GRID;
 	ray->xincr = GRID / tan_a;
@@ -157,10 +159,13 @@ void	extend_horizontal(t_world *world, t_ray *ray)
 			ray->foundwall = 0;
 	}
 }
+
+
+
 void	cast_ray(t_vars *vars)
 {
 	static t_caster	caster;
-	float			tan_a;
+	double			tan_a;
 
 	caster.raydir = HALF_FOV;
 	caster.column = 1;
@@ -170,11 +175,17 @@ void	cast_ray(t_vars *vars)
 	{
 		caster.a = ray_angle(vars->world.lookdir, caster.raydir);
 		tan_a = tan(caster.a);
-		/*printf("col|%4d| tan|%7.4f| raydir|%7.4f| a|%7.4f| lookdir|%.4f|\n",caster.column, tan_a, caster.raydir, caster.a, vars->world.lookdir);*/
+		caster.taniszero = 0;
+		if ((int)(tan_a * 1000000) == 0)
+		{
+			tan_a = 0.000001;
+			caster.taniszero = 1;
+		}
 		set_tex(vars, &caster);
 		cast_horizontal(&(vars->world), &(caster.h), caster.a, tan_a);
 		cast_vertical(&(vars->world), &(caster.v), caster.a, tan_a);
 		calc_distance(&(vars->world), &caster);
+		/*printf("col|%4d| tan|%10f| raydir|%7.4f| a|%10f| lookdir|%.4f|\n",caster.column, tan_a, caster.raydir, caster.a, vars->world.lookdir);*/
 		draw_texture_column(&(vars->img), caster.near, caster.column,
 				caster.near->tex);
 		//loop over list
