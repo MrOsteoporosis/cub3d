@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/05 12:20:29 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:24:10 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,6 @@ void	cast_ray(t_vars *vars)
 		cast_horizontal(&(vars->world), &(caster.h), caster.a, tan_a);
 		cast_vertical(&(vars->world), &(caster.v), caster.a, tan_a);
 		calc_distance(&(vars->world), &caster);
-		/*printf("col|%4d| tan|%10f| raydir|%7.4f| a|%10f| lookdir|%.4f|\n",caster.column, tan_a, caster.raydir, caster.a, vars->world.lookdir);*/
 		draw_texture_column(&(vars->img), caster.near, caster.column,
 				caster.near->tex);
 		//loop over list
