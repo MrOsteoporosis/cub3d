@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/28 13:23:26 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 12:31:29 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/05 13:19:47 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 int		is_valid_cub_char(char c)
 {
 	int			i;
-	static char	set[7] = {'0', '1', '2', 'N', 'S', 'W', 'E'};
+	static char	set[8] = {' ', '0', '1', '2', 'N', 'S', 'W', 'E'};
 
 	i = 0;
-	while (set[i])
+	while (i < 8)
 	{
 		if (set[i] == c)
 			return (1);

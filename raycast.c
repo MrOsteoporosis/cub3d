@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/05 12:32:03 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/05 13:30:40 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ void	extend_horizontal(t_world *world, t_ray *ray)
 	check_bounds(world, ray);
 	ray->tex_offset = (int)ray->x % GRID;
 	if (ray->foundwall && ray->tex_offset == GRID - 1 &&
-			ray->gridx + 1 < world->map_height &&
+			ray->gridx + 1 < world->map_width &&
 			world->map[ray->gridy][ray->gridx + 1] != '1')
 		ray->foundwall = 0;
 	while (!ray->foundwall && ray->safe)
@@ -152,7 +152,7 @@ void	extend_horizontal(t_world *world, t_ray *ray)
 		check_bounds(world, ray);
 		ray->tex_offset = (int)ray->x % GRID;
 		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
-				ray->gridx + 1 < world->map_height &&
+				ray->gridx + 1 < world->map_width &&
 				world->map[ray->gridy][ray->gridx + 1] != '1')
 			ray->foundwall = 0;
 	}

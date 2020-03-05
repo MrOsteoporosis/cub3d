@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/04 13:02:24 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/05 13:22:11 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,31 +37,19 @@ int		array_append(char ***map, char *line, int currentlength)
 	return (0);
 }
 
-int		map_line_sanitize(char **lineorigin, char *line, int *ft_width)
+int		map_line_sanitize(char *line)
 {
 	char	*res;
 	int		i;
 	int		valid;
 
-	*ft_width = count_non_whitespace_char(line);
-	res = (char *)ft_calloc(*ft_width + 1, sizeof(char));
-	if (!res)
-		return (1);
 	i = 0;
-	while (i < *ft_width && *line)
+	while (line[i])
 	{
-		valid = is_valid_cub_char(*line);
-		if (valid && (*(line + 1) && *(line + 1) != ' '))
+		if (!is_valid_cub_char(*line))
 			return (1);
-		if (valid)
-		{
-			res[i] = *line;
-			i++;
-		}
-		line++;
+		i++;
 	}
-	free(*lineorigin);
-	*lineorigin = res;
 	return (0);
 }
 
@@ -89,7 +77,7 @@ int		parse_map(t_vars *vars, int fd)
 			break ;
 		if (ret == -1)
 			free_everything(vars, fd, line);
-		if (map_line_sanitize(&line, line, &(vars->world.map_width)))
+		if (map_line_sanitize(line))
 			return (free_everything(vars, fd, line));
 		if (array_append(&(vars->world.map), line, vars->world.map_height))
 			return (free_everything(vars, fd, line));
@@ -98,7 +86,6 @@ int		parse_map(t_vars *vars, int fd)
 	free(line);
 	if (validate_map(vars->world.map, vars))
 		return (free_everything(vars, fd, NULL));
-	vars->world.max_x = vars->world.map_width * GRID;
 	vars->world.max_y = vars->world.map_height * GRID;
 	return (0);
 }

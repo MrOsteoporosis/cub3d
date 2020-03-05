@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/28 13:27:44 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/04 14:21:32 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:52:19 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 
 int		parse_rgb_partial(int *color, char **str, int notlast)
 {
-	if (ft_skip_passed_func(str, &ft_iswhitespace))
-		return (1);
 	if (!ft_isdigit(**str))
 		return (1);
 	*color = ft_atoi(*str);
@@ -40,6 +38,8 @@ int		parse_color(t_vars *vars, char *line)
 	else if (!ft_strncmp(line, "F", 1))
 		colorpointer = &(vars->world.colorfloor);
 	line++;
+	if (ft_skip_passed_func(&line, &ft_iswhitespace))
+		return (1);
 	if (parse_rgb_partial(&red, &line, 1))
 		return (1);
 	if (parse_rgb_partial(&green, &line, 1))
