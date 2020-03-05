@@ -6,14 +6,12 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/05 12:24:10 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:32:03 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "cub3d.h"
-
-#include <stdio.h>
 
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 		t_data *tex)
