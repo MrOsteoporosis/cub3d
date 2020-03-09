@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/05 13:22:11 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 12:18:58 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,39 @@ int		map_line_sanitize(char *line)
 
 int		validate_map(char **map, t_vars *vars)
 {
+	int		spritecount;
+	int		i;
+	int		i2;
+
 	//pathfind around the map to check for 1s?
 	//set player pos
-	vars->world.playerx = GRID * 1 + (GRID / 2);
-	vars->world.playery = GRID * 1 + (GRID / 2);
-	vars->world.lookdir = DEG90 * 0;
+	i = 0;
+	while (i < vars->world.map_height)
+	{
+		i2 = 0;
+		while (map[i][i2])
+		{
+			if (map[i][i2] == 'N')
+				vars->world.lookdir = DEG90;
+			else if (map[i][i2] == 'E')
+				vars->world.lookdir = 0;
+			else if (map[i][i2] == 'W')
+				vars->world.lookdir = DEG180;
+			else if (map[i][i2] == 'S')
+				vars->world.lookdir = DEG270;
+			if (map[i][i2] == 'N' || map[i][i2] == 'E' ||
+					map[i][i2] == 'W' || map[i][i2] == 'S')
+			{
+				vars->world.playerx = GRID * i2 + (GRID / 2);
+				vars->world.playery = GRID * i + (GRID / 2);
+			}
+			if (map[i][i2] == '2')
+				spritecount++;
+			i2++;
+		}
+		i++;
+	}
+	printf("%d\n", spritecount);
 	return (0);
 }
 
