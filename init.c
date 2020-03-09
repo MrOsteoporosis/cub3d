@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/02 13:08:59 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 10:53:17 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,31 @@
 #include <libft.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "cub3d.h"
+
+#include <time.h>
 
 int		render(t_vars *vars)
 {
+	static clock_t	start;
+
+	if (vars->frames == 0)
+		start = clock();
+	vars->frames++;
 	mlx_sync(1, vars->img.img);
 	clear_frame_color_sky_floor(&(vars->img),
 			vars->world.colorceiling, vars->world.colorfloor);
 	do_movement(&(vars->world), &(vars->move));
 	cast_ray(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+	if (vars->frames >= 3)
+	{
+		free (vars->rate);
+		vars->frames = 0;
+		vars->rate = ft_itoa((1 / ((double)(clock() - start) / (double)(CLOCKS_PER_SEC))) * 3);
+	}
+	mlx_string_put(vars->mlx, vars->win, 10, 20, 0x00FFFFFF, vars->rate);
 	mlx_sync(2, vars->win);
 	return (0);
 }
@@ -61,6 +76,7 @@ int		main(int argc, char **argv)
 			&vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(vars.img.resx);
 	vars.world.proj_plane_dist = (vars.img.resx / 2) / tan(HALF_FOV);
+	vars.rate = ft_itoa(0);
 	mlx_loop_hook(vars.mlx, render, &vars);
 	mlx_loop(vars.mlx);
 	return (0);

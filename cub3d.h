@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/05 13:38:09 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 10:51:10 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ typedef struct	s_vars {
 	t_data	   	we;
 	t_data	   	ea;
 	t_data	   	s;
+	int			frames;
+	char		*rate;
 }				t_vars;
 
 typedef struct	s_ray {
