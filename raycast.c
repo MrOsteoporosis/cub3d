@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 11:14:26 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 11:16:28 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 	y = frame->halfresy - (ray->height >> 1);
 	endy = frame->halfresy + (ray->height >> 1);
 	i = -1 * (frame->halfresy - (ray->real_height >> 1)) + y;
-	/*if (frame_column == frame->resx || frame_column == 0)*/
-		/*endy--;*/
 	while (y < endy)
 	{
 		dst = frame->addr + (y * frame->line_length +
