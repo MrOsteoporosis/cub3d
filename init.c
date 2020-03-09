@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 10:53:17 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 11:58:21 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int		main(int argc, char **argv)
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(vars.img.resx);
 	vars.world.proj_plane_dist = (vars.img.resx / 2) / tan(HALF_FOV);
 	vars.rate = ft_itoa(0);
+	vars.distarr = ft_calloc(sizeof(int), vars.img.resx);
 	mlx_loop_hook(vars.mlx, render, &vars);
 	mlx_loop(vars.mlx);
 	return (0);

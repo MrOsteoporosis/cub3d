@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 11:16:28 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 11:59:13 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 	}
 }
 
-void	calc_distance(t_world *world, t_caster *caster)
+void	calc_distance(t_world *world, t_caster *caster, int *distarr)
 {
 	double	temp;
 	double	dist;
@@ -64,6 +64,7 @@ void	calc_distance(t_world *world, t_caster *caster)
 		caster->near = &(caster->v);
 	else if (caster->v.dist == caster->h.dist)
 		caster->near = caster->ftprev;
+	distarr[caster->column] = caster->near->dist;
 	caster->ftprev = caster->near;
 	caster->near->dist = caster->near->dist * cos(caster->raydir);
 	caster->near->height = (GRID / caster->near->dist) * world->proj_plane_dist;
@@ -165,8 +166,6 @@ void	cast_ray(t_vars *vars)
 
 	caster.raydir = HALF_FOV;
 	caster.column = 0;
-	//make a sprite linked list, adding new link in check bounds, should be sorted in reverse render order automatially
-	//yaayy memory management
 	while (caster.column < vars->img.resx)
 	{
 		caster.a = ray_angle(vars->world.lookdir, caster.raydir);
@@ -180,14 +179,9 @@ void	cast_ray(t_vars *vars)
 		set_tex(vars, &caster);
 		cast_horizontal(&(vars->world), &(caster.h), caster.a, tan_a);
 		cast_vertical(&(vars->world), &(caster.v), caster.a, tan_a);
-		calc_distance(&(vars->world), &caster);
+		calc_distance(&(vars->world), &caster, vars->distarr);
 		draw_texture_column(&(vars->img), caster.near, caster.column,
 				caster.near->tex);
-		//loop over list
-			//calc sprte distance
-			//calc sprite offset
-			//draw sprite column
-			//free
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}

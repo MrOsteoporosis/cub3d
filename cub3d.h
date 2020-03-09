@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 11:36:42 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 11:58:30 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct	s_vars {
 	t_data	   	we;
 	t_data	   	ea;
 	t_data	   	s;
+	int			*distarr;
 	int			frames;
 	char		*rate;
 }				t_vars;
@@ -152,7 +153,7 @@ void	cast_horizontal(t_world *world, t_ray *ray, double a, double tan_a);
 void	extend_horizontal(t_world *world, t_ray *ray);
 void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a);
 void	extend_vertical(t_world *world, t_ray *ray);
-void	calc_distance(t_world *world, t_caster *caster);
+void	calc_distance(t_world *world, t_caster *caster, int *distarr);
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_data *tex);
 
 int		create_trgb(int t, int r, int g, int b);
