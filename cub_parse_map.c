@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 12:18:58 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 12:40:49 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ int		validate_map(char **map, t_vars *vars)
 	int		i;
 	int		i2;
 
-	//pathfind around the map to check for 1s?
-	//set player pos
+	//pathfind around the map to check for unbroken edge wall
 	i = 0;
 	while (i < vars->world.map_height)
 	{
@@ -81,13 +80,10 @@ int		validate_map(char **map, t_vars *vars)
 				vars->world.playerx = GRID * i2 + (GRID / 2);
 				vars->world.playery = GRID * i + (GRID / 2);
 			}
-			if (map[i][i2] == '2')
-				spritecount++;
 			i2++;
 		}
 		i++;
 	}
-	printf("%d\n", spritecount);
 	return (0);
 }
 
@@ -114,6 +110,15 @@ int		parse_map(t_vars *vars, int fd)
 	free(line);
 	if (validate_map(vars->world.map, vars))
 		return (free_everything(vars, fd, NULL));
+	//2d array of t_sprite pointers with maps dimensions
+	//loop over map
+	//malloc for a link at every '2' and assign pointer
+	//lst
+	//	int	gridx;
+	//	int	gridy;
+	//	int queued;
+	//	t_sprite *next
+	//	t_sprite *prev
 	vars->world.max_y = vars->world.map_height * GRID;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 11:58:30 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 12:47:39 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ typedef struct	s_data {
 
 typedef struct	s_world {
 	char		**map;
+	//t_sprite	**spritemap;
+	//t_sprite	*spritelst;
     int         colorfloor;
     int         colorceiling;
 	int			map_width;

@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 11:15:01 by averheij          #+#    #+#             */
-/*   Updated: 2020/03/05 13:31:40 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 12:44:02 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int		call_element_parser(t_vars *vars, char *line, int *elecount)
 		&parse_tex, &parse_tex, &parse_tex, &parse_color, &parse_color};
 
 	i = 0;
-	/*printf("%s\n", line);*/
 	if (*line == '\0')
 		return (0);
 	while (i < 9)
@@ -67,7 +66,6 @@ int		parse_cub(t_vars *vars, char *map_path)
 			return (free_line_and_close(fd, line));
 		free(line);
 	}
-	/*printf("meta done\n");*/
 	if (parse_map(vars, fd))
 		return (1);
 	close(fd);

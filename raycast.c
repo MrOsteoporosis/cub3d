@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 11:59:13 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 12:48:48 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,9 @@ void	cast_ray(t_vars *vars)
 		calc_distance(&(vars->world), &caster, vars->distarr);
 		draw_texture_column(&(vars->img), caster.near, caster.column,
 				caster.near->tex);
+		//sort spritelst
+		//calc
+		//render
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}

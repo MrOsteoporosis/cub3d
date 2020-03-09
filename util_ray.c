@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:57:33 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 11:55:06 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 12:41:26 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int		check_bounds(t_world *world, t_ray *ray)
 		return (0);
 	if (world->map[ray->gridy][ray->gridx] == '1' )
 		ray->foundwall = 1;
-	//check for sprite
-		//save x y to array
+	//if map[gridy][gridx] == '2' and !spritemap[gridy][gridx].queued	
+	//	add link to spritelst
 	ray->safe = 1;
 	return (1);
 }

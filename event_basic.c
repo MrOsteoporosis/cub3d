@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/11 11:54:02 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 11:58:46 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 12:43:14 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int		close_window(t_vars *vars)
 	mlx_destroy_window(vars->mlx, vars->win);
 	free_everything(vars, -1, NULL);
 	free (vars->distarr);
+	//MEM MANAGE SPRITE LINKS
+	//SPRITEMAP
 	exit(0);
 	return (0);
 }
