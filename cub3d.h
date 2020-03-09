@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 10:51:10 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 11:29:05 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,4 +162,5 @@ int	 	ft_abs(int x);
 void	do_movement(t_world *world, t_movement *move);
 void	adjust_speed(double lookdir, double movedir, t_movement *move);
 void	adjust_look(double *lookdir, t_movement *move);
+int		check_collision(t_world *world, t_movement *move, int xy);
 #endif
