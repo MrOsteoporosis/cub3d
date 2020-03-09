@@ -6,7 +6,7 @@
 /*   By: averheij <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/06 10:55:59 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 11:27:43 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 11:32:21 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ void	do_movement(t_world *world, t_movement *move)
 	move->speedx -= move->speedx * FRICTION;
 	move->speedy -= move->speedy * FRICTION;
 	if (check_collision(world, move, 0))
-		move->speedx *= -0.6;
+		move->speedx *= COLELASTICITY;
 	if (check_collision(world, move, 1))
-		move->speedy *= -0.6;
+		move->speedy *= COLELASTICITY;
 	world->playerx += move->speedx;
 	world->playery += move->speedy;
 	adjust_look(&(world->lookdir), move);

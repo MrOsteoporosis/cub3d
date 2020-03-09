@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 11:29:05 by averheij         ###   ########.fr       */
+/*   Updated: 2020/03/09 11:33:23 by averheij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@
 # define DEG90  1.5708
 # define DEG180 3.14159
 # define DEG270 4.71239
-# define FRICTION   0.04
-# define MOVESPEED  1
-# define LOOKSPEED  0.035
+# define FRICTION   0.02//0.04
+# define MOVESPEED  1.5//1
+# define COLELASTICITY	-1//-0.6
+# define LOOKSPEED  0.07//0.035
 # define GRID   512
 # define GRIDPOW	9
 
