@@ -79,6 +79,7 @@ int		validate_map(char **map, t_vars *vars)
 			{
 				vars->world.playerx = GRID * i2 + (GRID / 2);
 				vars->world.playery = GRID * i + (GRID / 2);
+                //Flood map to validate unbroken edges here
 			}
 			i2++;
 		}

@@ -19,10 +19,16 @@ FLAGS	=	#-Werror -Wall -Wextra
 FLAGS	+= 	-g
 CC		=	gcc $(FLAGS)
 
-MLX_DIR	=	mlx
-MLX_NAME=	mlx
-MLX_INCLUDE	=	mlx
-EXTRA_FLAGS	=	-framework OpenGL -framework AppKit libmlx.dylib -fsanitize=address
+# LINUX	
+MLX_DIR	=	mlxlinux
+MLX_NAME=	minilibx
+MLX_INCLUDE	=	mlxlinux
+EXTRA_FLAGS	=	-lm -lX11 -lXext
+#MAC
+#MLX_DIR	=	mlx
+#MLX_NAME=	mlx
+#MLX_INCLUDE	=	mlx
+#EXTRA_FLAGS	=	-framework OpenGL -framework AppKit libmlx.dylib -fsanitize=address
 
 BOLD	=	\033[1m
 CLEAR	=	\033[0m
@@ -32,7 +38,7 @@ all: $(NAME)
 $(NAME): $(OFILES)
 	@echo "$(BOLD)/--------     mlx     --------\\ $(CLEAR)"
 	make -C $(MLX_DIR)
-	cp $(MLX_DIR)/libmlx.dylib .
+	#cp $(MLX_DIR)/libmlx.dylib .
 	@echo ""
 	@echo "$(BOLD)/--------    libft    --------\\ $(CLEAR)"
 	make -C libft
