@@ -9,6 +9,7 @@
 */
 
 #include    "mlx_int.h"
+#include    <X11/XKBlib.h>
 
 int mlx_int_param_undef() {
 }

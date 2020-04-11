@@ -160,10 +160,10 @@ void *mlx_int_parse_xpm(t_xvar *xvar, void *info, int info_size, char *(*f)()) {
 
 		if (method)
 			colors_direct[mlx_int_get_col_name(line, cpp)] =
-					rgb_col >= 0 ? mlx_get_color_value(xvar, rgb_col) : rgb_col;
+					rgb_col >= 0 ? mlx_int_get_color_value(xvar, rgb_col) : rgb_col;
 		else {
 			colors[i].name = mlx_int_get_col_name(line, cpp);
-			colors[i].col = rgb_col >= 0 ? mlx_get_color_value(xvar, rgb_col) : rgb_col;
+			colors[i].col = rgb_col >= 0 ? mlx_int_get_color_value(xvar, rgb_col) : rgb_col;
 		}
 		free(tab);
 	}

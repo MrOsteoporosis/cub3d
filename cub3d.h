@@ -27,12 +27,20 @@
 # define GRID   512
 # define GRIDPOW	9
 
-# define WKEY   13
-# define AKEY   0
-# define SKEY   1
-# define DKEY   2
-# define LAKEY  123
-# define RAKEY  124
+//linux keycodes
+# define WKEY   119
+# define AKEY   97
+# define SKEY   115
+# define DKEY   100
+# define LAKEY  65361
+# define RAKEY  65363
+//mac keycodes
+//# define WKEY   13
+//# define AKEY   0
+//# define SKEY   1
+//# define DKEY   2
+//# define LAKEY  123
+//# define RAKEY  124
 
 typedef struct	s_data {
 	void		*img;

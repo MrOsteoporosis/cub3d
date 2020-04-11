@@ -125,3 +125,15 @@ char **mlx_int_str_to_wordtab();
 void *mlx_new_image();
 
 int shm_att_pb();
+
+//Added prototypes because of implicit warnings
+
+int mlx_int_get_visual(t_xvar *xvar);
+
+int mlx_int_set_win_event_mask(t_xvar *xvar);
+
+int mlx_int_str_str(char *str, char *find, int len);
+
+int mlx_int_get_color_value(t_xvar *xvar, int color);
+
+int mlx_int_str_str_cote(char *str, char *find, int len);

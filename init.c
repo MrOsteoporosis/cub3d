@@ -40,7 +40,7 @@ int		render(t_vars *vars)
 	}
 	mlx_string_put(vars->mlx, vars->win, 10, 20, 0x00FFFFFF, vars->rate);
 	/*mlx_sync(2, vars->win);*/
-    mlx_do_sync(vars->win);
+    /*mlx_do_sync(vars->win);*/
 	return (0);
 }
 

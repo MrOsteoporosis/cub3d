@@ -21,9 +21,9 @@ CC		=	gcc $(FLAGS)
 
 # LINUX	
 MLX_DIR	=	mlxlinux
-MLX_NAME=	minilibx
+MLX_NAME=	mlx_Linux
 MLX_INCLUDE	=	mlxlinux
-EXTRA_FLAGS	=	-lm -lX11 -lXext
+EXTRA_FLAGS	=	-lz -lm -lX11 -lXext
 #MAC
 #MLX_DIR	=	mlx
 #MLX_NAME=	mlx
