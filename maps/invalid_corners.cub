@@ -1,0 +1,21 @@
+R 1920 1080
+NO ./textures/colorstone.png
+SO ./textures/greystone.png
+WE ./textures/mossy.png
+
+EA ./textures/mossy.png
+S ./textures/barrel.png
+F 220,100,0
+C 225,30,0
+1111111111   11
+1000000001 1 011
+1000000001110001
+1000000000100001
+1000000000000001
+1100000000000001
+   0000000000011
+  1111111111011
+           1E1
+           101
+           101
+           101

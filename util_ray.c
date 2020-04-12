@@ -26,6 +26,8 @@ double	ray_angle(double lookdir, double raydir)
 
 int		check_bounds(t_world *world, t_ray *ray)
 {
+    ray->gridx = ray->x / GRID;
+    ray->gridy = ray->y / GRID;
 	ray->foundwall = 0;
 	ray->safe = 0;
 	if (ray->y < 0 || ray->y >= world->max_y)

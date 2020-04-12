@@ -60,10 +60,10 @@ void	calc_distance(t_world *world, t_caster *caster, int *distarr)
 		caster->v.dist = ft_abs((world->playerx - caster->v.x) / trig_a);
 	}
 	caster->near = &(caster->h);
-	if (caster->v.dist < caster->h.dist)
-		caster->near = &(caster->v);
-	else if (caster->v.dist == caster->h.dist)
+	if (caster->v.dist == caster->h.dist)
 		caster->near = caster->ftprev;
+	else if (caster->v.dist < caster->h.dist)
+		caster->near = &(caster->v);
 	distarr[caster->column] = caster->near->dist;
 	caster->ftprev = caster->near;
 	caster->near->dist = caster->near->dist * cos(caster->raydir);
@@ -91,8 +91,6 @@ void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a)
 
 void	extend_vertical(t_world *world, t_ray *ray)
 {
-	ray->gridx = ray->x / GRID;
-	ray->gridy = ray->y / GRID;
 	check_bounds(world, ray);
 	ray->tex_offset = (int)ray->y % GRID;
 	if (ray->foundwall && ray->tex_offset == GRID - 1 &&
@@ -103,8 +101,6 @@ void	extend_vertical(t_world *world, t_ray *ray)
 	{
 		ray->x = ray->x + ray->xincr;
 		ray->y = ray->y + ray->yincr;
-		ray->gridx = ray->x / GRID;
-		ray->gridy = ray->y / GRID;
 		check_bounds(world, ray);
 		ray->tex_offset = (int)ray->y % GRID;
 		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
@@ -134,8 +130,6 @@ void	cast_horizontal(t_world *world, t_ray *ray, double a, double tan_a)
 
 void	extend_horizontal(t_world *world, t_ray *ray)
 {
-	ray->gridx = ray->x / GRID;
-	ray->gridy = ray->y / GRID;
 	check_bounds(world, ray);
 	ray->tex_offset = (int)ray->x % GRID;
 	if (ray->foundwall && ray->tex_offset == GRID - 1 &&
@@ -146,8 +140,6 @@ void	extend_horizontal(t_world *world, t_ray *ray)
 	{
 		ray->x = ray->x + ray->xincr;
 		ray->y = ray->y + ray->yincr;
-		ray->gridx = ray->x / GRID;
-		ray->gridy = ray->y / GRID;
 		check_bounds(world, ray);
 		ray->tex_offset = (int)ray->x % GRID;
 		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
