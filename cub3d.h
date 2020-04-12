@@ -145,13 +145,14 @@ int		parse_rgb_partial(int *color, char **str, int notlast);
 int		parse_map(t_vars *vars, int fd);
 int		validate_map_line(char *line);
 int		array_append(char ***map, char *line, int currentlength);
-int		validate_map_edges(char **map, t_vars *vars);
+int		validate_map_edges(int x, int y, char **map, t_vars *vars);
 
 int		ft_iswhitespace(int c);
 int     ft_skip_comma(char **str);
 int     ft_skip_passed_func(char **str, t_isfunc is);
 int		count_non_whitespace_char(char *line);
 int		is_valid_cub_char(char c);
+int     ismap(int y, int x, t_vars *vars);
 int		free_line_and_close(int fd, char *line);
 int		free_everything(t_vars *vars, int fd, char *line);
 

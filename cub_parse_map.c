@@ -17,6 +17,19 @@
 #include <mlx.h>
 #include "cub3d.h"
 
+void	printf_map(char **map, int map_height)
+{
+	int     y;
+
+    y = 0;
+    while (y < map_height)
+    {
+        printf("%s\n", map[y]);
+        y++;
+    }
+    printf("\n");
+}
+
 int		array_append(char ***map, char *line, int currentlength)
 {
 	char	**res;
@@ -53,13 +66,79 @@ int		map_line_sanitize(char *line)
 	return (0);
 }
 
+int     ismap(int y, int x, t_vars *vars)
+{
+	if (y < 0 || y >= vars->world.map_height)
+		return (0);
+	vars->world.map_width = ft_strlen(vars->world.map[y]);
+	if (x < 0 || x >= vars->world.map_width)
+		return (0);
+	return (1);
+
+}
+
+int     validate_map_edges(int y, int x, char **map, t_vars *vars)
+{
+	int		invalid;
+
+    printf_map(map, vars->world.map_height);
+	invalid = 0;
+	if (map[y][x] == '0' || map[y][x] == ' ')
+		map[y][x] = 'O';
+    if (ismap(y - 1, x, vars))
+	{
+        if ((map[y - 1][x] == '0' || map[y - 1][x] == ' ')
+			&& validate_map_edges(y - 1, x, map, vars))
+			invalid = 1;
+	}
+	else
+		invalid = 1;
+    if (ismap(y + 1, x, vars))
+	{
+        if ((map[y + 1][x] == '0' || map[y + 1][x] == ' ')
+			&& validate_map_edges(y + 1, x, map, vars))
+			invalid = 1;
+	}
+	else
+		invalid = 1;
+    if (ismap(y, x - 1, vars))
+	{
+        if ((map[y][x - 1] == '0' || map[y][x - 1] == ' ')
+			&& validate_map_edges(y, x - 1, map, vars))
+			invalid = 1;
+	}
+	else
+		invalid = 1;
+    if (ismap(y, x + 1, vars))
+	{
+        if ((map[y][x + 1] == '0' || map[y][x + 1] == ' ')
+			&& validate_map_edges(y, x + 1, map, vars))
+			invalid = 1;
+	}
+	else
+		invalid = 1;
+	if (ismap(y + 1, x, vars) && map[y + 1][x] == '1' &&
+		ismap(y, x + 1, vars) && map[y][x + 1] == '1')
+			map[y + 1][x + 1] = '1';
+	if (ismap(y - 1, x, vars) && map[y - 1][x] == '1' &&
+		ismap(y, x + 1, vars) && map[y][x + 1] == '1')
+			map[y - 1][x + 1] = '1';
+	if (ismap(y - 1, x, vars) && map[y - 1][x] == '1' &&
+		ismap(y, x - 1, vars) && map[y][x - 1] == '1')
+			map[y - 1][x - 1] = '1';
+	if (ismap(y + 1, x, vars) && map[y + 1][x] == '1' &&
+		ismap(y, x - 1, vars) && map[y][x - 1] == '1')
+			map[y + 1][x - 1] = '1';
+	return (invalid);
+}
+
 int		validate_map(char **map, t_vars *vars)
 {
-	int		spritecount;
+	int		playerfound;
 	int		i;
 	int		i2;
 
-	//pathfind around the map to check for unbroken edge wall
+    playerfound = 0;
 	i = 0;
 	while (i < vars->world.map_height)
 	{
@@ -79,7 +158,10 @@ int		validate_map(char **map, t_vars *vars)
 			{
 				vars->world.playerx = GRID * i2 + (GRID / 2);
 				vars->world.playery = GRID * i + (GRID / 2);
-                //Flood map to validate unbroken edges here
+                if (playerfound || validate_map_edges(i, i2, map, vars))
+                    return (1);
+                printf_map(map, vars->world.map_height);
+                playerfound = 1;
 			}
 			i2++;
 		}
