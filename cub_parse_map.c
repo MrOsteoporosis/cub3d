@@ -87,32 +87,32 @@ int     validate_map_edges(int y, int x, char **map, t_vars *vars)
 		map[y][x] = 'O';
     if (ismap(y - 1, x, vars))
 	{
-        if ((map[y - 1][x] == '0' || map[y - 1][x] == ' ')
-			&& validate_map_edges(y - 1, x, map, vars))
+        if ((map[y - 1][x] == '0' || map[y - 1][x] == ' ' || map[y - 1][x]
+                == '2') && validate_map_edges(y - 1, x, map, vars))
 			invalid = 1;
 	}
 	else
 		invalid = 1;
     if (ismap(y + 1, x, vars))
 	{
-        if ((map[y + 1][x] == '0' || map[y + 1][x] == ' ')
-			&& validate_map_edges(y + 1, x, map, vars))
+        if ((map[y + 1][x] == '0' || map[y + 1][x] == ' ' || map[y + 1][x]
+                == '2') && validate_map_edges(y + 1, x, map, vars))
 			invalid = 1;
 	}
 	else
 		invalid = 1;
     if (ismap(y, x - 1, vars))
 	{
-        if ((map[y][x - 1] == '0' || map[y][x - 1] == ' ')
-			&& validate_map_edges(y, x - 1, map, vars))
+        if ((map[y][x - 1] == '0' || map[y][x - 1] == ' ' || map[y][x - 1]
+                == '2') && validate_map_edges(y, x - 1, map, vars))
 			invalid = 1;
 	}
 	else
 		invalid = 1;
     if (ismap(y, x + 1, vars))
 	{
-        if ((map[y][x + 1] == '0' || map[y][x + 1] == ' ')
-			&& validate_map_edges(y, x + 1, map, vars))
+        if ((map[y][x + 1] == '0' || map[y][x + 1] == ' ' || map[y][x + 1]
+                == '2') && validate_map_edges(y, x + 1, map, vars))
 			invalid = 1;
 	}
 	else
@@ -191,6 +191,7 @@ int		parse_map(t_vars *vars, int fd)
 		vars->world.map_height++;
 	}
 	free(line);
+	vars->world.max_y = vars->world.map_height * GRID;
 	if (validate_map(vars->world.map, vars))
 		return (free_everything(vars, fd, NULL));
 	//2d array of t_sprite pointers with maps dimensions
@@ -202,6 +203,5 @@ int		parse_map(t_vars *vars, int fd)
 	//	int queued;
 	//	t_sprite *next
 	//	t_sprite *prev
-	vars->world.max_y = vars->world.map_height * GRID;
 	return (0);
 }

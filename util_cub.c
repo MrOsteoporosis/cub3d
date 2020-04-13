@@ -29,19 +29,6 @@ int		is_valid_cub_char(char c)
 	return (0);
 }
 
-int		count_non_whitespace_char(char *line)
-{
-	int		count;
-
-	while (*line)
-	{
-		if (*line != ' ')
-			count++;
-		line++;
-	}
-	return (count);
-}
-
 int		ft_iswhitespace(int c)
 {
 	if (c == 32 || (c >= 9 && c <= 13))
