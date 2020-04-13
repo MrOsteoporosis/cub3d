@@ -176,15 +176,15 @@ void	cast_ray(t_vars *vars)
 		calc_distance(&(vars->world), &caster, vars->distarr);
 		draw_texture_column(&(vars->img), caster.near, caster.column,
 				caster.near->tex);
-		t_sprite *link;
-		link = vars->world.spritelst;
-		if (link)
-			printf("\n");
-		while (link)
-		{
-			link->queued = 0;
-			link = link->lstnext;
-		}
+		/*t_sprite *link;*/
+		/*link = vars->world.spritelst;*/
+		/*if (link)*/
+			/*printf("\n");*/
+		/*while (link)*/
+		/*{*/
+			/*link->queued = 0;*/
+			/*link = link->lstnext;*/
+		/*}*/
 		//sort spritelst
 		//calc
 		//render

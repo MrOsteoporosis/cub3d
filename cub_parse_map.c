@@ -50,19 +50,21 @@ int		array_append(char ***map, char *line, int currentlength)
 	return (0);
 }
 
-int		map_line_sanitize(char *line)
+int		map_line_sanitize(char **line)
 {
 	char	*res;
 	int		i;
-	int		valid;
 
 	i = 0;
-	while (line[i])
+	while ((*line)[i])
 	{
-		if (!is_valid_cub_char(*line))
+		if (!is_valid_cub_char((*line)[i]))
 			return (1);
 		i++;
 	}
+    res = ft_strjoin(*line, " ");
+    free(*line);
+    *line = res;
 	return (0);
 }
 
@@ -187,16 +189,18 @@ int		create_sprite_map(t_vars *vars)
 		x = 0;
 		while (vars->world.map[y][x])
 		{
-			printf("%c ", vars->world.map[y][x]);
+			printf("%c", vars->world.map[y][x]);
 			if (vars->world.map[y][x] == '2')
 			{
-				printf("ye");
+				printf("S");
 				vars->world.spritemap[y][x] = (t_sprite *)ft_calloc(sizeof(t_sprite), 1);
 				if (!vars->world.spritemap[y][x])
 					return (1);
 				vars->world.spritemap[y][x]->x = x * GRID;
 				vars->world.spritemap[y][x]->y = y * GRID;
 			}
+            else
+                printf(" ");
 			x++;
 		}
 		printf("\n");
@@ -219,7 +223,7 @@ int		parse_map(t_vars *vars, int fd)
 			break ;
 		if (ret == -1)
 			free_everything(vars, fd, line);
-		if (map_line_sanitize(line))
+		if (map_line_sanitize(&line))
 			return (free_everything(vars, fd, line));
 		if (array_append(&(vars->world.map), line, vars->world.map_height))
 			return (free_everything(vars, fd, line));
