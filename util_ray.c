@@ -38,8 +38,28 @@ int		check_bounds(t_world *world, t_ray *ray)
 		return (0);
 	if (world->map[ray->gridy][ray->gridx] == '1' )
 		ray->foundwall = 1;
-	//if map[gridy][gridx] == '2' and !spritemap[gridy][gridx].queued	
-	//	add link to spritelst
+	if (!ray->foundwall && world->map[ray->gridy][ray->gridx] == '2'
+			&& !(world->spritemap[ray->gridy][ray->gridx]->queued))
+	{
+		if (!world->spritelst)
+		{
+			printf("1st %d %d ", ray->gridy, ray->gridx);
+			world->spritelst = world->spritemap[ray->gridy][ray->gridx];
+			world->spritelstlast = world->spritelst;
+			world->spritelst->lstprev = (void *)0;
+			world->spritelst->lstnext = (void *)0;
+			world->spritelst->queued = 1;
+		}
+		else
+		{
+			printf("anotha %d %d ", ray->gridy, ray->gridx);
+			world->spritemap[ray->gridy][ray->gridx]->lstprev = world->spritelstlast;
+			world->spritemap[ray->gridy][ray->gridx]->lstnext = (void *)0;
+			world->spritelstlast->lstnext = world->spritemap[ray->gridy][ray->gridx];
+			world->spritelstlast = world->spritemap[ray->gridy][ray->gridx];
+			world->spritelstlast->queued = 1;
+		}
+	}
 	ray->safe = 1;
 	return (1);
 }

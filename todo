@@ -1,3 +1,4 @@
 test map validation
+    fix bug where repairing a corner with a 1 removes the nul terminator
 sprites
 bmp save

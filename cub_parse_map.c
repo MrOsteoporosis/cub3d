@@ -119,16 +119,16 @@ int     validate_map_edges(int y, int x, char **map, t_vars *vars)
 		invalid = 1;
 	if (ismap(y + 1, x, vars) && map[y + 1][x] == '1' &&
 		ismap(y, x + 1, vars) && map[y][x + 1] == '1')
-			map[y + 1][x + 1] = '1';
+			map[y + 1][x + 1] = '1';//UNSAFE
 	if (ismap(y - 1, x, vars) && map[y - 1][x] == '1' &&
 		ismap(y, x + 1, vars) && map[y][x + 1] == '1')
-			map[y - 1][x + 1] = '1';
+			map[y - 1][x + 1] = '1';//UNSAFE
 	if (ismap(y - 1, x, vars) && map[y - 1][x] == '1' &&
 		ismap(y, x - 1, vars) && map[y][x - 1] == '1')
-			map[y - 1][x - 1] = '1';
+			map[y - 1][x - 1] = '1';//UNSAFE
 	if (ismap(y + 1, x, vars) && map[y + 1][x] == '1' &&
 		ismap(y, x - 1, vars) && map[y][x - 1] == '1')
-			map[y + 1][x - 1] = '1';
+			map[y + 1][x - 1] = '1';//UNSAFE
 	return (invalid);
 }
 
@@ -170,6 +170,41 @@ int		validate_map(char **map, t_vars *vars)
 	return (0);
 }
 
+int		create_sprite_map(t_vars *vars)
+{
+	int		y;
+	int		x;
+
+	vars->world.spritemap = (t_sprite ***)ft_calloc(sizeof(t_sprite **), vars->world.map_height);
+	if (!vars->world.spritemap)
+		return (1);
+	y = 0;
+	while (y < vars->world.map_height)
+	{
+		vars->world.spritemap[y] = (t_sprite **)ft_calloc(sizeof(t_sprite *), ft_strlen(vars->world.map[y]));
+		if (!vars->world.spritemap[y])
+			return (1);
+		x = 0;
+		while (vars->world.map[y][x])
+		{
+			printf("%c ", vars->world.map[y][x]);
+			if (vars->world.map[y][x] == '2')
+			{
+				printf("ye");
+				vars->world.spritemap[y][x] = (t_sprite *)ft_calloc(sizeof(t_sprite), 1);
+				if (!vars->world.spritemap[y][x])
+					return (1);
+				vars->world.spritemap[y][x]->x = x * GRID;
+				vars->world.spritemap[y][x]->y = y * GRID;
+			}
+			x++;
+		}
+		printf("\n");
+		y++;
+	}
+	return (0);
+}
+
 int		parse_map(t_vars *vars, int fd)
 {
 	int		ret;
@@ -194,14 +229,7 @@ int		parse_map(t_vars *vars, int fd)
 	vars->world.max_y = vars->world.map_height * GRID;
 	if (validate_map(vars->world.map, vars))
 		return (free_everything(vars, fd, NULL));
-	//2d array of t_sprite pointers with maps dimensions
-	//loop over map
-	//malloc for a link at every '2' and assign pointer
-	//lst
-	//	int	gridx;
-	//	int	gridy;
-	//	int queued;
-	//	t_sprite *next
-	//	t_sprite *prev
+	if (create_sprite_map(vars))
+		return (1);//MEM MANAGE
 	return (0);
 }

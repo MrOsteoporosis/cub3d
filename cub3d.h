@@ -53,10 +53,22 @@ typedef struct	s_data {
 	int			halfresy;
 }				t_data;
 
+typedef struct	    s_sprite {
+	int				gridx;
+	int				gridy;
+	int				x;
+	int				y;
+	int				dist;
+	int				queued;
+	struct s_sprite	*lstnext;
+	struct s_sprite	*lstprev;
+}				    t_sprite;
+
 typedef struct	s_world {
 	char		**map;
-	//t_sprite	**spritemap;
-	//t_sprite	*spritelst;
+	t_sprite	***spritemap;
+	t_sprite	*spritelst;
+	t_sprite	*spritelstlast;
     int         colorfloor;
     int         colorceiling;
 	int			map_width;
@@ -104,8 +116,8 @@ typedef struct	s_ray {
 	double		yincr;
 	int			gridx;
 	int			gridy;
-	int			nxtwlx;
-	int			nxtwly;
+	//int			nxtwlx;
+	//int			nxtwly;
 	short		safe;
 	short		foundwall;
 	double	   	dist;
@@ -113,7 +125,7 @@ typedef struct	s_ray {
 	int		 	real_height;
 	t_data	   	*tex;
 	int		 	tex_offset;
-	int			clip_offset;
+	//int			clip_offset;
 }				t_ray;
 
 typedef struct	s_caster {
