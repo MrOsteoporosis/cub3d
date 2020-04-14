@@ -86,6 +86,8 @@ void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a)
 		ray->yincr *= -1;
 	}
 	ray->y = world->playery + ((world->playerx - ray->x) * tan_a);
+    ray->yorigin = ray->y;
+    ray->xorigin = ray->x;
 	extend_vertical(world, ray);
 }
 
@@ -125,6 +127,8 @@ void	cast_horizontal(t_world *world, t_ray *ray, double a, double tan_a)
 		ray->xincr *= -1;
 	}
 	ray->x = world->playerx + ((world->playery - ray->y) / tan_a);
+    ray->yorigin = ray->y;
+    ray->xorigin = ray->x;
 	extend_horizontal(world, ray);
 }
 
@@ -149,7 +153,19 @@ void	extend_horizontal(t_world *world, t_ray *ray)
 	}
 }
 
+void    clean_list(t_sprite *spritelst)
+{
+    t_sprite *link;
 
+    link = spritelst;
+    if (link)
+        printf("\n");
+    while (link)
+    {
+        link->queued = 0;
+        link = link->lstnext;
+    }
+}
 
 void	cast_ray(t_vars *vars)
 {
@@ -176,15 +192,9 @@ void	cast_ray(t_vars *vars)
 		calc_distance(&(vars->world), &caster, vars->distarr);
 		draw_texture_column(&(vars->img), caster.near, caster.column,
 				caster.near->tex);
-		/*t_sprite *link;*/
-		/*link = vars->world.spritelst;*/
-		/*if (link)*/
-			/*printf("\n");*/
-		/*while (link)*/
-		/*{*/
-			/*link->queued = 0;*/
-			/*link = link->lstnext;*/
-		/*}*/
+        detect_sprites(&(caster.v), caster.near, &(vars->world), caster.column);
+        detect_sprites(&(caster.h), caster.near, &(vars->world), caster.column);
+        clean_list(vars->world.spritelst);
 		//sort spritelst
 		//calc
 		//render

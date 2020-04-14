@@ -26,7 +26,7 @@ int		render(t_vars *vars)
 	if (vars->frames == 0)
 		start = clock();
 	vars->frames++;
-	/*mlx_sync(1, vars->img.img);*/
+    /*mlx_sync(1, vars->img.img);*/
 	clear_frame_color_sky_floor(&(vars->img),
 			vars->world.colorceiling, vars->world.colorfloor);
 	do_movement(&(vars->world), &(vars->move));
@@ -39,7 +39,7 @@ int		render(t_vars *vars)
 		vars->rate = ft_itoa((1 / ((double)(clock() - start) / (double)(CLOCKS_PER_SEC))) * 3);
 	}
 	mlx_string_put(vars->mlx, vars->win, 10, 20, 0x00FFFFFF, vars->rate);
-	/*mlx_sync(2, vars->win);*/
+    /*mlx_sync(2, vars->win);*/
 	return (0);
 }
 

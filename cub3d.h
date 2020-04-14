@@ -110,6 +110,8 @@ typedef struct	s_vars {
 }				t_vars;
 
 typedef struct	s_ray {
+    double      xorigin;
+    double      yorigin;
 	double		x;
 	double		y;
 	double		xincr;
@@ -179,6 +181,7 @@ void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a);
 void	extend_vertical(t_world *world, t_ray *ray);
 void	calc_distance(t_world *world, t_caster *caster, int *distarr);
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_data *tex);
+void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, int col);
 
 int		create_trgb(int t, int r, int g, int b);
 double	ray_angle(double lookdir, double raydir);
