@@ -51,23 +51,21 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, int col)
     int     gridx;
     int     gridy;
 
-    x = ray->x;
-    y = ray->y;
-    //Need to rewind whichever one goes too far first, to the correct dist then look for sprites by working backwardd
-    printf("col%d xa%7.3f ya%7.3f ", col, x, y);
-    while (ft_abs(world->playerx - x) > ft_abs(world->playerx - near->x)
-           && ft_abs(world->playery - y) > ft_abs(world->playery - near->y))
+    x = ray->xorigin;
+    y = ray->yorigin;
+    while (ft_abs(world->playerx - x) < ft_abs(world->playerx - near->x)
+           && ft_abs(world->playery - y) < ft_abs(world->playery - near->y))
     {
-        x = x - ray->xincr;
-        y = y - ray->yincr;
-    }
-    printf("xf%7.3f yf%7.3f xi%7.3f yi%7.3f xn%7.3f yn%7.3f\n", x, y, ray->xincr, ray->yincr, near->x, near->y);
-    while (x != ray->xorigin && y != ray->yorigin)
-    {
-        x = x - ray->xincr;
-        y = y - ray->yincr;
+        x = x + ray->xincr;
+        y = y + ray->yincr;
         gridx = x / GRID;
         gridy = y / GRID;
+        if (y < 0 || y >= world->max_y)
+            break ;
+        world->map_width = ft_strlen(world->map[gridy]);
+        world->max_x = world->map_width << GRIDPOW;
+        if (x < 0 || x >= world->max_x)
+            break ;
         if (world->map[gridy][gridx] == '2' &&
             !(world->spritemap[gridy][gridx]->queued))
         {
