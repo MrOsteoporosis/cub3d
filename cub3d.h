@@ -59,6 +59,8 @@ typedef struct	    s_sprite {
 	int				x;
 	int				y;
 	int				dist;
+    int             center_column;
+    int             height;
 	int				queued;
 	struct s_sprite	*lstnext;
 	struct s_sprite	*lstprev;
@@ -118,8 +120,6 @@ typedef struct	s_ray {
 	double		yincr;
 	int			gridx;
 	int			gridy;
-	//int			nxtwlx;
-	//int			nxtwly;
 	short		safe;
 	short		foundwall;
 	double	   	dist;
@@ -127,7 +127,6 @@ typedef struct	s_ray {
 	int		 	real_height;
 	t_data	   	*tex;
 	int		 	tex_offset;
-	//int			clip_offset;
 }				t_ray;
 
 typedef struct	s_caster {
@@ -135,6 +134,7 @@ typedef struct	s_caster {
 	int			column;
 	double		a;
 	int			taniszero;
+    double      trig_a;
 	t_ray		v;
 	t_ray		h;
 	t_ray		*near;

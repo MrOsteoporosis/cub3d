@@ -85,35 +85,37 @@ int     validate_map_edges(int y, int x, char **map, t_vars *vars)
 
     printf_map(map, vars->world.map_height);
 	invalid = 0;
-	if (map[y][x] == '0' || map[y][x] == ' ')
+	if (map[y][x] == '0')
 		map[y][x] = 'O';
-    if (ismap(y - 1, x, vars))
+    if (map[y][x] == '2')
+        map[y][x] = 'S';
+    if (ismap(y - 1, x, vars) && map[y - 1][x] != ' ')
 	{
-        if ((map[y - 1][x] == '0' || map[y - 1][x] == ' ' || map[y - 1][x]
+        if ((map[y - 1][x] == '0' || map[y - 1][x]
                 == '2') && validate_map_edges(y - 1, x, map, vars))
 			invalid = 1;
 	}
 	else
 		invalid = 1;
-    if (ismap(y + 1, x, vars))
+    if (ismap(y + 1, x, vars) && map[y + 1][x] != ' ')
 	{
-        if ((map[y + 1][x] == '0' || map[y + 1][x] == ' ' || map[y + 1][x]
+        if ((map[y + 1][x] == '0' || map[y + 1][x]
                 == '2') && validate_map_edges(y + 1, x, map, vars))
 			invalid = 1;
 	}
 	else
 		invalid = 1;
-    if (ismap(y, x - 1, vars))
+    if (ismap(y, x - 1, vars) && map[y][x - 1] != ' ')
 	{
-        if ((map[y][x - 1] == '0' || map[y][x - 1] == ' ' || map[y][x - 1]
+        if ((map[y][x - 1] == '0' || map[y][x - 1]
                 == '2') && validate_map_edges(y, x - 1, map, vars))
 			invalid = 1;
 	}
 	else
 		invalid = 1;
-    if (ismap(y, x + 1, vars))
+    if (ismap(y, x + 1, vars) && map[y][x + 1] != ' ')
 	{
-        if ((map[y][x + 1] == '0' || map[y][x + 1] == ' ' || map[y][x + 1]
+        if ((map[y][x + 1] == '0' || map[y][x + 1]
                 == '2') && validate_map_edges(y, x + 1, map, vars))
 			invalid = 1;
 	}
@@ -121,16 +123,16 @@ int     validate_map_edges(int y, int x, char **map, t_vars *vars)
 		invalid = 1;
 	if (ismap(y + 1, x, vars) && map[y + 1][x] == '1' &&
 		ismap(y, x + 1, vars) && map[y][x + 1] == '1')
-			map[y + 1][x + 1] = '1';//UNSAFE
+			map[y + 1][x + 1] = '1';
 	if (ismap(y - 1, x, vars) && map[y - 1][x] == '1' &&
 		ismap(y, x + 1, vars) && map[y][x + 1] == '1')
-			map[y - 1][x + 1] = '1';//UNSAFE
+			map[y - 1][x + 1] = '1';
 	if (ismap(y - 1, x, vars) && map[y - 1][x] == '1' &&
 		ismap(y, x - 1, vars) && map[y][x - 1] == '1')
-			map[y - 1][x - 1] = '1';//UNSAFE
+			map[y - 1][x - 1] = '1';
 	if (ismap(y + 1, x, vars) && map[y + 1][x] == '1' &&
 		ismap(y, x - 1, vars) && map[y][x - 1] == '1')
-			map[y + 1][x - 1] = '1';//UNSAFE
+			map[y + 1][x - 1] = '1';
 	return (invalid);
 }
 
@@ -190,9 +192,9 @@ int		create_sprite_map(t_vars *vars)
 		while (vars->world.map[y][x])
 		{
 			printf("%c", vars->world.map[y][x]);
-			if (vars->world.map[y][x] == '2')
+			if (vars->world.map[y][x] == 'S')
 			{
-				printf("S");
+				printf("2");
 				vars->world.spritemap[y][x] = (t_sprite *)ft_calloc(sizeof(t_sprite), 1);
 				if (!vars->world.spritemap[y][x])
 					return (1);

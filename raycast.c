@@ -45,19 +45,18 @@ void	calc_distance(t_world *world, t_caster *caster, int *distarr)
 	double	temp;
 	double	dist;
 	int		height;
-	double	trig_a;
 
 	if (!caster->taniszero)
 	{
-		trig_a = sin(caster->a);
-		caster->h.dist = ft_abs((world->playery - caster->h.y) / trig_a);
-		caster->v.dist = ft_abs((world->playery - caster->v.y) / trig_a);
+		caster->trig_a = sin(caster->a);
+		caster->h.dist = ft_abs((world->playery - caster->h.y) / caster->trig_a);
+		caster->v.dist = ft_abs((world->playery - caster->v.y) / caster->trig_a);
 	}
 	else
 	{
-		trig_a = cos(caster->a);
-		caster->h.dist = ft_abs((world->playerx - caster->h.x) / trig_a);
-		caster->v.dist = ft_abs((world->playerx - caster->v.x) / trig_a);
+		caster->trig_a = cos(caster->a);
+		caster->h.dist = ft_abs((world->playerx - caster->h.x) / caster->trig_a);
+		caster->v.dist = ft_abs((world->playerx - caster->v.x) / caster->trig_a);
 	}
 	caster->near = &(caster->h);
 	if (caster->v.dist == caster->h.dist)
@@ -153,7 +152,7 @@ void	extend_horizontal(t_world *world, t_ray *ray)
 	}
 }
 
-void    clean_list(t_sprite *spritelst)
+void    clean_list(t_sprite *spritelst, t_caster *caster, t_world *world, int *distarr)
 {
     t_sprite *link;
 
@@ -165,6 +164,15 @@ void    clean_list(t_sprite *spritelst)
         link->queued = 0;
         link = link->lstnext;
     }
+
+    if (!caster->taniszero)
+        link->dist = (ft_abs((world->playery - link->y) / caster->trig_a)) * cos(caster->raydir);
+    else
+        link->dist = (ft_abs((world->playerx - link->x) / caster->trig_a)) * cos(caster->raydir);
+    link->height = (GRID / link->dist) * world->proj_plane_dist;
+    //Use center column, draw one left, draw on right, continue until height (width) reached 
+    //Remember to reset height from real height
+    //if > dstarr dont draw
 }
 
 void	cast_ray(t_vars *vars)
@@ -194,11 +202,8 @@ void	cast_ray(t_vars *vars)
 				caster.near->tex);
         detect_sprites(&(caster.v), caster.near, &(vars->world), caster.column);
         detect_sprites(&(caster.h), caster.near, &(vars->world), caster.column);
-        clean_list(vars->world.spritelst);
-		//sort spritelst
-		//calc
-		//render
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}
+    clean_list(vars->world.spritelst, &caster, &(vars->world), vars->distarr);
 }

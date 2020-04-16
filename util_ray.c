@@ -66,7 +66,7 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, int col)
         world->max_x = world->map_width << GRIDPOW;
         if (x < 0 || x >= world->max_x)
             break ;
-        if (world->map[gridy][gridx] == '2' &&
+        if (world->map[gridy][gridx] == 'S' &&
             !(world->spritemap[gridy][gridx]->queued))
         {
             if (!world->spritelst)
@@ -76,6 +76,7 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, int col)
                 world->spritelstlast = world->spritelst;
                 world->spritelst->lstprev = (void *)0;
                 world->spritelst->lstnext = (void *)0;
+                world->spritelst->center_column = col;
                 world->spritelst->queued = 1;
             }
             else
@@ -85,6 +86,7 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, int col)
                 world->spritemap[gridy][gridx]->lstnext = (void *)0;
                 world->spritelstlast->lstnext = world->spritemap[gridy][gridx];
                 world->spritelstlast = world->spritemap[gridy][gridx];
+                world->spritelstlast->center_column = col;
                 world->spritelstlast->queued = 1;
             }
         }
