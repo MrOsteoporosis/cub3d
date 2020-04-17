@@ -44,7 +44,7 @@ int		check_bounds(t_world *world, t_ray *ray)
 	return (1);
 }
 
-void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, int col)
+void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster)
 {
     double  x;
     double  y;
@@ -76,7 +76,9 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, int col)
                 world->spritelstlast = world->spritelst;
                 world->spritelst->lstprev = (void *)0;
                 world->spritelst->lstnext = (void *)0;
-                world->spritelst->center_column = col;
+                world->spritelst->center_column = caster->column;
+                world->spritelst->trig_a = caster->trig_a;
+                world->spritelst->trig_r = caster->trig_r;
                 world->spritelst->queued = 1;
             }
             else
@@ -86,7 +88,9 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, int col)
                 world->spritemap[gridy][gridx]->lstnext = (void *)0;
                 world->spritelstlast->lstnext = world->spritemap[gridy][gridx];
                 world->spritelstlast = world->spritemap[gridy][gridx];
-                world->spritelstlast->center_column = col;
+                world->spritelstlast->center_column = caster->column;
+                world->spritelstlast->trig_a = caster->trig_a;
+                world->spritelstlast->trig_r = caster->trig_r;
                 world->spritelstlast->queued = 1;
             }
         }

@@ -61,7 +61,10 @@ typedef struct	    s_sprite {
 	int				dist;
     int             center_column;
     int             height;
+    int             half_height;
 	int				queued;
+    double          trig_a;
+    double          trig_r;
 	struct s_sprite	*lstnext;
 	struct s_sprite	*lstprev;
 }				    t_sprite;
@@ -127,6 +130,7 @@ typedef struct	s_ray {
 	int		 	real_height;
 	t_data	   	*tex;
 	int		 	tex_offset;
+    int         tex_column;
 }				t_ray;
 
 typedef struct	s_caster {
@@ -135,6 +139,7 @@ typedef struct	s_caster {
 	double		a;
 	int			taniszero;
     double      trig_a;
+    double      trig_r;
 	t_ray		v;
 	t_ray		h;
 	t_ray		*near;
@@ -181,7 +186,7 @@ void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a);
 void	extend_vertical(t_world *world, t_ray *ray);
 void	calc_distance(t_world *world, t_caster *caster, int *distarr);
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_data *tex);
-void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, int col);
+void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster);
 
 int		create_trgb(int t, int r, int g, int b);
 double	ray_angle(double lookdir, double raydir);

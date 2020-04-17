@@ -24,7 +24,6 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 
 	if (ray->height > frame->resy)
 		ray->height = frame->resy;
-	tex_column = (tex->resx * ray->tex_offset) >> GRIDPOW;
 	y = frame->halfresy - (ray->height >> 1);
 	endy = frame->halfresy + (ray->height >> 1);
 	i = -1 * (frame->halfresy - (ray->real_height >> 1)) + y;
@@ -34,7 +33,7 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 				frame_column * (frame->bits_per_pixel >> 3));
 		*(unsigned int*)dst = *(unsigned int*)(tex->addr +
 				(((tex->resy * i) / ray->real_height) * tex->line_length
-				+ tex_column * (tex->bits_per_pixel >> 3)));
+				+ ray->tex_column * (tex->bits_per_pixel >> 3)));
 		i++;
 		y++;
 	}
@@ -65,7 +64,9 @@ void	calc_distance(t_world *world, t_caster *caster, int *distarr)
 		caster->near = &(caster->v);
 	distarr[caster->column] = caster->near->dist;
 	caster->ftprev = caster->near;
-	caster->near->dist = caster->near->dist * cos(caster->raydir);
+    caster->trig_r = cos(caster->raydir);
+	caster->near->dist = caster->near->dist * caster->trig_r;
+	caster->near->tex_column = (caster->near->tex->resx * caster->near->tex_offset) >> GRIDPOW;
 	caster->near->height = (GRID / caster->near->dist) * world->proj_plane_dist;
 	caster->near->real_height = caster->near->height;
 }
@@ -152,27 +153,45 @@ void	extend_horizontal(t_world *world, t_ray *ray)
 	}
 }
 
-void    clean_list(t_sprite *spritelst, t_caster *caster, t_world *world, int *distarr)
+void    clean_list(t_caster *caster, t_vars *vars)
 {
-    t_sprite *link;
+    t_sprite    *link;
+    int         spritecol;
+    int         col;
 
-    link = spritelst;
+    link = vars->world.spritelst;
     if (link)
-        printf("\n");
+        printf(" yeet\n");
     while (link)
     {
+        if (!caster->taniszero)
+            link->dist = (ft_abs((vars->world.playery - link->y) / link->trig_a)) * link->trig_r;
+        else
+            link->dist = (ft_abs((vars->world.playerx - link->x) / link->trig_a)) * link->trig_r;
+        link->height = (GRID / link->dist) * vars->world.proj_plane_dist;
+        link->half_height = link->height >> 1;
+        //Now sort??
+        spritecol = -1 * (link->height - link->half_height);
+        printf("sc%d hh%d h%d d%d", spritecol, link->half_height, link->height, link->dist);
+        while (spritecol < link->half_height)
+        {
+            col = link->center_column + spritecol;
+            printf("col%d ", col);
+            if ((col > 0 && col < vars->img.resx) && link->dist < vars->distarr[col])
+            {
+                caster->v.height = link->height;
+                caster->v.real_height = link->height;
+                caster->v.tex_column = (vars->s.resx * spritecol) / link->height;
+                draw_texture_column(&(vars->img), &(caster->v), col, &(vars->s));
+            }
+            spritecol++;
+        }
+        //Use center column, draw one left, draw on right, continue until height (width) reached 
+        //Remember to reset height from real height
+        //if > dstarr dont draw
         link->queued = 0;
         link = link->lstnext;
     }
-
-    if (!caster->taniszero)
-        link->dist = (ft_abs((world->playery - link->y) / caster->trig_a)) * cos(caster->raydir);
-    else
-        link->dist = (ft_abs((world->playerx - link->x) / caster->trig_a)) * cos(caster->raydir);
-    link->height = (GRID / link->dist) * world->proj_plane_dist;
-    //Use center column, draw one left, draw on right, continue until height (width) reached 
-    //Remember to reset height from real height
-    //if > dstarr dont draw
 }
 
 void	cast_ray(t_vars *vars)
@@ -182,6 +201,8 @@ void	cast_ray(t_vars *vars)
 
 	caster.raydir = HALF_FOV;
 	caster.column = 0;
+    vars->world.spritelst = (void *)0;
+    vars->world.spritelstlast = (void *)0;
 	while (caster.column < vars->img.resx)
 	{
 		caster.a = ray_angle(vars->world.lookdir, caster.raydir);
@@ -193,17 +214,15 @@ void	cast_ray(t_vars *vars)
 			caster.taniszero = 1;
 		}
 		set_tex(vars, &caster);
-		vars->world.spritelst = (void *)0;
-		vars->world.spritelstlast = (void *)0;
 		cast_horizontal(&(vars->world), &(caster.h), caster.a, tan_a);
 		cast_vertical(&(vars->world), &(caster.v), caster.a, tan_a);
 		calc_distance(&(vars->world), &caster, vars->distarr);
 		draw_texture_column(&(vars->img), caster.near, caster.column,
 				caster.near->tex);
-        detect_sprites(&(caster.v), caster.near, &(vars->world), caster.column);
-        detect_sprites(&(caster.h), caster.near, &(vars->world), caster.column);
+        detect_sprites(&(caster.v), caster.near, &(vars->world), &(caster));
+        detect_sprites(&(caster.h), caster.near, &(vars->world), &(caster));
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}
-    clean_list(vars->world.spritelst, &caster, &(vars->world), vars->distarr);
+    clean_list(&caster, vars);
 }
