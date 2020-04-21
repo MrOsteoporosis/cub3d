@@ -38,7 +38,8 @@ int		check_bounds(t_world *world, t_ray *ray)
 	world->max_x = world->map_width << GRIDPOW;
 	if (ray->x < 0 || ray->x >= world->max_x)
 		return (0);
-	if (world->map[ray->gridy][ray->gridx] == '1' )
+	if (world->map[ray->gridy][ray->gridx] == '1' ||
+            world->map[ray->gridy][ray->gridx] == 'C')
 		ray->foundwall = 1;
 	ray->safe = 1;
 	return (1);

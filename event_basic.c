@@ -36,9 +36,9 @@ int		key_press(int keycode, t_vars *vars)
 		vars->move.backward = 1;
 	else if (keycode == DKEY)
 		vars->move.straferight = 1;
-	else if (keycode == LAKEY)
+	else if (keycode == LAKEY || keycode == QKEY)
 		vars->move.lookleft = 1;
-	else if (keycode == RAKEY)
+	else if (keycode == RAKEY || keycode == EKEY)
 		vars->move.lookright = 1;
 	return (0);
 }
@@ -53,9 +53,9 @@ int		key_release(int keycode, t_vars *vars)
 		vars->move.backward = 0;
 	else if (keycode == DKEY)
 		vars->move.straferight = 0;
-	else if (keycode == LAKEY)
+	else if (keycode == LAKEY || keycode == QKEY)
 		vars->move.lookleft = 0;
-	else if (keycode == RAKEY)
+	else if (keycode == RAKEY || keycode == EKEY)
 		vars->move.lookright = 0;
 	else if (keycode == 53)
 		close_window(vars);

@@ -23,7 +23,8 @@
 # define FRICTION   0.04
 # define MOVESPEED  1
 # define COLELASTICITY	-0.6
-# define LOOKSPEED  0.035
+# define LOOKSPEED  0.040
+# define LOOKACCEL  0.004
 # define GRID   512
 # define GRIDPOW	9
 
@@ -32,6 +33,8 @@
 # define AKEY   97
 # define SKEY   115
 # define DKEY   100
+# define QKEY   113
+# define EKEY  101
 # define LAKEY  65361
 # define RAKEY  65363
 //mac keycodes
@@ -58,7 +61,7 @@ typedef struct	    s_sprite {
 	int				gridy;
 	int				x;
 	int				y;
-	int				dist;
+	double	    	dist;
     int             center_column;
     int             height;
     int             half_height;
@@ -94,6 +97,7 @@ typedef struct  s_movement {
 	short	   straferight;
 	short	   lookleft;
 	short	   lookright;
+    double     lookvel;
 	double	   speedy;
 	double	   speedx;
 }			   t_movement;
@@ -109,7 +113,7 @@ typedef struct	s_vars {
 	t_data	   	we;
 	t_data	   	ea;
 	t_data	   	s;
-	int			*distarr;
+	double	    *distarr;
 	int			frames;
 	char		*rate;
 }				t_vars;
@@ -184,7 +188,7 @@ void	cast_horizontal(t_world *world, t_ray *ray, double a, double tan_a);
 void	extend_horizontal(t_world *world, t_ray *ray);
 void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a);
 void	extend_vertical(t_world *world, t_ray *ray);
-void	calc_distance(t_world *world, t_caster *caster, int *distarr);
+void	calc_distance(t_world *world, t_caster *caster, double *distarr);
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_data *tex);
 void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster);
 

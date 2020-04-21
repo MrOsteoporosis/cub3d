@@ -77,7 +77,7 @@ int		main(int argc, char **argv)
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(vars.img.resx);
 	vars.world.proj_plane_dist = (vars.img.resx / 2) / tan(HALF_FOV);
 	vars.rate = ft_itoa(0);
-	vars.distarr = ft_calloc(sizeof(int), vars.img.resx);
+	vars.distarr = (double* )ft_calloc(sizeof(double), vars.img.resx);
 	mlx_loop_hook(vars.mlx, render, &vars);
 	mlx_loop(vars.mlx);
 	return (0);

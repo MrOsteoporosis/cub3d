@@ -25,10 +25,13 @@ void	adjust_speed(double lookdir, double movedir, t_movement *move)
 
 void	adjust_look(double *lookdir, t_movement *move)
 {
-	if (move->lookleft)
-		*lookdir += LOOKSPEED;
-	else if (move->lookright)
-		*lookdir -= LOOKSPEED;
+	if (move->lookleft && move->lookvel < LOOKSPEED)
+		move->lookvel += LOOKACCEL;
+	else if (move->lookright && move->lookvel > (LOOKSPEED * -1))
+		move->lookvel -= LOOKACCEL;
+    else
+        move->lookvel += move->lookvel * -0.5;
+    *lookdir += move->lookvel;
 	if (*lookdir >= M_PI2)
 		*lookdir = 0;
 	else if (*lookdir <= 0)
@@ -56,7 +59,7 @@ int		check_collision(t_world *world, t_movement *move, int xy)
 	world->max_x = world->map_width << GRIDPOW;
 	if (world->playerx < 0 || world->playerx >= world->max_x)
 		return (1);
-	if (world->map[gridy][gridx] == '1' )
+	if (world->map[gridy][gridx] == '1' || world->map[gridy][gridx] == 'C')
 		return (1);
 	return (0);
 }

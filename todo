@@ -1,3 +1,5 @@
-test map validation
-sprites
+bug: flood fill
+bug: raycaster allows peeking through walls when corners are not completed
+bug: sprites distances
+bug: sprites disapear if their center is off the screen
 bmp save

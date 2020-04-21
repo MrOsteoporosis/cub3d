@@ -20,7 +20,6 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 	int		i;
 	int		y;
 	int		endy;
-	int		tex_column;
 
 	if (ray->height > frame->resy)
 		ray->height = frame->resy;
@@ -39,7 +38,7 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 	}
 }
 
-void	calc_distance(t_world *world, t_caster *caster, int *distarr)
+void	calc_distance(t_world *world, t_caster *caster, double *distarr)
 {
 	double	temp;
 	double	dist;
@@ -96,8 +95,9 @@ void	extend_vertical(t_world *world, t_ray *ray)
 	check_bounds(world, ray);
 	ray->tex_offset = (int)ray->y % GRID;
 	if (ray->foundwall && ray->tex_offset == GRID - 1 &&
-			ray->gridy + 1 < world->map_height &&
-			world->map[ray->gridy + 1][ray->gridx] != '1')
+            world->map[ray->gridy][ray->gridx] != 'C')
+			/*ray->gridy + 1 < world->map_height &&*/
+			/*world->map[ray->gridy + 1][ray->gridx] != '1')*/
 		ray->foundwall = 0;
 	while (!ray->foundwall && ray->safe)
 	{
@@ -106,8 +106,9 @@ void	extend_vertical(t_world *world, t_ray *ray)
 		check_bounds(world, ray);
 		ray->tex_offset = (int)ray->y % GRID;
 		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
-				ray->gridy + 1 < world->map_height &&
-				world->map[ray->gridy + 1][ray->gridx] != '1')
+                world->map[ray->gridy][ray->gridx] != 'C')
+				/*ray->gridy + 1 < world->map_height &&*/
+				/*world->map[ray->gridy + 1][ray->gridx] != '1')*/
 			ray->foundwall = 0;
 	}
 }
@@ -137,8 +138,9 @@ void	extend_horizontal(t_world *world, t_ray *ray)
 	check_bounds(world, ray);
 	ray->tex_offset = (int)ray->x % GRID;
 	if (ray->foundwall && ray->tex_offset == GRID - 1 &&
-			ray->gridx + 1 < world->map_width &&
-			world->map[ray->gridy][ray->gridx + 1] != '1')
+            world->map[ray->gridy][ray->gridx] != 'C')
+			/*ray->gridx + 1 < world->map_width &&*/
+			/*world->map[ray->gridy][ray->gridx + 1] != '1')*/
 		ray->foundwall = 0;
 	while (!ray->foundwall && ray->safe)
 	{
@@ -147,8 +149,9 @@ void	extend_horizontal(t_world *world, t_ray *ray)
 		check_bounds(world, ray);
 		ray->tex_offset = (int)ray->x % GRID;
 		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
-				ray->gridx + 1 < world->map_width &&
-				world->map[ray->gridy][ray->gridx + 1] != '1')
+                world->map[ray->gridy][ray->gridx] != 'C')
+				/*ray->gridx + 1 < world->map_width &&*/
+				/*world->map[ray->gridy][ray->gridx + 1] != '1')*/
 			ray->foundwall = 0;
 	}
 }
@@ -158,6 +161,7 @@ void    clean_list(t_caster *caster, t_vars *vars)
     t_sprite    *link;
     int         spritecol;
     int         col;
+    int         c;
 
     link = vars->world.spritelst;
     if (link)
@@ -171,17 +175,17 @@ void    clean_list(t_caster *caster, t_vars *vars)
         link->height = (GRID / link->dist) * vars->world.proj_plane_dist;
         link->half_height = link->height >> 1;
         //Now sort??
-        spritecol = -1 * (link->height - link->half_height);
-        printf("sc%d hh%d h%d d%d", spritecol, link->half_height, link->height, link->dist);
+        c = (link->height - link->half_height);
+        spritecol = -1 * c;
+        printf("sc%d hh%d h%d d%f z%f tr%7.4f ta%7.4f x%d", spritecol, link->half_height, link->height, link->dist, vars->distarr[link->center_column], link->trig_r, link->trig_a, link->x);
         while (spritecol < link->half_height)
         {
             col = link->center_column + spritecol;
-            printf("col%d ", col);
             if ((col > 0 && col < vars->img.resx) && link->dist < vars->distarr[col])
             {
                 caster->v.height = link->height;
                 caster->v.real_height = link->height;
-                caster->v.tex_column = (vars->s.resx * spritecol) / link->height;
+                caster->v.tex_column = (vars->s.resx * (spritecol + c)) / link->height;
                 draw_texture_column(&(vars->img), &(caster->v), col, &(vars->s));
             }
             spritecol++;

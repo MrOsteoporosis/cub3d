@@ -76,63 +76,76 @@ int     ismap(int y, int x, t_vars *vars)
 	if (x < 0 || x >= vars->world.map_width)
 		return (0);
 	return (1);
+}
 
+int     iscset(char c, char *set)
+{
+    while (*set)
+    {
+        if (c == *set)
+            return (1);
+        *set++;
+    }
+    return (0);
+}
+
+void    identify_corner_walls(int y, int x, char **map, t_vars *vars)
+{
+	if (ismap(y + 1, x, vars) && iscset(map[y + 1][x], "1C")
+        && ismap(y, x + 1, vars) && iscset(map[y][x + 1], "1C"))
+    {
+            map[y + 1][x] = 'C';
+            map[y][x + 1] = 'C';
+    }
+	if (ismap(y - 1, x, vars) && iscset(map[y - 1][x], "1C")
+            && ismap(y, x + 1, vars) && iscset(map[y][x + 1], "1C"))
+    {
+            map[y - 1][x] = 'C';
+            map[y][x + 1] = 'C';
+    }
+	if (ismap(y - 1, x, vars) && iscset(map[y - 1][x], "1C")
+        && ismap(y, x - 1, vars) && iscset(map[y][x - 1], "1C"))
+    {
+            map[y - 1][x] = 'C';
+            map[y][x - 1] = 'C';
+    }
+	if (ismap(y + 1, x, vars) && iscset(map[y + 1][x], "1C")
+        && ismap(y, x - 1, vars) && iscset(map[y][x - 1], "1C"))
+    {
+            map[y + 1][x] = 'C';
+            map[y][x - 1] = 'C';
+    }
 }
 
 int     validate_map_edges(int y, int x, char **map, t_vars *vars)
 {
 	int		invalid;
 
-    printf_map(map, vars->world.map_height);
+    if (!iscset(map[y][x], "02NSWE"))
+        return (0);
 	invalid = 0;
 	if (map[y][x] == '0')
 		map[y][x] = 'O';
     if (map[y][x] == '2')
         map[y][x] = 'S';
     if (ismap(y - 1, x, vars) && map[y - 1][x] != ' ')
-	{
-        if ((map[y - 1][x] == '0' || map[y - 1][x]
-                == '2') && validate_map_edges(y - 1, x, map, vars))
-			invalid = 1;
-	}
-	else
-		invalid = 1;
+        invalid += validate_map_edges(y - 1, x, map, vars);
+    else
+        invalid = 1;
     if (ismap(y + 1, x, vars) && map[y + 1][x] != ' ')
-	{
-        if ((map[y + 1][x] == '0' || map[y + 1][x]
-                == '2') && validate_map_edges(y + 1, x, map, vars))
-			invalid = 1;
-	}
+        invalid += validate_map_edges(y + 1, x, map, vars);
 	else
 		invalid = 1;
     if (ismap(y, x - 1, vars) && map[y][x - 1] != ' ')
-	{
-        if ((map[y][x - 1] == '0' || map[y][x - 1]
-                == '2') && validate_map_edges(y, x - 1, map, vars))
-			invalid = 1;
-	}
+        invalid += validate_map_edges(y, x - 1, map, vars);
 	else
 		invalid = 1;
     if (ismap(y, x + 1, vars) && map[y][x + 1] != ' ')
-	{
-        if ((map[y][x + 1] == '0' || map[y][x + 1]
-                == '2') && validate_map_edges(y, x + 1, map, vars))
-			invalid = 1;
-	}
+        invalid += validate_map_edges(y, x + 1, map, vars);
 	else
 		invalid = 1;
-	if (ismap(y + 1, x, vars) && map[y + 1][x] == '1' &&
-		ismap(y, x + 1, vars) && map[y][x + 1] == '1')
-			map[y + 1][x + 1] = '1';
-	if (ismap(y - 1, x, vars) && map[y - 1][x] == '1' &&
-		ismap(y, x + 1, vars) && map[y][x + 1] == '1')
-			map[y - 1][x + 1] = '1';
-	if (ismap(y - 1, x, vars) && map[y - 1][x] == '1' &&
-		ismap(y, x - 1, vars) && map[y][x - 1] == '1')
-			map[y - 1][x - 1] = '1';
-	if (ismap(y + 1, x, vars) && map[y + 1][x] == '1' &&
-		ismap(y, x - 1, vars) && map[y][x - 1] == '1')
-			map[y + 1][x - 1] = '1';
+    identify_corner_walls(y, x, map, vars);
+    printf_map(map, vars->world.map_height);
 	return (invalid);
 }
 
@@ -164,7 +177,6 @@ int		validate_map(char **map, t_vars *vars)
 				vars->world.playery = GRID * i + (GRID / 2);
                 if (playerfound || validate_map_edges(i, i2, map, vars))
                     return (1);
-                printf_map(map, vars->world.map_height);
                 playerfound = 1;
 			}
 			i2++;
@@ -191,7 +203,7 @@ int		create_sprite_map(t_vars *vars)
 		x = 0;
 		while (vars->world.map[y][x])
 		{
-			printf("%c", vars->world.map[y][x]);
+            printf("%c", vars->world.map[y][x]);
 			if (vars->world.map[y][x] == 'S')
 			{
 				printf("2");
