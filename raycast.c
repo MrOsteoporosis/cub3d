@@ -44,19 +44,21 @@ void	calc_distance(t_world *world, t_caster *caster, double *distarr)
 	double	dist;
 	int		height;
 
-	if (!caster->taniszero)
-	{
+    /*caster->h.y += caster->h.off_mod;*/
+    /*caster->v.x += caster->v.off_mod;*/
+    if (!caster->taniszero)
+    {
 		caster->trig_a = sin(caster->a);
 		caster->h.dist = ft_abs((world->playery - caster->h.y) / caster->trig_a);
-		caster->v.dist = ft_abs((world->playery - caster->v.y) / caster->trig_a);
-	}
-	else
-	{
-		caster->trig_a = cos(caster->a);
-		caster->h.dist = ft_abs((world->playerx - caster->h.x) / caster->trig_a);
-		caster->v.dist = ft_abs((world->playerx - caster->v.x) / caster->trig_a);
-	}
-	caster->near = &(caster->h);
+        caster->v.dist = ft_abs((world->playery - caster->v.y) / caster->trig_a);
+    }
+    else
+    {
+        caster->trig_a = cos(caster->a);
+        caster->h.dist = ft_abs((world->playerx - caster->h.x) / caster->trig_a);
+        caster->v.dist = ft_abs((world->playerx - caster->v.x) / caster->trig_a);
+    }
+    caster->near = &(caster->h);
 	if (caster->v.dist == caster->h.dist)
 		caster->near = caster->ftprev;
 	else if (caster->v.dist < caster->h.dist)
@@ -76,12 +78,14 @@ void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a)
 	ray->yincr = GRID * tan_a;
 	if (a < DEG270 && a > DEG90)
 	{
-		ray->x = (((int)world->playerx >> GRIDPOW) << GRIDPOW) - 1;
+		ray->x = (((int)world->playerx >> GRIDPOW) << GRIDPOW);// - 1;
+        ray->off_mod = -1;
 		ray->xincr *= -1;
 	}
 	else
 	{
 		ray->x = (((int)world->playerx >> GRIDPOW) << GRIDPOW) + GRID;
+        ray->off_mod = 0;
 		ray->yincr *= -1;
 	}
 	ray->y = world->playery + ((world->playerx - ray->x) * tan_a);
@@ -92,24 +96,34 @@ void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a)
 
 void	extend_vertical(t_world *world, t_ray *ray)
 {
+    ray->x += ray->off_mod;
 	check_bounds(world, ray);
+    ray->x -= ray->off_mod;
 	ray->tex_offset = (int)ray->y % GRID;
-	if (ray->foundwall && ray->tex_offset == GRID - 1 &&
-            world->map[ray->gridy][ray->gridx] != 'C')
-			/*ray->gridy + 1 < world->map_height &&*/
-			/*world->map[ray->gridy + 1][ray->gridx] != '1')*/
-		ray->foundwall = 0;
+    /*if (ray->foundwall && ray->tex_offset == GRID - 1 &&*/
+            /*ismap(ray->gridy + 1, ray->gridx, world) &&*/
+            /*!iscset(world->map[ray->gridy + 1][ray->gridx], "C1"))*/
+        /*ray->foundwall = 0;*/
+    /*if (!ray->foundwall && ray->tex_offset == 1 &&*/
+            /*ismap(ray->gridy - 1, ray->gridx, world) &&*/
+            /*world->map[ray->gridy - 1][ray->gridx] == 'C')*/
+        /*ray->foundwall = 1;*/
 	while (!ray->foundwall && ray->safe)
 	{
 		ray->x = ray->x + ray->xincr;
 		ray->y = ray->y + ray->yincr;
+    ray->x += ray->off_mod;
 		check_bounds(world, ray);
-		ray->tex_offset = (int)ray->y % GRID;
-		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
-                world->map[ray->gridy][ray->gridx] != 'C')
-				/*ray->gridy + 1 < world->map_height &&*/
-				/*world->map[ray->gridy + 1][ray->gridx] != '1')*/
-			ray->foundwall = 0;
+    ray->x -= ray->off_mod;
+        ray->tex_offset = (int)ray->y % GRID;
+        /*if (ray->foundwall && ray->tex_offset == GRID - 1 &&*/
+                /*ismap(ray->gridy + 1, ray->gridx, world) &&*/
+                /*!iscset(world->map[ray->gridy + 1][ray->gridx], "C1"))*/
+            /*ray->foundwall = 0;*/
+        /*if (!ray->foundwall && ray->tex_offset == 1 &&*/
+                /*ismap(ray->gridy - 1, ray->gridx, world) &&*/
+                /*world->map[ray->gridy - 1][ray->gridx] == 'C')*/
+            /*ray->foundwall = 1;*/
 	}
 }
 
@@ -119,12 +133,14 @@ void	cast_horizontal(t_world *world, t_ray *ray, double a, double tan_a)
 	ray->xincr = GRID / tan_a;
 	if (a < DEG180 && a > 0)
 	{
-		ray->y = (((int)world->playery >> GRIDPOW) << GRIDPOW) - 1;
+		ray->y = (((int)world->playery >> GRIDPOW) << GRIDPOW);// - 1;
+        ray->off_mod = -1;
 		ray->yincr *= -1;
 	}
 	else
 	{
 		ray->y = (((int)world->playery >> GRIDPOW) << GRIDPOW) + GRID;
+        ray->off_mod = 0;
 		ray->xincr *= -1;
 	}
 	ray->x = world->playerx + ((world->playery - ray->y) / tan_a);
@@ -135,24 +151,34 @@ void	cast_horizontal(t_world *world, t_ray *ray, double a, double tan_a)
 
 void	extend_horizontal(t_world *world, t_ray *ray)
 {
+    ray->y += ray->off_mod;
 	check_bounds(world, ray);
+    ray->y -= ray->off_mod;
 	ray->tex_offset = (int)ray->x % GRID;
-	if (ray->foundwall && ray->tex_offset == GRID - 1 &&
-            world->map[ray->gridy][ray->gridx] != 'C')
-			/*ray->gridx + 1 < world->map_width &&*/
-			/*world->map[ray->gridy][ray->gridx + 1] != '1')*/
-		ray->foundwall = 0;
+    /*if (ray->foundwall && ray->tex_offset == GRID - 1 &&*/
+            /*ismap(ray->gridy, ray->gridx + 1, world) &&*/
+            /*!iscset(world->map[ray->gridy][ray->gridx + 1], "C1"))*/
+        /*ray->foundwall = 0;*/
+    /*if (!ray->foundwall && ray->tex_offset == 1 &&*/
+            /*ismap(ray->gridy, ray->gridx - 1, world) &&*/
+            /*world->map[ray->gridy][ray->gridx - 1] == 'C')*/
+        /*ray->foundwall = 1;*/
 	while (!ray->foundwall && ray->safe)
 	{
 		ray->x = ray->x + ray->xincr;
 		ray->y = ray->y + ray->yincr;
+        ray->y += ray->off_mod;//TODO HACKY MAKE THIS NICE
 		check_bounds(world, ray);
+        ray->y -= ray->off_mod;
 		ray->tex_offset = (int)ray->x % GRID;
-		if (ray->foundwall && ray->tex_offset == GRID - 1 &&
-                world->map[ray->gridy][ray->gridx] != 'C')
-				/*ray->gridx + 1 < world->map_width &&*/
-				/*world->map[ray->gridy][ray->gridx + 1] != '1')*/
-			ray->foundwall = 0;
+        /*if (ray->foundwall && ray->tex_offset == GRID - 1 &&*/
+                /*ismap(ray->gridy, ray->gridx + 1, world) &&*/
+                /*!iscset(world->map[ray->gridy][ray->gridx + 1], "C1"))*/
+            /*ray->foundwall = 0;*/
+        /*if (!ray->foundwall && ray->tex_offset == 1 &&*/
+                /*ismap(ray->gridy, ray->gridx - 1, world) &&*/
+                /*world->map[ray->gridy][ray->gridx - 1] == 'C')*/
+            /*ray->foundwall = 1;*/
 	}
 }
 
@@ -177,7 +203,7 @@ void    clean_list(t_caster *caster, t_vars *vars)
         //Now sort??
         c = (link->height - link->half_height);
         spritecol = -1 * c;
-        printf("sc%d hh%d h%d d%f z%f tr%7.4f ta%7.4f x%d", spritecol, link->half_height, link->height, link->dist, vars->distarr[link->center_column], link->trig_r, link->trig_a, link->x);
+        /*printf("sc%d hh%d h%d d%f z%f tr%7.4f ta%7.4f x%d", spritecol, link->half_height, link->height, link->dist, vars->distarr[link->center_column], link->trig_r, link->trig_a, link->x);*/
         while (spritecol < link->half_height)
         {
             col = link->center_column + spritecol;
@@ -190,9 +216,6 @@ void    clean_list(t_caster *caster, t_vars *vars)
             }
             spritecol++;
         }
-        //Use center column, draw one left, draw on right, continue until height (width) reached 
-        //Remember to reset height from real height
-        //if > dstarr dont draw
         link->queued = 0;
         link = link->lstnext;
     }

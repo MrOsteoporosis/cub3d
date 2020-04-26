@@ -135,6 +135,7 @@ typedef struct	s_ray {
 	t_data	   	*tex;
 	int		 	tex_offset;
     int         tex_column;
+    int         off_mod;
 }				t_ray;
 
 typedef struct	s_caster {
@@ -176,7 +177,7 @@ int		ft_iswhitespace(int c);
 int     ft_skip_comma(char **str);
 int     ft_skip_passed_func(char **str, t_isfunc is);
 int		is_valid_cub_char(char c);
-int     ismap(int y, int x, t_vars *vars);
+int     ismap(int y, int x, t_world *world);
 int		free_line_and_close(int fd, char *line);
 int		free_everything(t_vars *vars, int fd, char *line);
 
@@ -191,6 +192,8 @@ void	extend_vertical(t_world *world, t_ray *ray);
 void	calc_distance(t_world *world, t_caster *caster, double *distarr);
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_data *tex);
 void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster);
+
+int     iscset(char c, char *set);
 
 int		create_trgb(int t, int r, int g, int b);
 double	ray_angle(double lookdir, double raydir);

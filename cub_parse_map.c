@@ -68,12 +68,12 @@ int		map_line_sanitize(char **line)
 	return (0);
 }
 
-int     ismap(int y, int x, t_vars *vars)
+int     ismap(int y, int x, t_world *world)
 {
-	if (y < 0 || y >= vars->world.map_height)
+	if (y < 0 || y >= world->map_height)
 		return (0);
-	vars->world.map_width = ft_strlen(vars->world.map[y]);
-	if (x < 0 || x >= vars->world.map_width)
+	world->map_width = ft_strlen(world->map[y]);
+	if (x < 0 || x >= world->map_width)
 		return (0);
 	return (1);
 }
@@ -91,26 +91,26 @@ int     iscset(char c, char *set)
 
 void    identify_corner_walls(int y, int x, char **map, t_vars *vars)
 {
-	if (ismap(y + 1, x, vars) && iscset(map[y + 1][x], "1C")
-        && ismap(y, x + 1, vars) && iscset(map[y][x + 1], "1C"))
+	if (ismap(y + 1, x, &(vars->world)) && iscset(map[y + 1][x], "1C")
+        && ismap(y, x + 1, &(vars->world)) && iscset(map[y][x + 1], "1C"))
     {
             map[y + 1][x] = 'C';
             map[y][x + 1] = 'C';
     }
-	if (ismap(y - 1, x, vars) && iscset(map[y - 1][x], "1C")
-            && ismap(y, x + 1, vars) && iscset(map[y][x + 1], "1C"))
+	if (ismap(y - 1, x, &(vars->world)) && iscset(map[y - 1][x], "1C")
+            && ismap(y, x + 1, &(vars->world)) && iscset(map[y][x + 1], "1C"))
     {
             map[y - 1][x] = 'C';
             map[y][x + 1] = 'C';
     }
-	if (ismap(y - 1, x, vars) && iscset(map[y - 1][x], "1C")
-        && ismap(y, x - 1, vars) && iscset(map[y][x - 1], "1C"))
+	if (ismap(y - 1, x, &(vars->world)) && iscset(map[y - 1][x], "1C")
+        && ismap(y, x - 1, &(vars->world)) && iscset(map[y][x - 1], "1C"))
     {
             map[y - 1][x] = 'C';
             map[y][x - 1] = 'C';
     }
-	if (ismap(y + 1, x, vars) && iscset(map[y + 1][x], "1C")
-        && ismap(y, x - 1, vars) && iscset(map[y][x - 1], "1C"))
+	if (ismap(y + 1, x, &(vars->world)) && iscset(map[y + 1][x], "1C")
+        && ismap(y, x - 1, &(vars->world)) && iscset(map[y][x - 1], "1C"))
     {
             map[y + 1][x] = 'C';
             map[y][x - 1] = 'C';
@@ -128,23 +128,23 @@ int     validate_map_edges(int y, int x, char **map, t_vars *vars)
 		map[y][x] = 'O';
     if (map[y][x] == '2')
         map[y][x] = 'S';
-    if (ismap(y - 1, x, vars) && map[y - 1][x] != ' ')
+    if (ismap(y - 1, x, &(vars->world)) && map[y - 1][x] != ' ')
         invalid += validate_map_edges(y - 1, x, map, vars);
     else
         invalid = 1;
-    if (ismap(y + 1, x, vars) && map[y + 1][x] != ' ')
+    if (ismap(y + 1, x, &(vars->world)) && map[y + 1][x] != ' ')
         invalid += validate_map_edges(y + 1, x, map, vars);
 	else
 		invalid = 1;
-    if (ismap(y, x - 1, vars) && map[y][x - 1] != ' ')
+    if (ismap(y, x - 1, &(vars->world)) && map[y][x - 1] != ' ')
         invalid += validate_map_edges(y, x - 1, map, vars);
 	else
 		invalid = 1;
-    if (ismap(y, x + 1, vars) && map[y][x + 1] != ' ')
+    if (ismap(y, x + 1, &(vars->world)) && map[y][x + 1] != ' ')
         invalid += validate_map_edges(y, x + 1, map, vars);
 	else
 		invalid = 1;
-    identify_corner_walls(y, x, map, vars);
+    /*identify_corner_walls(y, x, map, vars);*/
     printf_map(map, vars->world.map_height);
 	return (invalid);
 }
