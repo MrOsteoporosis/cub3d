@@ -66,8 +66,7 @@ typedef struct	    s_sprite {
     int             height;
     int             half_height;
 	int				queued;
-    double          trig_a;
-    double          trig_r;
+	double			a;
 	struct s_sprite	*lstnext;
 	struct s_sprite	*lstprev;
 }				    t_sprite;
@@ -144,7 +143,6 @@ typedef struct	s_caster {
 	double		a;
 	int			taniszero;
     double      trig_a;
-    double      trig_r;
 	t_ray		v;
 	t_ray		h;
 	t_ray		*near;

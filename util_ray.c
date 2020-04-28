@@ -38,8 +38,7 @@ int		check_bounds(t_world *world, t_ray *ray)
 	world->max_x = world->map_width << GRIDPOW;
 	if (ray->x < 0 || ray->x >= world->max_x)
 		return (0);
-	if (world->map[ray->gridy][ray->gridx] == '1' ||
-            world->map[ray->gridy][ray->gridx] == 'C')
+	if (world->map[ray->gridy][ray->gridx] == '1')
 		ray->foundwall = 1;
 	ray->safe = 1;
 	return (1);
@@ -69,29 +68,29 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster
             break ;
         if (world->map[gridy][gridx] == 'S' &&
             !(world->spritemap[gridy][gridx]->queued))
-        {
+        {//TODO seperate function queuesprite
             if (!world->spritelst)
             {
-                printf("1st %d %d ", gridy, gridx);
+                /*printf("1st %d %d ", gridy, gridx);*/
                 world->spritelst = world->spritemap[gridy][gridx];
                 world->spritelstlast = world->spritelst;
                 world->spritelst->lstprev = (void *)0;
                 world->spritelst->lstnext = (void *)0;
-                world->spritelst->center_column = caster->column;
-                world->spritelst->trig_a = caster->trig_a;
-                world->spritelst->trig_r = caster->trig_r;
+                /*world->spritelst->center_column = caster->column;//TODO This will cause the sprite to render on the first column that lands on the grid it occupies, i.e. the furthest left ray that intesects the grid*/
+                /*world->spritelst->trig_a = caster->trig_a;//TODO These are obsolete*/
+                /*world->spritelst->trig_r = caster->trig_r;//TODO REMOVE*/
                 world->spritelst->queued = 1;
             }
             else
             {
-                printf("anotha %d %d ", gridy, gridx);
+                /*printf("anotha %d %d ", gridy, gridx);*/
                 world->spritemap[gridy][gridx]->lstprev = world->spritelstlast;
                 world->spritemap[gridy][gridx]->lstnext = (void *)0;
                 world->spritelstlast->lstnext = world->spritemap[gridy][gridx];
                 world->spritelstlast = world->spritemap[gridy][gridx];
-                world->spritelstlast->center_column = caster->column;
-                world->spritelstlast->trig_a = caster->trig_a;
-                world->spritelstlast->trig_r = caster->trig_r;
+                /*world->spritelstlast->center_column = caster->column;// TODO remove*/
+                /*world->spritelstlast->trig_a = caster->trig_a;//TODO REmove*/
+                /*world->spritelstlast->trig_r = caster->trig_r;//TODO remove*/
                 world->spritelstlast->queued = 1;
             }
         }

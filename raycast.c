@@ -14,7 +14,7 @@
 #include "cub3d.h"
 
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
-		t_data *tex)
+		t_data *tex)//TODO Rewrite this to not take ray but how else? a unique struct
 {
 	char	*dst;
 	int		i;
@@ -44,11 +44,9 @@ void	calc_distance(t_world *world, t_caster *caster, double *distarr)
 	double	dist;
 	int		height;
 
-    /*caster->h.y += caster->h.off_mod;*/
-    /*caster->v.x += caster->v.off_mod;*/
     if (!caster->taniszero)
     {
-		caster->trig_a = sin(caster->a);
+		caster->trig_a = sin(caster->a);//TODO This can be a local variable
 		caster->h.dist = ft_abs((world->playery - caster->h.y) / caster->trig_a);
         caster->v.dist = ft_abs((world->playery - caster->v.y) / caster->trig_a);
     }
@@ -59,14 +57,13 @@ void	calc_distance(t_world *world, t_caster *caster, double *distarr)
         caster->v.dist = ft_abs((world->playerx - caster->v.x) / caster->trig_a);
     }
     caster->near = &(caster->h);
-	if (caster->v.dist == caster->h.dist)
-		caster->near = caster->ftprev;
-	else if (caster->v.dist < caster->h.dist)
+	if (caster->v.dist < caster->h.dist)
 		caster->near = &(caster->v);
+	else if (caster->v.dist == caster->h.dist)
+		caster->near = caster->ftprev;
 	distarr[caster->column] = caster->near->dist;
 	caster->ftprev = caster->near;
-    caster->trig_r = cos(caster->raydir);
-	caster->near->dist = caster->near->dist * caster->trig_r;
+	caster->near->dist = caster->near->dist * cos(caster->raydir);
 	caster->near->tex_column = (caster->near->tex->resx * caster->near->tex_offset) >> GRIDPOW;
 	caster->near->height = (GRID / caster->near->dist) * world->proj_plane_dist;
 	caster->near->real_height = caster->near->height;
@@ -78,7 +75,7 @@ void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a)
 	ray->yincr = GRID * tan_a;
 	if (a < DEG270 && a > DEG90)
 	{
-		ray->x = (((int)world->playerx >> GRIDPOW) << GRIDPOW);// - 1;
+		ray->x = (((int)world->playerx >> GRIDPOW) << GRIDPOW);;
         ray->off_mod = -1;
 		ray->xincr *= -1;
 	}
@@ -96,34 +93,18 @@ void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a)
 
 void	extend_vertical(t_world *world, t_ray *ray)
 {
-    ray->x += ray->off_mod;
+    ray->x += ray->off_mod;//TODO move into while
 	check_bounds(world, ray);
     ray->x -= ray->off_mod;
 	ray->tex_offset = (int)ray->y % GRID;
-    /*if (ray->foundwall && ray->tex_offset == GRID - 1 &&*/
-            /*ismap(ray->gridy + 1, ray->gridx, world) &&*/
-            /*!iscset(world->map[ray->gridy + 1][ray->gridx], "C1"))*/
-        /*ray->foundwall = 0;*/
-    /*if (!ray->foundwall && ray->tex_offset == 1 &&*/
-            /*ismap(ray->gridy - 1, ray->gridx, world) &&*/
-            /*world->map[ray->gridy - 1][ray->gridx] == 'C')*/
-        /*ray->foundwall = 1;*/
 	while (!ray->foundwall && ray->safe)
 	{
 		ray->x = ray->x + ray->xincr;
 		ray->y = ray->y + ray->yincr;
-    ray->x += ray->off_mod;
+		ray->x += ray->off_mod;
 		check_bounds(world, ray);
-    ray->x -= ray->off_mod;
+		ray->x -= ray->off_mod;
         ray->tex_offset = (int)ray->y % GRID;
-        /*if (ray->foundwall && ray->tex_offset == GRID - 1 &&*/
-                /*ismap(ray->gridy + 1, ray->gridx, world) &&*/
-                /*!iscset(world->map[ray->gridy + 1][ray->gridx], "C1"))*/
-            /*ray->foundwall = 0;*/
-        /*if (!ray->foundwall && ray->tex_offset == 1 &&*/
-                /*ismap(ray->gridy - 1, ray->gridx, world) &&*/
-                /*world->map[ray->gridy - 1][ray->gridx] == 'C')*/
-            /*ray->foundwall = 1;*/
 	}
 }
 
@@ -133,7 +114,7 @@ void	cast_horizontal(t_world *world, t_ray *ray, double a, double tan_a)
 	ray->xincr = GRID / tan_a;
 	if (a < DEG180 && a > 0)
 	{
-		ray->y = (((int)world->playery >> GRIDPOW) << GRIDPOW);// - 1;
+		ray->y = (((int)world->playery >> GRIDPOW) << GRIDPOW);;
         ray->off_mod = -1;
 		ray->yincr *= -1;
 	}
@@ -151,18 +132,10 @@ void	cast_horizontal(t_world *world, t_ray *ray, double a, double tan_a)
 
 void	extend_horizontal(t_world *world, t_ray *ray)
 {
-    ray->y += ray->off_mod;
+    ray->y += ray->off_mod;//TODO move into while
 	check_bounds(world, ray);
     ray->y -= ray->off_mod;
 	ray->tex_offset = (int)ray->x % GRID;
-    /*if (ray->foundwall && ray->tex_offset == GRID - 1 &&*/
-            /*ismap(ray->gridy, ray->gridx + 1, world) &&*/
-            /*!iscset(world->map[ray->gridy][ray->gridx + 1], "C1"))*/
-        /*ray->foundwall = 0;*/
-    /*if (!ray->foundwall && ray->tex_offset == 1 &&*/
-            /*ismap(ray->gridy, ray->gridx - 1, world) &&*/
-            /*world->map[ray->gridy][ray->gridx - 1] == 'C')*/
-        /*ray->foundwall = 1;*/
 	while (!ray->foundwall && ray->safe)
 	{
 		ray->x = ray->x + ray->xincr;
@@ -171,14 +144,6 @@ void	extend_horizontal(t_world *world, t_ray *ray)
 		check_bounds(world, ray);
         ray->y -= ray->off_mod;
 		ray->tex_offset = (int)ray->x % GRID;
-        /*if (ray->foundwall && ray->tex_offset == GRID - 1 &&*/
-                /*ismap(ray->gridy, ray->gridx + 1, world) &&*/
-                /*!iscset(world->map[ray->gridy][ray->gridx + 1], "C1"))*/
-            /*ray->foundwall = 0;*/
-        /*if (!ray->foundwall && ray->tex_offset == 1 &&*/
-                /*ismap(ray->gridy, ray->gridx - 1, world) &&*/
-                /*world->map[ray->gridy][ray->gridx - 1] == 'C')*/
-            /*ray->foundwall = 1;*/
 	}
 }
 
@@ -190,20 +155,30 @@ void    clean_list(t_caster *caster, t_vars *vars)
     int         c;
 
     link = vars->world.spritelst;
-    if (link)
-        printf(" yeet\n");
+    /*if (link)*/
+        /*printf(" yeet\n");*/
     while (link)
     {
-        if (!caster->taniszero)
-            link->dist = (ft_abs((vars->world.playery - link->y) / link->trig_a)) * link->trig_r;
-        else
-            link->dist = (ft_abs((vars->world.playerx - link->x) / link->trig_a)) * link->trig_r;
+		link->dist = sqrt((vars->world.playery - link->y) * (vars->world.playery - link->y) + (vars->world.playerx - link->x) * (vars->world.playerx - link->x));
+		link->a = asin(((vars->world.playery - link->y)) / link->dist);
+		/*link->a = acos((ft_abs(vars->world.playerx - link->x)) / link->dist);//works S to W*/
+		if (vars->world.lookdir < DEG90 && vars->world.lookdir > 0)
+			link->a = link->a + 0;
+		else if (vars->world.lookdir < DEG180 && vars->world.lookdir > DEG90)
+			link->a = DEG180 - link->a + 0;
+		else if (vars->world.lookdir < M_PI2 && vars->world.lookdir > DEG270)
+			link->a = link->a + 0;
+		link->center_column = ((vars->world.lookdir - link->a) / vars->world.radians_per_pixel) + (vars->img.resx >> 1);
+		printf("d%f a%7.4f cc%d\n",link->dist, link->a, link->center_column);
         link->height = (GRID / link->dist) * vars->world.proj_plane_dist;
         link->half_height = link->height >> 1;
         //Now sort??
         c = (link->height - link->half_height);
         spritecol = -1 * c;
-        /*printf("sc%d hh%d h%d d%f z%f tr%7.4f ta%7.4f x%d", spritecol, link->half_height, link->height, link->dist, vars->distarr[link->center_column], link->trig_r, link->trig_a, link->x);*/
+        /*printf("x%d y%d sc%d hh%d h%d d%f z%f tr%7.4f ta%7.4f x%d", link->x, link->y, spritecol, link->half_height, link->height, link->dist, vars->distarr[link->center_column], link->trig_r, link->trig_a, link->x);*/
+        link->queued = 0;
+		if (link->center_column > vars->img.resx || link->center_column < 0)
+			break ;
         while (spritecol < link->half_height)
         {
             col = link->center_column + spritecol;
@@ -216,7 +191,6 @@ void    clean_list(t_caster *caster, t_vars *vars)
             }
             spritecol++;
         }
-        link->queued = 0;
         link = link->lstnext;
     }
 }
@@ -248,6 +222,7 @@ void	cast_ray(t_vars *vars)
 				caster.near->tex);
         detect_sprites(&(caster.v), caster.near, &(vars->world), &(caster));
         detect_sprites(&(caster.h), caster.near, &(vars->world), &(caster));
+		//TODO Anotehr function to detect sprites on the edge of the screen, and in the current occupied grid
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}
