@@ -182,8 +182,8 @@ int		create_sprite_map(t_vars *vars)
 				vars->world.spritemap[y][x] = (t_sprite *)ft_calloc(sizeof(t_sprite), 1);
 				if (!vars->world.spritemap[y][x])
 					return (1);
-				vars->world.spritemap[y][x]->x = x * GRID;
-				vars->world.spritemap[y][x]->y = y * GRID;
+				vars->world.spritemap[y][x]->x = x * GRID + (GRID >> 1);
+				vars->world.spritemap[y][x]->y = y * GRID + (GRID >> 1);
 			}
             else
                 printf(" ");

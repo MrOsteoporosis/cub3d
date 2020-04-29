@@ -1,5 +1,4 @@
-bug: flood fill
-bug: raycaster allows peeking through walls when corners are not completed
-bug: sprites distances
-bug: sprites disapear if their center is off the screen
+bug: sprites do not appear in cases where center column is off screen (not detected, not drawn)
+bug: sprite deadzones with grids: [-1,0] [-1,-1] [0,-1]
+sprite invisible color
 bmp save

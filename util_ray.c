@@ -54,8 +54,10 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster
     x = ray->xorigin;
     y = ray->yorigin;
     while (ft_abs(world->playerx - x) < ft_abs(world->playerx - near->x)
-           && ft_abs(world->playery - y) < ft_abs(world->playery - near->y))
+		   && ft_abs(world->playery - y) < ft_abs(world->playery - near->y))
     {
+		/*printf("c%d x%d mx%d y%d my%d \n", caster->column, ft_abs(world->playerx - x), ft_abs(world->playerx - near->x), ft_abs(world->playery - y), ft_abs(world->playery - near->y));*/
+		//Try do a queue before you start counting
         x = x + ray->xincr;
         y = y + ray->yincr;
         gridx = x / GRID;
@@ -69,9 +71,10 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster
         if (world->map[gridy][gridx] == 'S' &&
             !(world->spritemap[gridy][gridx]->queued))
         {//TODO seperate function queuesprite
+			printf("s");
             if (!world->spritelst)
             {
-                /*printf("1st %d %d ", gridy, gridx);*/
+				printf("1st %d %d ", gridy, gridx);
                 world->spritelst = world->spritemap[gridy][gridx];
                 world->spritelstlast = world->spritelst;
                 world->spritelst->lstprev = (void *)0;
@@ -83,7 +86,7 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster
             }
             else
             {
-                /*printf("anotha %d %d ", gridy, gridx);*/
+				printf("anotha %d %d ", gridy, gridx);
                 world->spritemap[gridy][gridx]->lstprev = world->spritelstlast;
                 world->spritemap[gridy][gridx]->lstnext = (void *)0;
                 world->spritelstlast->lstnext = world->spritemap[gridy][gridx];

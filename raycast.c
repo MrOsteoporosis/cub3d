@@ -153,39 +153,47 @@ void    clean_list(t_caster *caster, t_vars *vars)
     int         spritecol;
     int         col;
     int         c;
+	int			dx;
+	int			dy;
+	double		player_sprite_a;
 
     link = vars->world.spritelst;
-    /*if (link)*/
-        /*printf(" yeet\n");*/
+	/*if (link)*/
+		printf(" yeet\n");
     while (link)
     {
-		link->dist = sqrt((vars->world.playery - link->y) * (vars->world.playery - link->y) + (vars->world.playerx - link->x) * (vars->world.playerx - link->x));
-		link->a = asin(((vars->world.playery - link->y)) / link->dist);
-		/*link->a = acos((ft_abs(vars->world.playerx - link->x)) / link->dist);//works S to W*/
-		if (vars->world.lookdir < DEG90 && vars->world.lookdir > 0)
-			link->a = link->a + 0;
-		else if (vars->world.lookdir < DEG180 && vars->world.lookdir > DEG90)
-			link->a = DEG180 - link->a + 0;
-		else if (vars->world.lookdir < M_PI2 && vars->world.lookdir > DEG270)
-			link->a = link->a + 0;
-		link->center_column = ((vars->world.lookdir - link->a) / vars->world.radians_per_pixel) + (vars->img.resx >> 1);
-		printf("d%f a%7.4f cc%d\n",link->dist, link->a, link->center_column);
+		dx = vars->world.playerx - link->x;
+		dy = vars->world.playery - link->y;
+		link->dist = sqrt(dy * dy + dx * dx);
+		link->a = asin(dy / link->dist);
+		/*link->a = acos((ft_abs(vars->world.playerx - link->x)) / link->dist);*/
+		if (dx < 0 && dy < 0)
+			link->a = M_PI2 + link->a;
+		else if (dx > 0)
+			link->a = DEG180 - link->a;
+		player_sprite_a = (vars->world.lookdir - link->a);
+		if (player_sprite_a < -1)
+			player_sprite_a = M_PI2 + player_sprite_a;
+		else if (player_sprite_a > 1)
+			player_sprite_a = player_sprite_a - M_PI2;
+		link->center_column = (player_sprite_a / vars->world.radians_per_pixel) + (vars->img.resx >> 1);
         link->height = (GRID / link->dist) * vars->world.proj_plane_dist;
         link->half_height = link->height >> 1;
         //Now sort??
         c = (link->height - link->half_height);
         spritecol = -1 * c;
-        /*printf("x%d y%d sc%d hh%d h%d d%f z%f tr%7.4f ta%7.4f x%d", link->x, link->y, spritecol, link->half_height, link->height, link->dist, vars->distarr[link->center_column], link->trig_r, link->trig_a, link->x);*/
         link->queued = 0;
-		if (link->center_column > vars->img.resx || link->center_column < 0)
-			break ;
+		/*printf("d%f a%7.4f tb%7.4f, ta%7.4f cc%d\n",link->dist, link->a,(vars->world.lookdir - link->a), player_sprite_a, link->center_column);*/
+        /*printf("x%d y%d sc%d hh%d h%d d%f z%f tr%7.4f ta%7.4f x%d", link->x, link->y, spritecol, link->half_height, link->height, link->dist, vars->distarr[link->center_column], link->trig_r, link->trig_a, link->x);*/
+		/*if (link->center_column > vars->img.resx || link->center_column < 0)*/
+			/*break ;*/
         while (spritecol < link->half_height)
         {
             col = link->center_column + spritecol;
+			caster->v.height = link->height;
+			caster->v.real_height = link->height;
             if ((col > 0 && col < vars->img.resx) && link->dist < vars->distarr[col])
             {
-                caster->v.height = link->height;
-                caster->v.real_height = link->height;
                 caster->v.tex_column = (vars->s.resx * (spritecol + c)) / link->height;
                 draw_texture_column(&(vars->img), &(caster->v), col, &(vars->s));
             }
