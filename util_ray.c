@@ -44,6 +44,27 @@ int		check_bounds(t_world *world, t_ray *ray)
 	return (1);
 }
 
+void	queue_sprite(t_world *world, int gridy, int gridx)
+{
+	if (!world->spritelst)
+	{
+		printf("1st %d %d ", gridy, gridx);
+		world->spritelst = world->spritemap[gridy][gridx];
+		world->spritelstlast = world->spritelst;
+		world->spritelst->lstprev = (void *)0;
+		world->spritelst->lstnext = (void *)0;
+		world->spritelst->queued = 1;
+	}
+	else
+	{
+		printf("anotha %d %d ", gridy, gridx);
+		world->spritemap[gridy][gridx]->lstprev = world->spritelstlast;
+		world->spritemap[gridy][gridx]->lstnext = (void *)0;
+		world->spritemap[gridy][gridx]->queued = 1;
+		world->spritelstlast->lstnext = world->spritemap[gridy][gridx];
+		world->spritelstlast = world->spritemap[gridy][gridx];
+	}
+}
 void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster)
 {
     double  x;
@@ -57,7 +78,11 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster
 		   && ft_abs(world->playery - y) < ft_abs(world->playery - near->y))
     {
 		/*printf("c%d x%d mx%d y%d my%d \n", caster->column, ft_abs(world->playerx - x), ft_abs(world->playerx - near->x), ft_abs(world->playery - y), ft_abs(world->playery - near->y));*/
-		//Try do a queue before you start counting
+		gridx = x / GRID;
+		gridy = y / GRID;
+		if (world->map[gridy][gridx] == 'I'
+				&& !(world->spritemap[gridy][gridx]->queued))
+			queue_sprite(world, gridy, gridx);
         x = x + ray->xincr;
         y = y + ray->yincr;
         gridx = x / GRID;
@@ -68,35 +93,9 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster
         world->max_x = world->map_width << GRIDPOW;
         if (x < 0 || x >= world->max_x)
             break ;
-        if (world->map[gridy][gridx] == 'S' &&
-            !(world->spritemap[gridy][gridx]->queued))
-        {//TODO seperate function queuesprite
-			printf("s");
-            if (!world->spritelst)
-            {
-				printf("1st %d %d ", gridy, gridx);
-                world->spritelst = world->spritemap[gridy][gridx];
-                world->spritelstlast = world->spritelst;
-                world->spritelst->lstprev = (void *)0;
-                world->spritelst->lstnext = (void *)0;
-                /*world->spritelst->center_column = caster->column;//TODO This will cause the sprite to render on the first column that lands on the grid it occupies, i.e. the furthest left ray that intesects the grid*/
-                /*world->spritelst->trig_a = caster->trig_a;//TODO These are obsolete*/
-                /*world->spritelst->trig_r = caster->trig_r;//TODO REMOVE*/
-                world->spritelst->queued = 1;
-            }
-            else
-            {
-				printf("anotha %d %d ", gridy, gridx);
-                world->spritemap[gridy][gridx]->lstprev = world->spritelstlast;
-                world->spritemap[gridy][gridx]->lstnext = (void *)0;
-                world->spritelstlast->lstnext = world->spritemap[gridy][gridx];
-                world->spritelstlast = world->spritemap[gridy][gridx];
-                /*world->spritelstlast->center_column = caster->column;// TODO remove*/
-                /*world->spritelstlast->trig_a = caster->trig_a;//TODO REmove*/
-                /*world->spritelstlast->trig_r = caster->trig_r;//TODO remove*/
-                world->spritelstlast->queued = 1;
-            }
-        }
+        if (world->map[gridy][gridx] == 'I'
+				&& !(world->spritemap[gridy][gridx]->queued))
+			queue_sprite(world, gridy, gridx);
     }
 }
 

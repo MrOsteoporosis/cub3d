@@ -1,15 +1,15 @@
 R 1920 1080
 NO ./textures/colorstone.png
-SO ./textures/greystone.png
-WE ./textures/mossy.png
+SO ./textures/greystone.xpm
+WE ./textures/mossy.xpm
 
-EA ./textures/mossy.png
-S ./textures/cage.png
+EA ./textures/mossy.xpm
+S ./textures/cagev2.xpm
 F 220,100,0
 C 225,30,0
         1111111111111111111111111
         1000000000110000000000001
-        1011000001110000002000001
+        1011000001110222222222001
         1001000000000000000000001
 111111111011000001110000000000001
 100000000011000001110111111111111

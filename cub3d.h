@@ -27,6 +27,7 @@
 # define LOOKACCEL  0.004
 # define GRID   512
 # define GRIDPOW	9
+# define INVISIBLE	0x000000
 
 //linux keycodes
 # define WKEY   119
@@ -69,6 +70,9 @@ typedef struct	    s_sprite {
 	double			a;
 	struct s_sprite	*lstnext;
 	struct s_sprite	*lstprev;
+	int				dx;
+	int				dy;
+	double			plyrsprt_a;
 }				    t_sprite;
 
 typedef struct	s_world {
@@ -135,6 +139,7 @@ typedef struct	s_ray {
 	int		 	tex_offset;
     int         tex_column;
     int         off_mod;
+	int			invisible_on;
 }				t_ray;
 
 typedef struct	s_caster {
@@ -190,6 +195,8 @@ void	extend_vertical(t_world *world, t_ray *ray);
 void	calc_distance(t_world *world, t_caster *caster, double *distarr);
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_data *tex);
 void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster);
+void	queue_sprite(t_world *world, int gridy, int gridx);
+void	sort_spritelst(t_sprite **lst);
 
 int     iscset(char c, char *set);
 

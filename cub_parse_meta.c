@@ -105,7 +105,11 @@ int		parse_tex(t_vars *vars, char *line)
 		return (1);
 	if (ft_skip_passed_func(&line, &ft_iswhitespace))
 		return (1);
-	tex->img = mlx_png_file_to_image(vars->mlx, line, &tex->resx, &tex->resy);
+	if (ft_strlen(line) > 4
+			&& !ft_strncmp((line + (ft_strlen(line) - 4)), ".png", 4))
+		tex->img = mlx_png_file_to_image(vars->mlx, line, &tex->resx, &tex->resy);
+	else
+		tex->img = mlx_xpm_file_to_image(vars->mlx, line, &tex->resx, &tex->resy);
 	if (!tex->img)
 		return (1);
 	tex->addr = mlx_get_data_addr(tex->img,

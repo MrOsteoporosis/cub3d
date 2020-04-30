@@ -1,4 +1,4 @@
-bug: sprites do not appear in cases where center column is off screen (not detected, not drawn)
-bug: sprite deadzones with grids: [-1,0] [-1,-1] [0,-1]
-sprite invisible color
 bmp save
+fix sort losing sprites on edges
+norm
+test

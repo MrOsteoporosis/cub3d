@@ -17,6 +17,7 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 		t_data *tex)//TODO Rewrite this to not take ray but how else? a unique struct
 {
 	char	*dst;
+	unsigned int	color;
 	int		i;
 	int		y;
 	int		endy;
@@ -30,9 +31,13 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 	{
 		dst = frame->addr + (y * frame->line_length +
 				frame_column * (frame->bits_per_pixel >> 3));
-		*(unsigned int*)dst = *(unsigned int*)(tex->addr +
+		color = *(unsigned int*)(tex->addr +
 				(((tex->resy * i) / ray->real_height) * tex->line_length
 				+ ray->tex_column * (tex->bits_per_pixel >> 3)));
+		if (ray->invisible_on && color == INVISIBLE)
+			dst = dst;
+		else
+			*(unsigned int*)dst = color;
 		i++;
 		y++;
 	}
@@ -46,7 +51,7 @@ void	calc_distance(t_world *world, t_caster *caster, double *distarr)
 
     if (!caster->taniszero)
     {
-		caster->trig_a = sin(caster->a);//TODO This can be a local variable
+		caster->trig_a = sin(caster->a);
 		caster->h.dist = ft_abs((world->playery - caster->h.y) / caster->trig_a);
         caster->v.dist = ft_abs((world->playery - caster->v.y) / caster->trig_a);
     }
@@ -67,6 +72,7 @@ void	calc_distance(t_world *world, t_caster *caster, double *distarr)
 	caster->near->tex_column = (caster->near->tex->resx * caster->near->tex_offset) >> GRIDPOW;
 	caster->near->height = (GRID / caster->near->dist) * world->proj_plane_dist;
 	caster->near->real_height = caster->near->height;
+	caster->near->invisible_on = 0;
 }
 
 void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a)
@@ -93,7 +99,7 @@ void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a)
 
 void	extend_vertical(t_world *world, t_ray *ray)
 {
-    ray->x += ray->off_mod;//TODO move into while
+    ray->x += ray->off_mod;
 	check_bounds(world, ray);
     ray->x -= ray->off_mod;
 	ray->tex_offset = (int)ray->y % GRID;
@@ -147,46 +153,110 @@ void	extend_horizontal(t_world *world, t_ray *ray)
 	}
 }
 
+/*void	sort_spritelst(t_sprite **lst) {*/
+	/*int			i;*/
+	/*int			j;*/
+	/*int			count;*/
+	/*t_sprite	*link;*/
+	/*t_sprite	*swap;*/
+
+	/*count = 0;*/
+	/*link = *lst;*/
+	/*while (link)*/
+	/*{*/
+		/*link = link->lstnext;*/
+		/*count++;*/
+	/*}*/
+	/*i = 0;*/
+	/*link = *lst;*/
+	/*while (i < count - 1)*/
+	/*{*/
+		/*j = 0;*/
+		/*link = *lst;*/
+		/*while (j < count - 1 - i)*/
+		/*{*/
+			/*if (link->lstnext && link->dist < link->lstnext->dist)*/
+			/*{*/
+				/*if (j == 0)*/
+					/**lst = link->lstnext;*/
+				/*swap = link->lstnext;*/
+				/*link->lstnext = swap->lstnext;*/
+				/*swap->lstnext = link;*/
+				/*swap->lstprev = link->lstprev;*/
+				/*link->lstprev = swap;*/
+			/*}*/
+			/*else*/
+				/*link = link->lstnext;*/
+			/*j++;*/
+		/*}*/
+		/*i++;*/
+	/*}*/
+/*}*/
+
+t_sprite	*select_furthest(t_sprite **lst)
+{
+	t_sprite	*furthest;
+	t_sprite	*link;
+
+	link = *lst;
+	furthest = link;
+	while (link)
+	{
+		if (furthest->dist < link->dist)
+			furthest = link;
+		link = link->lstnext;
+	}
+	if (furthest->lstprev)
+		furthest->lstprev->lstnext = furthest->lstnext;
+	else
+		*lst = furthest->lstnext;
+	if (furthest->lstnext)
+		furthest->lstnext->lstprev = furthest->lstprev;
+	furthest->queued = 0;
+	return (furthest);
+}
+
 void    clean_list(t_caster *caster, t_vars *vars)
 {
     t_sprite    *link;
     int         spritecol;
     int         col;
     int         c;
-	int			dx;
-	int			dy;
-	double		player_sprite_a;
 
     link = vars->world.spritelst;
-	/*if (link)*/
+	if (link)
 		printf(" yeet\n");
+	caster->v.invisible_on = 1;
     while (link)
     {
-		dx = vars->world.playerx - link->x;
-		dy = vars->world.playery - link->y;
-		link->dist = sqrt(dy * dy + dx * dx);
-		link->a = asin(dy / link->dist);
-		/*link->a = acos((ft_abs(vars->world.playerx - link->x)) / link->dist);*/
-		if (dx < 0 && dy < 0)
+		link->dx = vars->world.playerx - link->x;
+		link->dy = vars->world.playery - link->y;
+		link->dist = sqrt(link->dy * link->dy + link->dx * link->dx);
+		link->a = asin(link->dy / link->dist);
+		if (link->dx < 0 && link->dy < 0)
 			link->a = M_PI2 + link->a;
-		else if (dx > 0)
+		else if (link->dx > 0)
 			link->a = DEG180 - link->a;
-		player_sprite_a = (vars->world.lookdir - link->a);
-		if (player_sprite_a < -1)
-			player_sprite_a = M_PI2 + player_sprite_a;
-		else if (player_sprite_a > 1)
-			player_sprite_a = player_sprite_a - M_PI2;
-		link->center_column = (player_sprite_a / vars->world.radians_per_pixel) + (vars->img.resx >> 1);
+		link->plyrsprt_a = (vars->world.lookdir - link->a);
+		if (link->plyrsprt_a < -1)
+			link->plyrsprt_a = M_PI2 + link->plyrsprt_a;
+		else if (link->plyrsprt_a > 1)
+			link->plyrsprt_a = link->plyrsprt_a - M_PI2;
+		link->center_column = (link->plyrsprt_a / vars->world.radians_per_pixel) + (vars->img.resx >> 1);
         link->height = (GRID / link->dist) * vars->world.proj_plane_dist;
         link->half_height = link->height >> 1;
-        //Now sort??
+        link = link->lstnext;
+	}
+	/*sort_spritelst(&(vars->world.spritelst));*/
+	while (vars->world.spritelst)
+	/*while (link)*/
+	{
+		link = select_furthest(&vars->world.spritelst);
         c = (link->height - link->half_height);
         spritecol = -1 * c;
-        link->queued = 0;
+        /*link->queued = 0;*/
 		/*printf("d%f a%7.4f tb%7.4f, ta%7.4f cc%d\n",link->dist, link->a,(vars->world.lookdir - link->a), player_sprite_a, link->center_column);*/
         /*printf("x%d y%d sc%d hh%d h%d d%f z%f tr%7.4f ta%7.4f x%d", link->x, link->y, spritecol, link->half_height, link->height, link->dist, vars->distarr[link->center_column], link->trig_r, link->trig_a, link->x);*/
-		/*if (link->center_column > vars->img.resx || link->center_column < 0)*/
-			/*break ;*/
         while (spritecol < link->half_height)
         {
             col = link->center_column + spritecol;
@@ -199,7 +269,7 @@ void    clean_list(t_caster *caster, t_vars *vars)
             }
             spritecol++;
         }
-        link = link->lstnext;
+		/*link = link->lstnext;*/
     }
 }
 
@@ -230,7 +300,6 @@ void	cast_ray(t_vars *vars)
 				caster.near->tex);
         detect_sprites(&(caster.v), caster.near, &(vars->world), &(caster));
         detect_sprites(&(caster.h), caster.near, &(vars->world), &(caster));
-		//TODO Anotehr function to detect sprites on the edge of the screen, and in the current occupied grid
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}

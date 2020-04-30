@@ -95,11 +95,11 @@ int     validate_map_edges(int y, int x, char **map, t_vars *vars)
 
     if (!iscset(map[y][x], "02NSWE"))
         return (0);
-	invalid = 0;
 	if (map[y][x] == '0')
 		map[y][x] = 'O';
-    if (map[y][x] == '2')
-        map[y][x] = 'S';
+    else if (map[y][x] == '2')
+        map[y][x] = 'I';
+	invalid = 0;
     if (ismap(y - 1, x, &(vars->world)) && map[y - 1][x] != ' ')
         invalid += validate_map_edges(y - 1, x, map, vars);
     else
@@ -116,8 +116,7 @@ int     validate_map_edges(int y, int x, char **map, t_vars *vars)
         invalid += validate_map_edges(y, x + 1, map, vars);
 	else
 		invalid = 1;
-    /*identify_corner_walls(y, x, map, vars);*/
-    printf_map(map, vars->world.map_height);
+    /*printf_map(map, vars->world.map_height);*/
 	return (invalid);
 }
 
@@ -176,7 +175,7 @@ int		create_sprite_map(t_vars *vars)
 		while (vars->world.map[y][x])
 		{
             printf("%c", vars->world.map[y][x]);
-			if (vars->world.map[y][x] == 'S')
+			if (vars->world.map[y][x] == 'I')
 			{
 				printf("2");
 				vars->world.spritemap[y][x] = (t_sprite *)ft_calloc(sizeof(t_sprite), 1);
