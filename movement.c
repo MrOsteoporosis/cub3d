@@ -59,7 +59,7 @@ int		check_collision(t_world *world, t_movement *move, int xy)
 	world->max_x = world->map_width << GRIDPOW;
 	if (world->playerx < 0 || world->playerx >= world->max_x)
 		return (1);
-	if (world->map[gridy][gridx] == '1' || world->map[gridy][gridx] == 'C')
+	if (world->map[gridy][gridx] == '1')
 		return (1);
 	return (0);
 }

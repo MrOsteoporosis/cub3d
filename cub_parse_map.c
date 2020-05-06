@@ -17,39 +17,6 @@
 #include <mlx.h>
 #include "cub3d.h"
 
-void	printf_map(char **map, int map_height)
-{
-	int     y;
-
-    y = 0;
-    while (y < map_height)
-    {
-        printf("%s\n", map[y]);
-        y++;
-    }
-    printf("\n");
-}
-
-int		array_append(char ***map, char *line, int currentlength)
-{
-	char	**res;
-	int		i;
-
-	res = (char **)ft_calloc(currentlength + 1, sizeof(char *));
-	if (!res)
-		return (1);
-	i = 0;
-	while (i < currentlength)
-	{
-		res[i] = (*map)[i];
-		i++;
-	}
-	res[currentlength] = line;
-	free((*map));
-	*map = res;
-	return (0);
-}
-
 int		map_line_sanitize(char **line)
 {
 	char	*res;
@@ -68,26 +35,6 @@ int		map_line_sanitize(char **line)
 	return (0);
 }
 
-int     ismap(int y, int x, t_world *world)
-{
-	if (y < 0 || y >= world->map_height)
-		return (0);
-	world->map_width = ft_strlen(world->map[y]);
-	if (x < 0 || x >= world->map_width)
-		return (0);
-	return (1);
-}
-
-int     iscset(char c, char *set)
-{
-    while (*set)
-    {
-        if (c == *set)
-            return (1);
-        *set++;
-    }
-    return (0);
-}
 
 int     validate_map_edges(int y, int x, char **map, t_vars *vars)
 {
@@ -170,25 +117,25 @@ int		create_sprite_map(t_vars *vars)
 	{
 		vars->world.spritemap[y] = (t_sprite **)ft_calloc(sizeof(t_sprite *), ft_strlen(vars->world.map[y]));
 		if (!vars->world.spritemap[y])
-			return (1);
+			return (1);//TODO function that frees everything upto there
 		x = 0;
 		while (vars->world.map[y][x])
 		{
-            printf("%c", vars->world.map[y][x]);
+            /*printf("%c", vars->world.map[y][x]);*/
 			if (vars->world.map[y][x] == 'I')
 			{
-				printf("2");
+				/*printf("2");*/
 				vars->world.spritemap[y][x] = (t_sprite *)ft_calloc(sizeof(t_sprite), 1);
 				if (!vars->world.spritemap[y][x])
-					return (1);
+					return (1);//TODO function that frees everything malloc b4 this
 				vars->world.spritemap[y][x]->x = x * GRID + (GRID >> 1);
 				vars->world.spritemap[y][x]->y = y * GRID + (GRID >> 1);
 			}
-            else
-                printf(" ");
+            /*else*/
+                /*printf(" ");*/
 			x++;
 		}
-		printf("\n");
+		/*printf("\n");*/
 		y++;
 	}
 	return (0);

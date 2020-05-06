@@ -14,32 +14,29 @@
 #include "cub3d.h"
 
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
-		t_data *tex)//TODO Rewrite this to not take ray but how else? a unique struct
+		t_data *tex)
 {
 	char	*dst;
 	unsigned int	color;
-	int		i;
-	int		y;
-	int		endy;
+	int		i[2];
+	int		end;
 
 	if (ray->height > frame->resy)
 		ray->height = frame->resy;
-	y = frame->halfresy - (ray->height >> 1);
-	endy = frame->halfresy + (ray->height >> 1);
-	i = -1 * (frame->halfresy - (ray->real_height >> 1)) + y;
-	while (y < endy)
+	i[1] = frame->halfresy - (ray->height >> 1);
+	end = frame->halfresy + (ray->height >> 1);
+	i[0] = -1 * (frame->halfresy - (ray->real_height >> 1)) + i[1];
+	while (i[1] < end)
 	{
-		dst = frame->addr + (y * frame->line_length +
+		dst = frame->addr + (i[1] * frame->line_length +
 				frame_column * (frame->bits_per_pixel >> 3));
 		color = *(unsigned int*)(tex->addr +
-				(((tex->resy * i) / ray->real_height) * tex->line_length
+				(((tex->resy * i[0]) / ray->real_height) * tex->line_length
 				+ ray->tex_column * (tex->bits_per_pixel >> 3)));
-		if (ray->invisible_on && color == INVISIBLE)
-			dst = dst;
-		else
+		if ((ray->invisible_on && color != INVISIBLE) || !ray->invisible_on)
 			*(unsigned int*)dst = color;
-		i++;
-		y++;
+		i[0]++;
+		i[1]++;
 	}
 }
 
@@ -68,6 +65,11 @@ void	calc_distance(t_world *world, t_caster *caster, double *distarr)
 		caster->near = caster->ftprev;
 	distarr[caster->column] = caster->near->dist;
 	caster->ftprev = caster->near;
+	calc_distance_norm(world, caster, distarr);
+}
+
+void	calc_distance_norm(t_world *world, t_caster *caster, double *distarr)
+{
 	caster->near->dist = caster->near->dist * cos(caster->raydir);
 	caster->near->tex_column = (caster->near->tex->resx * caster->near->tex_offset) >> GRIDPOW;
 	caster->near->height = (GRID / caster->near->dist) * world->proj_plane_dist;
@@ -138,7 +140,7 @@ void	cast_horizontal(t_world *world, t_ray *ray, double a, double tan_a)
 
 void	extend_horizontal(t_world *world, t_ray *ray)
 {
-    ray->y += ray->off_mod;//TODO move into while
+    ray->y += ray->off_mod;
 	check_bounds(world, ray);
     ray->y -= ray->off_mod;
 	ray->tex_offset = (int)ray->x % GRID;
@@ -146,132 +148,13 @@ void	extend_horizontal(t_world *world, t_ray *ray)
 	{
 		ray->x = ray->x + ray->xincr;
 		ray->y = ray->y + ray->yincr;
-        ray->y += ray->off_mod;//TODO HACKY MAKE THIS NICE
+        ray->y += ray->off_mod;
 		check_bounds(world, ray);
         ray->y -= ray->off_mod;
 		ray->tex_offset = (int)ray->x % GRID;
 	}
 }
 
-/*void	sort_spritelst(t_sprite **lst) {*/
-	/*int			i;*/
-	/*int			j;*/
-	/*int			count;*/
-	/*t_sprite	*link;*/
-	/*t_sprite	*swap;*/
-
-	/*count = 0;*/
-	/*link = *lst;*/
-	/*while (link)*/
-	/*{*/
-		/*link = link->lstnext;*/
-		/*count++;*/
-	/*}*/
-	/*i = 0;*/
-	/*link = *lst;*/
-	/*while (i < count - 1)*/
-	/*{*/
-		/*j = 0;*/
-		/*link = *lst;*/
-		/*while (j < count - 1 - i)*/
-		/*{*/
-			/*if (link->lstnext && link->dist < link->lstnext->dist)*/
-			/*{*/
-				/*if (j == 0)*/
-					/**lst = link->lstnext;*/
-				/*swap = link->lstnext;*/
-				/*link->lstnext = swap->lstnext;*/
-				/*swap->lstnext = link;*/
-				/*swap->lstprev = link->lstprev;*/
-				/*link->lstprev = swap;*/
-			/*}*/
-			/*else*/
-				/*link = link->lstnext;*/
-			/*j++;*/
-		/*}*/
-		/*i++;*/
-	/*}*/
-/*}*/
-
-t_sprite	*select_furthest(t_sprite **lst)
-{
-	t_sprite	*furthest;
-	t_sprite	*link;
-
-	link = *lst;
-	furthest = link;
-	while (link)
-	{
-		if (furthest->dist < link->dist)
-			furthest = link;
-		link = link->lstnext;
-	}
-	if (furthest->lstprev)
-		furthest->lstprev->lstnext = furthest->lstnext;
-	else
-		*lst = furthest->lstnext;
-	if (furthest->lstnext)
-		furthest->lstnext->lstprev = furthest->lstprev;
-	furthest->queued = 0;
-	return (furthest);
-}
-
-void    clean_list(t_caster *caster, t_vars *vars)
-{
-    t_sprite    *link;
-    int         spritecol;
-    int         col;
-    int         c;
-
-    link = vars->world.spritelst;
-	if (link)
-		printf(" yeet\n");
-	caster->v.invisible_on = 1;
-    while (link)
-    {
-		link->dx = vars->world.playerx - link->x;
-		link->dy = vars->world.playery - link->y;
-		link->dist = sqrt(link->dy * link->dy + link->dx * link->dx);
-		link->a = asin(link->dy / link->dist);
-		if (link->dx < 0 && link->dy < 0)
-			link->a = M_PI2 + link->a;
-		else if (link->dx > 0)
-			link->a = DEG180 - link->a;
-		link->plyrsprt_a = (vars->world.lookdir - link->a);
-		if (link->plyrsprt_a < -1)
-			link->plyrsprt_a = M_PI2 + link->plyrsprt_a;
-		else if (link->plyrsprt_a > 1)
-			link->plyrsprt_a = link->plyrsprt_a - M_PI2;
-		link->center_column = (link->plyrsprt_a / vars->world.radians_per_pixel) + (vars->img.resx >> 1);
-        link->height = (GRID / link->dist) * vars->world.proj_plane_dist;
-        link->half_height = link->height >> 1;
-        link = link->lstnext;
-	}
-	/*sort_spritelst(&(vars->world.spritelst));*/
-	while (vars->world.spritelst)
-	/*while (link)*/
-	{
-		link = select_furthest(&vars->world.spritelst);
-        c = (link->height - link->half_height);
-        spritecol = -1 * c;
-        /*link->queued = 0;*/
-		/*printf("d%f a%7.4f tb%7.4f, ta%7.4f cc%d\n",link->dist, link->a,(vars->world.lookdir - link->a), player_sprite_a, link->center_column);*/
-        /*printf("x%d y%d sc%d hh%d h%d d%f z%f tr%7.4f ta%7.4f x%d", link->x, link->y, spritecol, link->half_height, link->height, link->dist, vars->distarr[link->center_column], link->trig_r, link->trig_a, link->x);*/
-        while (spritecol < link->half_height)
-        {
-            col = link->center_column + spritecol;
-			caster->v.height = link->height;
-			caster->v.real_height = link->height;
-            if ((col > 0 && col < vars->img.resx) && link->dist < vars->distarr[col])
-            {
-                caster->v.tex_column = (vars->s.resx * (spritecol + c)) / link->height;
-                draw_texture_column(&(vars->img), &(caster->v), col, &(vars->s));
-            }
-            spritecol++;
-        }
-		/*link = link->lstnext;*/
-    }
-}
 
 void	cast_ray(t_vars *vars)
 {
@@ -285,13 +168,7 @@ void	cast_ray(t_vars *vars)
 	while (caster.column < vars->img.resx)
 	{
 		caster.a = ray_angle(vars->world.lookdir, caster.raydir);
-		tan_a = tan(caster.a);
-		caster.taniszero = 0;
-		if ((int)(tan_a * 1000000) == 0)
-		{
-			tan_a = 0.000001;
-			caster.taniszero = 1;
-		}
+		get_tan_a(caster.a, &tan_a, &caster.taniszero);
 		set_tex(vars, &caster);
 		cast_horizontal(&(vars->world), &(caster.h), caster.a, tan_a);
 		cast_vertical(&(vars->world), &(caster.v), caster.a, tan_a);
@@ -303,5 +180,6 @@ void	cast_ray(t_vars *vars)
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}
-    clean_list(&caster, vars);
+    calculate_sprites(&caster, vars);
+	draw_sprites(&caster, vars);
 }

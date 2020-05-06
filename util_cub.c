@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <libft.h>
 #include "cub3d.h"
 
 int		is_valid_cub_char(char c)
@@ -54,4 +55,58 @@ int		ft_skip_passed_func(char **str, t_isfunc is)
 	if (**str)
 		return (0);
 	return (1);
+}
+
+int     ismap(int y, int x, t_world *world)
+{
+	if (y < 0 || y >= world->map_height)
+		return (0);
+	world->map_width = ft_strlen(world->map[y]);
+	if (x < 0 || x >= world->map_width)
+		return (0);
+	return (1);
+}
+
+int     iscset(char c, char *set)
+{
+    while (*set)
+    {
+        if (c == *set)
+            return (1);
+        *set++;
+    }
+    return (0);
+}
+
+void	printf_map(char **map, int map_height)//REMOVE BEFORE SUBMIT
+{
+	int     y;
+
+    y = 0;
+    while (y < map_height)
+    {
+        printf("%s\n", map[y]);
+        y++;
+    }
+    printf("\n");
+}
+
+int		array_append(char ***map, char *line, int currentlength)
+{
+	char	**res;
+	int		i;
+
+	res = (char **)ft_calloc(currentlength + 1, sizeof(char *));
+	if (!res)
+		return (1);
+	i = 0;
+	while (i < currentlength)
+	{
+		res[i] = (*map)[i];
+		i++;
+	}
+	res[currentlength] = line;
+	free((*map));
+	*map = res;
+	return (0);
 }

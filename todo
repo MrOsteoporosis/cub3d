@@ -1,4 +1,3 @@
-bmp save
-fix sort losing sprites on edges
 norm
 test
+	map validation

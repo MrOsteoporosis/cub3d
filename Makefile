@@ -12,6 +12,7 @@
 
 NAME	=	cub3d
 CFILES	=	init.c event_basic.c movement.c raycast.c util_ray.c util_pixel.c\
+			sprite.c util_sprite.c bmp.c\
 			cub_parser.c cub_parse_meta.c cub_parse_map.c util_cub.c\
 			get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 OFILES	=	$(CFILES:%.c=objects/%.o)

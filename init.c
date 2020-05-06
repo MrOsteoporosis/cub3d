@@ -17,11 +17,11 @@
 #include <stdlib.h>
 #include "cub3d.h"
 
-#include <time.h>
+#include <time.h>//REMOVE BEFORE UPLOAD
 
 int		render(t_vars *vars)
 {
-	static clock_t	start;
+	static clock_t	start;//REMOVE BEFORE UPLOAD
 
 	if (vars->frames == 0)
 		start = clock();
@@ -71,13 +71,20 @@ int		main(int argc, char **argv)
 	mlx_hook(vars.win, 2, (1L << 0), key_press, &vars);
 	mlx_hook(vars.win, 3, (1L << 1), key_release, &vars);
 	mlx_hook(vars.win, 17, 0L, close_window, &vars);
-	vars.img.img = mlx_new_image(vars.mlx, vars.img.resx, vars.img.resy);
+	vars.img.img = mlx_new_image(vars.mlx, vars.img.resx, vars.img.resy);//DOES THIS NEED PROTECTION??
 	vars.img.addr = mlx_get_data_addr(vars.img.img,
 			&vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(vars.img.resx);
 	vars.world.proj_plane_dist = (vars.img.resx / 2) / tan(HALF_FOV);
-	vars.rate = ft_itoa(0);
+	vars.rate = ft_itoa(0);//Remove before submit
 	vars.distarr = (double* )ft_calloc(sizeof(double), vars.img.resx);
+	if (argc == 3 && !ft_strncmp(argv[2], "--save", 6))
+	{
+		clear_frame_color_sky_floor(&vars.img,
+				vars.world.colorceiling, vars.world.colorfloor);
+		cast_ray(&vars);
+		return (write_bmp(&vars.img));//TODO Write a print error exit and replace everywhere
+	}
 	mlx_loop_hook(vars.mlx, render, &vars);
 	mlx_loop(vars.mlx);
 	return (0);

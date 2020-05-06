@@ -180,6 +180,7 @@ int		ft_iswhitespace(int c);
 int     ft_skip_comma(char **str);
 int     ft_skip_passed_func(char **str, t_isfunc is);
 int		is_valid_cub_char(char c);
+int     iscset(char c, char *set);
 int     ismap(int y, int x, t_world *world);
 int		free_line_and_close(int fd, char *line);
 int		free_everything(t_vars *vars, int fd, char *line);
@@ -193,20 +194,30 @@ void	extend_horizontal(t_world *world, t_ray *ray);
 void	cast_vertical(t_world *world, t_ray *ray, double a, double tan_a);
 void	extend_vertical(t_world *world, t_ray *ray);
 void	calc_distance(t_world *world, t_caster *caster, double *distarr);
+void	calc_distance_norm(t_world *world, t_caster *caster, double *distarr);
 void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column, t_data *tex);
-void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster);
-void	queue_sprite(t_world *world, int gridy, int gridx);
-void	sort_spritelst(t_sprite **lst);
-
-int     iscset(char c, char *set);
 
 int		create_trgb(int t, int r, int g, int b);
 double	ray_angle(double lookdir, double raydir);
 int		check_bounds(t_world *world, t_ray *ray);
 int	 	ft_abs(int x);
+void	get_tan_a(double a, double *tan_a, int *taniszero);
+
+void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster);
+void	queue_sprite(t_world *world, int gridy, int gridx);
+void    calculate_sprites(t_caster *caster, t_vars *vars);
+void	draw_sprites(t_caster *caster, t_vars *vars);
+
+void	check_sprite_map(t_world *world, int gridy, int gridx);
+t_sprite	*select_furthest(t_sprite **lst);
 
 void	do_movement(t_world *world, t_movement *move);
 void	adjust_speed(double lookdir, double movedir, t_movement *move);
 void	adjust_look(double *lookdir, t_movement *move);
 int		check_collision(t_world *world, t_movement *move, int xy);
+
+int		write_bmp(t_data *data);
+int		write_bitmapfileheader(t_data *data, int fd);
+int		write_bitmapinfoheader(t_data *data, int fd);
+int		write_bitmaprgb(t_data *data, int fd);
 #endif

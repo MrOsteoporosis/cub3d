@@ -14,8 +14,6 @@
 #include <libft.h>
 #include "cub3d.h"
 
-#include <stdio.h>
-
 double	ray_angle(double lookdir, double raydir)
 {
 	double a;
@@ -44,61 +42,6 @@ int		check_bounds(t_world *world, t_ray *ray)
 	return (1);
 }
 
-void	queue_sprite(t_world *world, int gridy, int gridx)
-{
-	if (!world->spritelst)
-	{
-		printf("1st %d %d ", gridy, gridx);
-		world->spritelst = world->spritemap[gridy][gridx];
-		world->spritelstlast = world->spritelst;
-		world->spritelst->lstprev = (void *)0;
-		world->spritelst->lstnext = (void *)0;
-		world->spritelst->queued = 1;
-	}
-	else
-	{
-		printf("anotha %d %d ", gridy, gridx);
-		world->spritemap[gridy][gridx]->lstprev = world->spritelstlast;
-		world->spritemap[gridy][gridx]->lstnext = (void *)0;
-		world->spritemap[gridy][gridx]->queued = 1;
-		world->spritelstlast->lstnext = world->spritemap[gridy][gridx];
-		world->spritelstlast = world->spritemap[gridy][gridx];
-	}
-}
-void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster)
-{
-    double  x;
-    double  y;
-    int     gridx;
-    int     gridy;
-
-    x = ray->xorigin;
-    y = ray->yorigin;
-    while (ft_abs(world->playerx - x) < ft_abs(world->playerx - near->x)
-		   && ft_abs(world->playery - y) < ft_abs(world->playery - near->y))
-    {
-		/*printf("c%d x%d mx%d y%d my%d \n", caster->column, ft_abs(world->playerx - x), ft_abs(world->playerx - near->x), ft_abs(world->playery - y), ft_abs(world->playery - near->y));*/
-		gridx = x / GRID;
-		gridy = y / GRID;
-		if (world->map[gridy][gridx] == 'I'
-				&& !(world->spritemap[gridy][gridx]->queued))
-			queue_sprite(world, gridy, gridx);
-        x = x + ray->xincr;
-        y = y + ray->yincr;
-        gridx = x / GRID;
-        gridy = y / GRID;
-        if (y < 0 || y >= world->max_y)
-            break ;
-        world->map_width = ft_strlen(world->map[gridy]);
-        world->max_x = world->map_width << GRIDPOW;
-        if (x < 0 || x >= world->max_x)
-            break ;
-        if (world->map[gridy][gridx] == 'I'
-				&& !(world->spritemap[gridy][gridx]->queued))
-			queue_sprite(world, gridy, gridx);
-    }
-}
-
 int		ft_abs(int x)
 {
 	int y;
@@ -117,4 +60,14 @@ void	set_tex(t_vars *vars, t_caster *caster)
 		caster->h.tex = &(vars->so);
 	else
 		caster->h.tex = &(vars->no);
+}
+
+void	get_tan_a(double a, double *tan_a, int *taniszero) {
+		*tan_a = tan(a);
+		*taniszero = 0;
+		if ((int)(*tan_a * 1000000) == 0)
+		{
+			*tan_a = 0.000001;
+			*taniszero = 1;
+		}
 }
