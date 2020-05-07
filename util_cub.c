@@ -78,19 +78,6 @@ int     iscset(char c, char *set)
     return (0);
 }
 
-void	printf_map(char **map, int map_height)//REMOVE BEFORE SUBMIT
-{
-	int     y;
-
-    y = 0;
-    while (y < map_height)
-    {
-        printf("%s\n", map[y]);
-        y++;
-    }
-    printf("\n");
-}
-
 int		array_append(char ***map, char *line, int currentlength)
 {
 	char	**res;

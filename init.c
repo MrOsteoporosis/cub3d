@@ -17,33 +17,19 @@
 #include <stdlib.h>
 #include "cub3d.h"
 
-#include <time.h>//REMOVE BEFORE UPLOAD
-
 int		render(t_vars *vars)
 {
-	static clock_t	start;//REMOVE BEFORE UPLOAD
-
-	if (vars->frames == 0)
-		start = clock();
-	vars->frames++;
-    /*mlx_sync(1, vars->img.img);*/
+	/*mlx_sync(1, vars->img.img);*/
 	clear_frame_color_sky_floor(&(vars->img),
 			vars->world.colorceiling, vars->world.colorfloor);
 	do_movement(&(vars->world), &(vars->move));
 	cast_ray(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
-	if (vars->frames >= 3)
-	{
-		free (vars->rate);
-		vars->frames = 0;
-		vars->rate = ft_itoa((1 / ((double)(clock() - start) / (double)(CLOCKS_PER_SEC))) * 3);
-	}
-	mlx_string_put(vars->mlx, vars->win, 10, 20, 0x00FFFFFF, vars->rate);
-    /*mlx_sync(2, vars->win);*/
+	/*mlx_sync(2, vars->win);*/
 	return (0);
 }
 
-int		check_argc_argv(int argc, char **argv)
+int		check_argc_argv(int argc, char **argv, t_vars *vars)
 {
 	if (argc == 1 || (argc == 2 &&
 			ft_strncmp(argv[1] + (ft_strlen(argv[1]) - 4), ".cub", 4)))
@@ -54,6 +40,17 @@ int		check_argc_argv(int argc, char **argv)
 	return (0);
 }
 
+int		check_save_arg(int argc, char **argv)
+{
+	if (argc == 3 && !ft_strncmp(argv[2], "--save", 6))
+	{
+		clear_frame_color_sky_floor(&vars.img,
+				vars.world.colorceiling, vars.world.colorfloor);
+		cast_ray(&vars);
+		return (write_bmp(&vars.img));//TODO print_error
+	}
+}
+
 int		main(int argc, char **argv)
 {
 	t_vars	vars;
@@ -62,7 +59,7 @@ int		main(int argc, char **argv)
 	vars.mlx = mlx_init();
 	if (check_argc_argv(argc, argv))
 		return (1);
-	if (parse_cub(&vars, argv[1]))
+	if (parse_cub(&vars, argv[1]))//TODO print_error
 	{
 		perror("Error");
 		return (1);
@@ -76,15 +73,8 @@ int		main(int argc, char **argv)
 			&vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(vars.img.resx);
 	vars.world.proj_plane_dist = (vars.img.resx / 2) / tan(HALF_FOV);
-	vars.rate = ft_itoa(0);//Remove before submit
-	vars.distarr = (double* )ft_calloc(sizeof(double), vars.img.resx);
-	if (argc == 3 && !ft_strncmp(argv[2], "--save", 6))
-	{
-		clear_frame_color_sky_floor(&vars.img,
-				vars.world.colorceiling, vars.world.colorfloor);
-		cast_ray(&vars);
-		return (write_bmp(&vars.img));//TODO Write a print error exit and replace everywhere
-	}
+	vars.distarr = (double *)ft_calloc(sizeof(double), vars.img.resx);
+	check_arg_save()
 	mlx_loop_hook(vars.mlx, render, &vars);
 	mlx_loop(vars.mlx);
 	return (0);

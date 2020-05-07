@@ -39,7 +39,6 @@ void	queue_sprite(t_world *world, int gridy, int gridx)
 {
 	if (!world->spritelst)
 	{
-		/*printf("1st %d %d ", gridy, gridx);*/
 		world->spritelst = world->spritemap[gridy][gridx];
 		world->spritelstlast = world->spritelst;
 		world->spritelst->lstprev = (void *)0;
@@ -48,7 +47,6 @@ void	queue_sprite(t_world *world, int gridy, int gridx)
 	}
 	else
 	{
-		/*printf("anotha %d %d ", gridy, gridx);*/
 		world->spritemap[gridy][gridx]->lstprev = world->spritelstlast;
 		world->spritemap[gridy][gridx]->lstnext = (void *)0;
 		world->spritemap[gridy][gridx]->queued = 1;

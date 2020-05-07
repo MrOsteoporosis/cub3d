@@ -26,8 +26,6 @@ void	draw_sprites(t_caster *caster, t_vars *vars)
 		link = select_furthest(&vars->world.spritelst);
         c = (link->height - link->half_height);
         spritecol = -1 * c;
-		/*printf("d%f a%7.4f tb%7.4f, ta%7.4f cc%d\n",link->dist, link->a,(vars->world.lookdir - link->a), player_sprite_a, link->center_column);*/
-        /*printf("x%d y%d sc%d hh%d h%d d%f z%f tr%7.4f ta%7.4f x%d", link->x, link->y, spritecol, link->half_height, link->height, link->dist, vars->distarr[link->center_column], link->trig_r, link->trig_a, link->x);*/
         while (spritecol < link->half_height)
         {
             col = link->center_column + spritecol;
@@ -41,7 +39,6 @@ void	draw_sprites(t_caster *caster, t_vars *vars)
             spritecol++;
         }
     }
-
 }
 
 void    calculate_sprites(t_caster *caster, t_vars *vars)
@@ -49,8 +46,6 @@ void    calculate_sprites(t_caster *caster, t_vars *vars)
     t_sprite    *link;
 
     link = vars->world.spritelst;
-	/*if (link)*/
-		/*printf(" yeet\n");*/
 	caster->v.invisible_on = 1;
     while (link)
     {
@@ -89,10 +84,6 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster
     while (ft_abs(world->playerx - x) < ft_abs(world->playerx - near->x)
 		   && ft_abs(world->playery - y) < ft_abs(world->playery - near->y))
     {
-		/*printf("c%d x%d mx%d y%d my%d \n", caster->column, ft_abs(world->playerx - x), ft_abs(world->playerx - near->x), ft_abs(world->playery - y), ft_abs(world->playery - near->y));*/
-		/*if (world->map[gridy][gridx] == 'I'//TODO FIX by looking x -1 and y -1 (subfunction)*/
-				/*&& !(world->spritemap[gridy][gridx]->queued))*/
-			/*queue_sprite(world, gridy, gridx);*/
         x = x + ray->xincr;
         y = y + ray->yincr;
         gridx = x / GRID;
@@ -104,9 +95,6 @@ void    detect_sprites(t_ray *ray, t_ray *near, t_world *world, t_caster *caster
         if (x < 0 || x >= world->max_x)
             break ;
 		check_sprite_map(world, gridy, gridx);
-        /*if (world->map[gridy][gridx] == 'I'*/
-				/*&& !(world->spritemap[gridy][gridx]->queued))*/
-			/*queue_sprite(world, gridy, gridx);*/
     }
 }
 

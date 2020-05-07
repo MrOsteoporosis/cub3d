@@ -27,13 +27,6 @@ int		write_bitmaprgb(t_data *data, int fd)
 	{
 		y--;
 		linestart = data->addr + (data->line_length * y);
-		/*x = 0;*/
-		/*while (x < data->resx) {*/
-			/*if (write(fd, linestart + (x * data->bits_per_pixel >> 3), data->bits_per_pixel >> 3) == -1)*/
-			/*[>if (write(fd, linestart + (x * data->bits_per_pixel >> 3), 4) == -1)<]*/
-				/*return (1);*/
-			/*x++;*/
-		/*}*/
 		if (write(fd, linestart, data->resx * (data->bits_per_pixel >> 3)) == -1)
 			return (1);
 	}

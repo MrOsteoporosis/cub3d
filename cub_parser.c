@@ -81,7 +81,7 @@ int		free_line_and_close(int fd, char *line)
 	return (1);
 }
 
-int		free_everything(t_vars *vars, int fd, char *line)
+int		free_everything(t_vars *vars, int fd, char *line)//TODO rename
 {
 	int	i;
 

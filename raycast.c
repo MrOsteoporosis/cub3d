@@ -49,7 +49,7 @@ void	calc_distance(t_world *world, t_caster *caster, double *distarr)
     if (!caster->taniszero)
     {
 		caster->trig_a = sin(caster->a);
-		caster->h.dist = ft_abs((world->playery - caster->h.y) / caster->trig_a);
+		caster->h.dist = ft_abs((world->playery - caster->h.y) / caster ->trig_a);
         caster->v.dist = ft_abs((world->playery - caster->v.y) / caster->trig_a);
     }
     else

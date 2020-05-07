@@ -35,7 +35,6 @@ int		map_line_sanitize(char **line)
 	return (0);
 }
 
-
 int     validate_map_edges(int y, int x, char **map, t_vars *vars)
 {
 	int		invalid;
@@ -63,7 +62,6 @@ int     validate_map_edges(int y, int x, char **map, t_vars *vars)
         invalid += validate_map_edges(y, x + 1, map, vars);
 	else
 		invalid = 1;
-    /*printf_map(map, vars->world.map_height);*/
 	return (invalid);
 }
 
@@ -121,21 +119,16 @@ int		create_sprite_map(t_vars *vars)
 		x = 0;
 		while (vars->world.map[y][x])
 		{
-            /*printf("%c", vars->world.map[y][x]);*/
 			if (vars->world.map[y][x] == 'I')
 			{
-				/*printf("2");*/
 				vars->world.spritemap[y][x] = (t_sprite *)ft_calloc(sizeof(t_sprite), 1);
 				if (!vars->world.spritemap[y][x])
 					return (1);//TODO function that frees everything malloc b4 this
 				vars->world.spritemap[y][x]->x = x * GRID + (GRID >> 1);
 				vars->world.spritemap[y][x]->y = y * GRID + (GRID >> 1);
 			}
-            /*else*/
-                /*printf(" ");*/
 			x++;
 		}
-		/*printf("\n");*/
 		y++;
 	}
 	return (0);
@@ -166,6 +159,6 @@ int		parse_map(t_vars *vars, int fd)
 	if (validate_map(vars->world.map, vars))
 		return (free_everything(vars, fd, NULL));
 	if (create_sprite_map(vars))
-		return (1);//MEM MANAGE
+		return (1);//TODO print_error MEM MANAGE
 	return (0);
 }
