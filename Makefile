@@ -1,19 +1,19 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         ::::::::             #
-#    Makefile                                           :+:      :+:    :+:    #
+#    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
 #    By: averheij <averheij@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2020/01/15 15:20:06 by averheij       #+#    #+#                 #
-#    Updated: 2020/03/03 11:16:17 by averheij         ###   ########.fr        #
+#    Created: 2020/05/11 20:57:19 by averheij      #+#   #+#                   #
+#    Updated: 2020/05/11 20:57:19 by averheij      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	cub3d
-CFILES	=	init.c event_basic.c movement.c raycast.c util_ray.c util_pixel.c\
-			sprite.c util_sprite.c bmp.c\
-			cub_parser.c cub_parse_meta.c cub_parse_map.c util_cub.c\
+CFILES	=	init.c bmp.c events.c movement.c ray_cast.c ray_sky_dist_draw.c\
+			ray_z_util.c cub_parse_main.c cub_parse_meta.c cub_parse_map.c\
+			cub_parse_z_util_1.c cub_parse_z_util_2.c sprite.c sprite_z_util.c\
 			get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 OFILES	=	$(CFILES:%.c=objects/%.o)
 FLAGS	=	#-Werror -Wall -Wextra

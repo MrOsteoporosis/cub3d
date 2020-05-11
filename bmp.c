@@ -1,14 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   raycast.c                                          :+:      :+:    :+:   */
+/*   bmp.c                                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: averheij <marvin@42.fr>                      +#+                     */
+/*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 12:48:48 by averheij         ###   ########.fr       */
+/*   Created: 2020/05/11 17:59:32 by averheij      #+#   #+#                  */
+/*   Updated: 2020/05/11 20:47:29 by averheij      ########   odam.nl         */
 /*                                                                            */
-/* ************************************************************************** *///REPLACE
+/* ************************************************************************** */
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -27,7 +27,8 @@ int		write_bitmaprgb(t_data *data, int fd)
 	{
 		y--;
 		linestart = data->addr + (data->line_length * y);
-		if (write(fd, linestart, data->resx * (data->bits_per_pixel >> 3)) == -1)
+		if (write(fd, linestart, data->resx *
+											(data->bits_per_pixel >> 3)) == -1)
 			return (1);
 	}
 	return (0);
@@ -74,7 +75,7 @@ int		write_bmp(t_data *data)
 	int		fd;
 	int		ret;
 
-	fd = open("./save.bmp", O_CREAT|O_WRONLY);
+	fd = open("./save.bmp", O_CREAT | O_WRONLY);
 	if (fd == -1)
 		return (1);
 	if (write_bitmapfileheader(data, fd))
@@ -83,7 +84,6 @@ int		write_bmp(t_data *data)
 		return (1);
 	if (write_bitmaprgb(data, fd))
 		return (1);
-	if (close(fd) == -1)
-		return (1);
+	close(fd);
 	return (0);
 }

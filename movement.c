@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   movement.c                                         :+:      :+:    :+:   */
+/*   movement.c                                         :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: averheij <marvin@42.fr>                      +#+                     */
+/*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/02/06 10:55:59 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 11:32:21 by averheij         ###   ########.fr       */
+/*   Created: 2020/05/11 20:56:59 by averheij      #+#   #+#                  */
+/*   Updated: 2020/05/11 20:56:59 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	adjust_look(double *lookdir, t_movement *move)
 		move->lookvel += LOOKACCEL;
 	else if (move->lookright && move->lookvel > (LOOKSPEED * -1))
 		move->lookvel -= LOOKACCEL;
-    else
-        move->lookvel += move->lookvel * -0.5;
-    *lookdir += move->lookvel;
+	else
+		move->lookvel += move->lookvel * -0.5;
+	*lookdir += move->lookvel;
 	if (*lookdir >= M_PI2)
 		*lookdir = 0;
 	else if (*lookdir <= 0)

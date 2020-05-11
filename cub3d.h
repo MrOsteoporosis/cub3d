@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   cub3d.h                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 12:47:39 by averheij         ###   ########.fr       */
+/*   Created: 2020/05/11 20:57:45 by averheij      #+#   #+#                  */
+/*   Updated: 2020/05/11 20:57:46 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ typedef struct		s_vars {
 	t_data			s;
 	double			*distarr;
 	int				frames;
-	char			*rate;
 }					t_vars;
 
 typedef struct		s_ray {
@@ -170,72 +169,89 @@ typedef struct		s_caster {
 typedef int			(*t_isfunc)(int c);
 typedef int			(*t_efunc)(t_vars *vars, char *line);
 
-int			check_argc_argv(int argc, char **argv);
-int			check_save_arg(int argc, char **argv);
-int			render(t_vars *vars);
+int					check_map_arg(int argc, char **argv, t_vars *vars);
+void				check_save_arg(int argc, char **argv, t_vars *vars);
+int					render(t_vars *vars);
 
-int			close_window(t_vars *vars);
-int			key_press(int keycode, t_vars *vars);
-int			key_release(int keycode, t_vars *vars);
 
-int			parse_cub(t_vars *vars, char *map_path);
-int			call_element_parser(t_vars *vars, char *line, int *elecount);
-int			parse_res(t_vars *vars, char *line);
-void		validate_res(t_vars *vars);
-int			parse_tex(t_vars *vars, char *line);
-int			parse_color(t_vars *vars, char *line);
-int			parse_rgb_partial(int *color, char **str, int notlast);
-int			parse_map(t_vars *vars, int fd);
-int			map_line_sanitize(char **line);
-int			array_append(char ***map, char *line, int currentlength);
-int			validate_map(char **map, t_vars *vars);
-int			validate_map_edges(int x, int y, char **map, t_vars *vars);
-int			create_sprite_map(t_vars *vars);
+int					close_window(t_vars *vars);
+int					key_press(int keycode, t_vars *vars);
+int					key_release(int keycode, t_vars *vars);
+void				print_error(char *err, t_vars *vars, int fd, char *line);
+int					free_maps(t_world *world);
 
-int			ft_iswhitespace(int c);
-int			ft_skip_comma(char **str);
-int			ft_skip_passed_func(char **str, t_isfunc is);
-int			is_valid_cub_char(char c);
-int			iscset(char c, char *set);
-int			ismap(int y, int x, t_world *world);
-int			free_line_and_close(int fd, char *line);
-int			free_everything(t_vars *vars, int fd, char *line);
 
-void		clear_frame_color_sky_floor(t_data *data, int sky, int ftfloor);
-void		cast_ray(t_vars *vars);
-void		set_tex(t_vars *vars, t_caster *caster);
-void		cast_horizontal(t_world *world, t_ray *ray, double a, double tan_a);
-void		extend_horizontal(t_world *world, t_ray *ray);
-void		cast_vertical(t_world *world, t_ray *ray, double a, double tan_a);
-void		extend_vertical(t_world *world, t_ray *ray);
-void		calc_distance(t_world *world, t_caster *caster, double *distarr);
-void		calc_distance_norm(t_world *world, t_caster *caster,
-									double *distarr);
-void		draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
-									t_data *tex);
+void				parse_cub(t_vars *vars, char *map_path);
+int					call_element_parser(t_vars *vars, char *line,
+											int *elecount);
+int					parse_res(t_vars *vars, char *line);
+void				validate_res(t_vars *vars);
+int					parse_tex(t_vars *vars, char *line);
+int					parse_color(t_vars *vars, char *line);
+int					parse_rgb_partial(int *color, char **str, int notlast);
+void				parse_map(t_vars *vars, int fd);
+int					validate_map(char **map, t_vars *vars);
+int					validate_map_edges(int x, int y, char **map, t_vars *vars);
+int					create_sprite_map(t_world *world);
 
-int			create_trgb(int t, int r, int g, int b);
-double		ray_angle(double lookdir, double raydir);
-int			check_bounds(t_world *world, t_ray *ray);
-int			ft_abs(int x);
-void		get_tan_a(double a, double *tan_a, int *taniszero);
 
-void		detect_sprites(t_ray *ray, t_ray *near, t_world *world,
-									t_caster *caster);
-void		queue_sprite(t_world *world, int gridy, int gridx);
-void		calculate_sprites(t_caster *caster, t_vars *vars);
-void		draw_sprites(t_caster *caster, t_vars *vars);
+int					ismap(int y, int x, t_world *world);
+int					iscset(char c, char *set);
+int					is_valid_cub_char(char c);
+double				get_lookdir(char c);
+int					ft_iswhitespace(int c);
+int					skip_comma(char **str);
+int					skip_passed_func(char **str, t_isfunc is);
+int					create_sprite(t_sprite **sprite, int x, int y);
+void				set_grid(int *setx, int *sety, int x, int y);
+int					array_append(char ***map, char *line, int currentlength);
+int					map_line_sanitize(char **line);
 
-void		check_sprite_map(t_world *world, int gridy, int gridx);
-t_sprite	*select_furthest(t_sprite **lst);
 
-void		do_movement(t_world *world, t_movement *move);
-void		adjust_speed(double lookdir, double movedir, t_movement *move);
-void		adjust_look(double *lookdir, t_movement *move);
-int			check_collision(t_world *world, t_movement *move, int xy);
+void				clear_frame_color_sky_floor(t_data *data, int sky,
+											int ftfloor);
+void				cast_ray(t_vars *vars);
+void				set_tex(t_vars *vars, t_caster *caster);
+void				cast_horizontal(t_world *world, t_ray *ray, double a,
+											double tan_a);
+void				extend_horizontal(t_world *world, t_ray *ray);
+void				cast_vertical(t_world *world, t_ray *ray, double a,
+											double tan_a);
+void				extend_vertical(t_world *world, t_ray *ray);
+void				calc_distance(t_world *world, t_caster *caster,
+											double *distarr);
+void				calc_distance_norm(t_world *world, t_caster *caster,
+											double *distarr);
+void				draw_texture_column(t_data *frame, t_ray *ray,
+											int frame_column, t_data *tex);
 
-int			write_bmp(t_data *data);
-int			write_bitmapfileheader(t_data *data, int fd);
-int			write_bitmapinfoheader(t_data *data, int fd);
-int			write_bitmaprgb(t_data *data, int fd);
+
+int					create_trgb(int t, int r, int g, int b);
+double				ray_angle(double lookdir, double raydir);
+int					check_ray_bounds(t_world *world, t_ray *ray);
+int					ft_abs(int x);
+void				get_tan_a(double a, double *tan_a, int *taniszero);
+
+
+void				detect_sprites(t_ray *ray, t_ray *near, t_world *world,
+											t_caster *caster);
+void				queue_sprite(t_world *world, int gridy, int gridx);
+void				calculate_sprites(t_caster *caster, t_vars *vars);
+void				draw_sprites(t_caster *caster, t_vars *vars);
+
+void				check_sprite_map(t_world *world, int gridy, int gridx);
+t_sprite			*select_furthest(t_sprite **lst);
+
+
+void				do_movement(t_world *world, t_movement *move);
+void				adjust_speed(double lookdir, double movedir,
+											t_movement *move);
+void				adjust_look(double *lookdir, t_movement *move);
+int					check_collision(t_world *world, t_movement *move, int xy);
+
+
+int					write_bmp(t_data *data);
+int					write_bitmapfileheader(t_data *data, int fd);
+int					write_bitmapinfoheader(t_data *data, int fd);
+int					write_bitmaprgb(t_data *data, int fd);
 #endif

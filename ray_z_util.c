@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   util_ray.c                                         :+:      :+:    :+:   */
+/*   ray_z_util.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: averheij <marvin@42.fr>                      +#+                     */
+/*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/02/06 10:57:33 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 12:41:26 by averheij         ###   ########.fr       */
+/*   Created: 2020/05/11 20:59:38 by averheij      #+#   #+#                  */
+/*   Updated: 2020/05/11 20:59:39 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ double	ray_angle(double lookdir, double raydir)
 	return (a);
 }
 
-int		check_bounds(t_world *world, t_ray *ray)
+int		check_ray_bounds(t_world *world, t_ray *ray)
 {
-    ray->gridx = ray->x / GRID;
-    ray->gridy = ray->y / GRID;
+	ray->gridx = ray->x / GRID;
+	ray->gridy = ray->y / GRID;
 	ray->foundwall = 0;
 	ray->safe = 0;
 	if (ray->y < 0 || ray->y >= world->max_y)
@@ -62,12 +62,13 @@ void	set_tex(t_vars *vars, t_caster *caster)
 		caster->h.tex = &(vars->no);
 }
 
-void	get_tan_a(double a, double *tan_a, int *taniszero) {
-		*tan_a = tan(a);
-		*taniszero = 0;
-		if ((int)(*tan_a * 1000000) == 0)
-		{
-			*tan_a = 0.000001;
-			*taniszero = 1;
-		}
+void	get_tan_a(double a, double *tan_a, int *taniszero)
+{
+	*tan_a = tan(a);
+	*taniszero = 0;
+	if ((int)(*tan_a * 1000000) == 0)
+	{
+		*tan_a = 0.000001;
+		*taniszero = 1;
+	}
 }

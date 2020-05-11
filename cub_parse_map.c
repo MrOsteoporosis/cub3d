@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cub_parse_map.c                                    :+:      :+:    :+:   */
+/*   cub_parse_map.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/01/20 11:57:39 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 12:40:49 by averheij         ###   ########.fr       */
+/*   Created: 2020/05/11 16:55:42 by averheij      #+#   #+#                  */
+/*   Updated: 2020/05/11 20:51:21 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,49 +17,29 @@
 #include <mlx.h>
 #include "cub3d.h"
 
-int		map_line_sanitize(char **line)
-{
-	char	*res;
-	int		i;
-
-	i = 0;
-	while ((*line)[i])
-	{
-		if (!is_valid_cub_char((*line)[i]))
-			return (1);
-		i++;
-	}
-    res = ft_strjoin(*line, " ");
-    free(*line);
-    *line = res;
-	return (0);
-}
-
-int     validate_map_edges(int y, int x, char **map, t_vars *vars)
+int		validate_map_edges(int y, int x, char **map, t_vars *vars)
 {
 	int		invalid;
 
-    if (!iscset(map[y][x], "02NSWE"))
-        return (0);
-	if (map[y][x] == '0')
-		map[y][x] = 'O';
-    else if (map[y][x] == '2')
-        map[y][x] = 'I';
+	if (!iscset(map[y][x], "02NSWE"))
+		return (0);
+	if (iscset(map[y][x], "02"))
+		map[y][x] = (map[y][x] == '0') ? 'O' : 'I';
 	invalid = 0;
-    if (ismap(y - 1, x, &(vars->world)) && map[y - 1][x] != ' ')
-        invalid += validate_map_edges(y - 1, x, map, vars);
-    else
-        invalid = 1;
-    if (ismap(y + 1, x, &(vars->world)) && map[y + 1][x] != ' ')
-        invalid += validate_map_edges(y + 1, x, map, vars);
+	if (ismap(y - 1, x, &(vars->world)) && map[y - 1][x] != ' ')
+		invalid += validate_map_edges(y - 1, x, map, vars);
 	else
 		invalid = 1;
-    if (ismap(y, x - 1, &(vars->world)) && map[y][x - 1] != ' ')
-        invalid += validate_map_edges(y, x - 1, map, vars);
+	if (ismap(y + 1, x, &(vars->world)) && map[y + 1][x] != ' ')
+		invalid += validate_map_edges(y + 1, x, map, vars);
 	else
 		invalid = 1;
-    if (ismap(y, x + 1, &(vars->world)) && map[y][x + 1] != ' ')
-        invalid += validate_map_edges(y, x + 1, map, vars);
+	if (ismap(y, x - 1, &(vars->world)) && map[y][x - 1] != ' ')
+		invalid += validate_map_edges(y, x - 1, map, vars);
+	else
+		invalid = 1;
+	if (ismap(y, x + 1, &(vars->world)) && map[y][x + 1] != ' ')
+		invalid += validate_map_edges(y, x + 1, map, vars);
 	else
 		invalid = 1;
 	return (invalid);
@@ -68,64 +48,24 @@ int     validate_map_edges(int y, int x, char **map, t_vars *vars)
 int		validate_map(char **map, t_vars *vars)
 {
 	int		playerfound;
-	int		i;
-	int		i2;
-
-    playerfound = 0;
-	i = 0;
-	while (i < vars->world.map_height)
-	{
-		i2 = 0;
-		while (map[i][i2])
-		{
-			if (map[i][i2] == 'N')
-				vars->world.lookdir = DEG90;
-			else if (map[i][i2] == 'E')
-				vars->world.lookdir = 0;
-			else if (map[i][i2] == 'W')
-				vars->world.lookdir = DEG180;
-			else if (map[i][i2] == 'S')
-				vars->world.lookdir = DEG270;
-			if (map[i][i2] == 'N' || map[i][i2] == 'E' ||
-					map[i][i2] == 'W' || map[i][i2] == 'S')
-			{
-				vars->world.playerx = GRID * i2 + (GRID / 2);
-				vars->world.playery = GRID * i + (GRID / 2);
-                if (playerfound || validate_map_edges(i, i2, map, vars))
-                    return (1);
-                playerfound = 1;
-			}
-			i2++;
-		}
-		i++;
-	}
-	return (0);
-}
-
-int		create_sprite_map(t_vars *vars)
-{
 	int		y;
 	int		x;
 
-	vars->world.spritemap = (t_sprite ***)ft_calloc(sizeof(t_sprite **), vars->world.map_height);
-	if (!vars->world.spritemap)
-		return (1);
+	playerfound = 0;
 	y = 0;
 	while (y < vars->world.map_height)
 	{
-		vars->world.spritemap[y] = (t_sprite **)ft_calloc(sizeof(t_sprite *), ft_strlen(vars->world.map[y]));
-		if (!vars->world.spritemap[y])
-			return (1);//TODO function that frees everything upto there
 		x = 0;
-		while (vars->world.map[y][x])
+		while (map[y][x])
 		{
-			if (vars->world.map[y][x] == 'I')
+			if (iscset(map[y][x], "NESW"))
 			{
-				vars->world.spritemap[y][x] = (t_sprite *)ft_calloc(sizeof(t_sprite), 1);
-				if (!vars->world.spritemap[y][x])
-					return (1);//TODO function that frees everything malloc b4 this
-				vars->world.spritemap[y][x]->x = x * GRID + (GRID >> 1);
-				vars->world.spritemap[y][x]->y = y * GRID + (GRID >> 1);
+				vars->world.lookdir = get_lookdir(map[y][x]);
+				if (playerfound || validate_map_edges(y, x, map, vars))
+					return (1);
+				playerfound = 1;
+				vars->world.playerx = GRID * x + (GRID >> 1);
+				vars->world.playery = GRID * y + (GRID >> 1);
 			}
 			x++;
 		}
@@ -134,7 +74,35 @@ int		create_sprite_map(t_vars *vars)
 	return (0);
 }
 
-int		parse_map(t_vars *vars, int fd)
+int		create_sprite_map(t_world *w)
+{
+	int		y;
+	int		x;
+
+	w->spritemap = (t_sprite ***)ft_calloc(sizeof(t_sprite **), w->map_height);
+	if (!w->spritemap)
+		return (1);
+	y = 0;
+	while (y < w->map_height)
+	{
+		w->spritemap[y] = (t_sprite **)ft_calloc(sizeof(t_sprite *),
+														ft_strlen(w->map[y]));
+		if (!w->spritemap[y])
+			return (1);
+		x = 0;
+		while (w->map[y][x])
+		{
+			if (w->map[y][x] == 'I')
+				if (create_sprite(&w->spritemap[y][x], x, y))
+					return (1);
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
+
+void	parse_map(t_vars *vars, int fd)
 {
 	int		ret;
 	char	*line;
@@ -147,18 +115,17 @@ int		parse_map(t_vars *vars, int fd)
 		if (ret == 0)
 			break ;
 		if (ret == -1)
-			free_everything(vars, fd, line);
+			print_error("File read failed", vars, fd, line);
 		if (map_line_sanitize(&line))
-			return (free_everything(vars, fd, line));
+			print_error("Invalid map characters", vars, fd, line);
 		if (array_append(&(vars->world.map), line, vars->world.map_height))
-			return (free_everything(vars, fd, line));
+			print_error("Failed to append map line", vars, fd, line);
 		vars->world.map_height++;
 	}
 	free(line);
 	vars->world.max_y = vars->world.map_height * GRID;
 	if (validate_map(vars->world.map, vars))
-		return (free_everything(vars, fd, NULL));
-	if (create_sprite_map(vars))
-		return (1);//TODO print_error MEM MANAGE
-	return (0);
+		print_error("Broken map edges/Multiple player pos", vars, fd, NULL);
+	if (create_sprite_map(&vars->world))
+		print_error("Failed to allocate sprites", vars, fd, NULL);
 }

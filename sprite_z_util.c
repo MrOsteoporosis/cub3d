@@ -1,14 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   raycast.c                                          :+:      :+:    :+:   */
+/*   sprite_z_util.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: averheij <marvin@42.fr>                      +#+                     */
+/*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/02/06 10:51:20 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/09 12:48:48 by averheij         ###   ########.fr       */
+/*   Created: 2020/05/11 20:53:04 by averheij      #+#   #+#                  */
+/*   Updated: 2020/05/11 20:53:06 by averheij      ########   odam.nl         */
 /*                                                                            */
-/* ************************************************************************** *///REPLACE
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -35,7 +35,7 @@ t_sprite	*select_furthest(t_sprite **lst)
 	return (furthest);
 }
 
-void	queue_sprite(t_world *world, int gridy, int gridx)
+void		queue_sprite(t_world *world, int gridy, int gridx)
 {
 	if (!world->spritelst)
 	{
@@ -55,7 +55,7 @@ void	queue_sprite(t_world *world, int gridy, int gridx)
 	}
 }
 
-void	check_sprite_map(t_world *world, int gridy, int gridx)
+void		check_sprite_map(t_world *world, int gridy, int gridx)
 {
 	if (ismap(gridy, gridx, world)
 			&& world->map[gridy][gridx] == 'I'

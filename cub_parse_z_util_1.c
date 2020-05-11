@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   util_cub.c                                         :+:      :+:    :+:   */
+/*   cub_parse_z_util_1.c                               :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: averheij <marvin@42.fr>                      +#+                     */
+/*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/02/28 13:23:26 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/05 13:19:47 by averheij         ###   ########.fr       */
+/*   Created: 2020/05/11 14:33:47 by averheij      #+#   #+#                  */
+/*   Updated: 2020/05/11 16:38:30 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,54 +30,6 @@ int		is_valid_cub_char(char c)
 	return (0);
 }
 
-int		ft_iswhitespace(int c)
-{
-	if (c == 32 || (c >= 9 && c <= 13))
-		return (1);
-	else
-		return (0);
-}
-
-int		ft_skip_comma(char **str)
-{
-	if (!(**str == ','))
-		return (1);
-	(*str)++;
-	if (**str)
-		return (0);
-	return (1);
-}
-
-int		ft_skip_passed_func(char **str, t_isfunc is)
-{
-	while (**str && is(**str))
-		(*str)++;
-	if (**str)
-		return (0);
-	return (1);
-}
-
-int     ismap(int y, int x, t_world *world)
-{
-	if (y < 0 || y >= world->map_height)
-		return (0);
-	world->map_width = ft_strlen(world->map[y]);
-	if (x < 0 || x >= world->map_width)
-		return (0);
-	return (1);
-}
-
-int     iscset(char c, char *set)
-{
-    while (*set)
-    {
-        if (c == *set)
-            return (1);
-        *set++;
-    }
-    return (0);
-}
-
 int		array_append(char ***map, char *line, int currentlength)
 {
 	char	**res;
@@ -95,5 +47,45 @@ int		array_append(char ***map, char *line, int currentlength)
 	res[currentlength] = line;
 	free((*map));
 	*map = res;
+	return (0);
+}
+
+double	get_lookdir(char c)
+{
+	if (c == 'N')
+		return (DEG90);
+	else if (c == 'E')
+		return (0);
+	else if (c == 'W')
+		return (DEG180);
+	else if (c == 'S')
+		return (DEG270);
+}
+
+int		map_line_sanitize(char **line)
+{
+	char	*res;
+	int		i;
+
+	i = 0;
+	while ((*line)[i])
+	{
+		if (!is_valid_cub_char((*line)[i]))
+			return (1);
+		i++;
+	}
+	res = ft_strjoin(*line, " ");
+	free(*line);
+	*line = res;
+	return (0);
+}
+
+int		create_sprite(t_sprite **sprite, int x, int y)
+{
+	*sprite = (t_sprite *)ft_calloc(sizeof(t_sprite), 1);
+	if (!sprite)
+		return (1);
+	(*sprite)->x = x * GRID + (GRID >> 1);
+	(*sprite)->y = y * GRID + (GRID >> 1);
 	return (0);
 }

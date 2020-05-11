@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cub_parse_meta.c                                   :+:      :+:    :+:   */
+/*   cub_parse_meta.c                                   :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: averheij <marvin@42.fr>                      +#+                     */
+/*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/02/28 13:27:44 by averheij       #+#    #+#                */
-/*   Updated: 2020/03/05 12:52:19 by averheij         ###   ########.fr       */
+/*   Created: 2020/05/11 16:57:29 by averheij      #+#   #+#                  */
+/*   Updated: 2020/05/11 16:57:30 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int		parse_rgb_partial(int *color, char **str, int notlast)
 	if (!ft_isdigit(**str))
 		return (1);
 	*color = ft_atoi(*str);
-	if (notlast && ft_skip_passed_func(str, &ft_isdigit))
+	if (notlast && skip_passed_func(str, &ft_isdigit))
 		return (1);
-	if (notlast && ft_skip_comma(str))
+	if (notlast && skip_comma(str))
 		return (1);
 	return (0);
 }
@@ -38,7 +38,7 @@ int		parse_color(t_vars *vars, char *line)
 	else if (!ft_strncmp(line, "F", 1))
 		colorpointer = &(vars->world.colorfloor);
 	line++;
-	if (ft_skip_passed_func(&line, &ft_iswhitespace))
+	if (skip_passed_func(&line, &ft_iswhitespace))
 		return (1);
 	if (parse_rgb_partial(&red, &line, 1))
 		return (1);
@@ -68,14 +68,14 @@ void	validate_res(t_vars *vars)
 int		parse_res(t_vars *vars, char *line)
 {
 	line++;
-	if (ft_skip_passed_func(&line, &ft_iswhitespace))
+	if (skip_passed_func(&line, &ft_iswhitespace))
 		return (1);
 	if (!ft_isdigit(*line))
 		return (1);
 	vars->img.resx = ft_atoi(line);
-	if (ft_skip_passed_func(&line, &ft_isdigit))
+	if (skip_passed_func(&line, &ft_isdigit))
 		return (1);
-	if (ft_skip_passed_func(&line, &ft_iswhitespace))
+	if (skip_passed_func(&line, &ft_iswhitespace))
 		return (1);
 	if (!ft_isdigit(*line))
 		return (1);
@@ -89,32 +89,27 @@ int		parse_res(t_vars *vars, char *line)
 
 int		parse_tex(t_vars *vars, char *line)
 {
-	t_data	*tex;
+	t_data	*t;
 
 	if (!ft_strncmp(line, "NO", 2))
-		tex = &(vars->no);
-	else if (!ft_strncmp(line, "SO", 2))
-		tex = &(vars->so);
-	else if (!ft_strncmp(line, "WE", 2))
-		tex = &(vars->we);
-	else if (!ft_strncmp(line, "EA", 2))
-		tex = &(vars->ea);
-	else if (!ft_strncmp(line, "S ", 2))
-		tex = &(vars->s);
-	if (ft_skip_passed_func(&line, &ft_isalpha))
-		return (1);
-	if (ft_skip_passed_func(&line, &ft_iswhitespace))
+		t = &(vars->no);
+	else if (!ft_strncmp(line, "SO", 2) || !ft_strncmp(line, "WE", 2))
+		t = !ft_strncmp(line, "SO", 2) ? &(vars->so) : &(vars->we);
+	else if (!ft_strncmp(line, "EA", 2) || !ft_strncmp(line, "S ", 2))
+		t = !ft_strncmp(line, "EA", 2) ? &(vars->ea) : &(vars->s);
+	line += 2;
+	if (skip_passed_func(&line, &ft_iswhitespace))
 		return (1);
 	if (ft_strlen(line) > 4
 			&& !ft_strncmp((line + (ft_strlen(line) - 4)), ".png", 4))
-		tex->img = mlx_png_file_to_image(vars->mlx, line, &tex->resx, &tex->resy);
+		t->img = mlx_png_file_to_image(vars->mlx, line, &t->resx, &t->resy);
 	else
-		tex->img = mlx_xpm_file_to_image(vars->mlx, line, &tex->resx, &tex->resy);
-	if (!tex->img)
+		t->img = mlx_xpm_file_to_image(vars->mlx, line, &t->resx, &t->resy);
+	if (!t->img)
 		return (1);
-	tex->addr = mlx_get_data_addr(tex->img,
-			&tex->bits_per_pixel, &tex->line_length, &tex->endian);
-	if (!tex->addr)
+	t->addr = mlx_get_data_addr(t->img,
+			&t->bits_per_pixel, &t->line_length, &t->endian);
+	if (!t->addr)
 		return (1);
 	return (0);
 }
