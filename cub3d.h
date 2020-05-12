@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/11 20:57:45 by averheij      #+#   #+#                  */
-/*   Updated: 2020/05/11 20:57:46 by averheij      ########   odam.nl         */
+/*   Updated: 2020/05/12 11:57:47 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,8 @@ int					key_press(int keycode, t_vars *vars);
 int					key_release(int keycode, t_vars *vars);
 void				print_error(char *err, t_vars *vars, int fd, char *line);
 int					free_maps(t_world *world);
+int					free_spritemap(t_world *world);
+int					free_map(t_world *world);
 
 
 void				parse_cub(t_vars *vars, char *map_path);

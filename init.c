@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 15:30:43 by averheij       #+#    #+#                */
-/*   Updated: 2020/05/11 20:50:07 by averheij      ########   odam.nl         */
+/*   Updated: 2020/05/12 11:45:21 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,6 @@ int		main(int argc, char **argv)
 	vars.mlx = mlx_init();
 	check_map_arg(argc, argv, &vars);
 	parse_cub(&vars, argv[1]);
-	vars.win = mlx_new_window(vars.mlx, vars.img.resx, vars.img.resy, "cub3d");
-	mlx_hook(vars.win, 2, (1L << 0), key_press, &vars);
-	mlx_hook(vars.win, 3, (1L << 1), key_release, &vars);
-	mlx_hook(vars.win, 17, 0L, close_window, &vars);
 	vars.img.img = mlx_new_image(vars.mlx, vars.img.resx, vars.img.resy);
 	if (!vars.img.img)
 		print_error("Failed to allocate image", &vars, 0, NULL);
@@ -71,6 +67,10 @@ int		main(int argc, char **argv)
 	vars.world.proj_plane_dist = (vars.img.resx / 2) / tan(HALF_FOV);
 	vars.distarr = (double *)ft_calloc(sizeof(double), vars.img.resx);
 	check_save_arg(argc, argv, &vars);
+	vars.win = mlx_new_window(vars.mlx, vars.img.resx, vars.img.resy, "cub3d");
+	mlx_hook(vars.win, 2, (1L << 0), key_press, &vars);
+	mlx_hook(vars.win, 3, (1L << 1), key_release, &vars);
+	mlx_hook(vars.win, 17, 0L, close_window, &vars);
 	mlx_loop_hook(vars.mlx, render, &vars);
 	mlx_loop(vars.mlx);
 	return (0);

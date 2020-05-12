@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/11 17:31:06 by averheij      #+#   #+#                  */
-/*   Updated: 2020/05/11 17:38:24 by averheij      ########   odam.nl         */
+/*   Updated: 2020/05/12 12:00:19 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,43 @@
 #include <get_next_line.h>
 #include <libft.h>
 #include "cub3d.h"
+
+int		free_spritemap(t_world *world)
+{
+	int		y;
+	int		x;
+
+	y = 0;
+	while (world->spritemap && world->spritemap[y] && y < world->map_height)
+	{
+		x = 0;
+		while (x < ft_strlen(world->map[y]))
+		{
+			if (world->spritemap[y][x])
+				free(world->spritemap[y][x]);
+			x++;
+		}
+		free(world->spritemap[y]);
+		y++;
+	}
+	free(world->spritemap);
+	return (1);
+}
+
+int		free_map(t_world *world)
+{
+	int		y;
+
+	y = 0;
+	while (world->map && y < world->map_height)
+	{
+		free(world->map[y]);
+		y++;
+	}
+	if (world->map)
+		free(world->map);
+	return (1);
+}
 
 int		call_element_parser(t_vars *vars, char *line, int *elecount)
 {

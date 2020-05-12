@@ -6,12 +6,10 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/11 17:59:32 by averheij      #+#   #+#                  */
-/*   Updated: 2020/05/11 20:47:29 by averheij      ########   odam.nl         */
+/*   Updated: 2020/05/12 12:21:01 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "cub3d.h"

@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/11 16:55:42 by averheij      #+#   #+#                  */
-/*   Updated: 2020/05/11 20:51:21 by averheij      ########   odam.nl         */
+/*   Updated: 2020/05/12 11:50:15 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		validate_map(char **map, t_vars *vars)
 		}
 		y++;
 	}
-	return (0);
+	return (!playerfound);
 }
 
 int		create_sprite_map(t_world *w)
@@ -125,7 +125,7 @@ void	parse_map(t_vars *vars, int fd)
 	free(line);
 	vars->world.max_y = vars->world.map_height * GRID;
 	if (validate_map(vars->world.map, vars))
-		print_error("Broken map edges/Multiple player pos", vars, fd, NULL);
+		print_error("Broken map edges/Invalid player pos", vars, fd, NULL);
 	if (create_sprite_map(&vars->world))
 		print_error("Failed to allocate sprites", vars, fd, NULL);
 }
