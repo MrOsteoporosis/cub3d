@@ -5,8 +5,8 @@
 /*                                                     +:+                    */
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/05/11 20:57:45 by averheij      #+#   #+#                  */
-/*   Updated: 2020/05/12 11:57:47 by averheij      ########   odam.nl         */
+/*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
+/*   Updated: 2020/05/29 13:43:33 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ typedef struct		s_vars {
 	t_data			ea;
 	t_data			s;
 	double			*distarr;
-	int				frames;
 }					t_vars;
 
 typedef struct		s_ray {

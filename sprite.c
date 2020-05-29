@@ -5,8 +5,8 @@
 /*                                                     +:+                    */
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/05/11 20:52:02 by averheij      #+#   #+#                  */
-/*   Updated: 2020/05/11 20:52:10 by averheij      ########   odam.nl         */
+/*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
+/*   Updated: 2020/05/29 13:44:58 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void	calculate_sprites(t_caster *caster, t_vars *vars)
 		else if (link->dx > 0)
 			link->a = DEG180 - link->a;
 		link->plyrsprt_a = (vars->world.lookdir - link->a);
-		if (link->plyrsprt_a < -1)//TODO Must be a better value than -1
+		if (link->plyrsprt_a < -1 * FOV)
 			link->plyrsprt_a = M_PI2 + link->plyrsprt_a;
-		else if (link->plyrsprt_a > 1)
+		else if (link->plyrsprt_a > 1 * FOV)
 			link->plyrsprt_a = link->plyrsprt_a - M_PI2;
 		link->center_column = (link->plyrsprt_a / vars->world.radians_per_pixel)
 														+ (vars->img.resx >> 1);
