@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 13:43:33 by averheij      ########   odam.nl         */
+/*   Updated: 2020/05/29 16:09:24 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,10 +168,10 @@ typedef struct		s_caster {
 typedef int			(*t_isfunc)(int c);
 typedef int			(*t_efunc)(t_vars *vars, char *line);
 
-int					check_map_arg(int argc, char **argv, t_vars *vars);
+void				check_map_arg(int argc, char **argv, t_vars *vars);
 void				check_save_arg(int argc, char **argv, t_vars *vars);
+void				filthy_hooker(t_vars *vars);
 int					render(t_vars *vars);
-
 
 int					close_window(t_vars *vars);
 int					key_press(int keycode, t_vars *vars);
@@ -180,7 +180,6 @@ void				print_error(char *err, t_vars *vars, int fd, char *line);
 int					free_maps(t_world *world);
 int					free_spritemap(t_world *world);
 int					free_map(t_world *world);
-
 
 void				parse_cub(t_vars *vars, char *map_path);
 int					call_element_parser(t_vars *vars, char *line,
@@ -195,7 +194,6 @@ int					validate_map(char **map, t_vars *vars);
 int					validate_map_edges(int x, int y, char **map, t_vars *vars);
 int					create_sprite_map(t_world *world);
 
-
 int					ismap(int y, int x, t_world *world);
 int					iscset(char c, char *set);
 int					is_valid_cub_char(char c);
@@ -207,7 +205,6 @@ int					create_sprite(t_sprite **sprite, int x, int y);
 void				set_grid(int *setx, int *sety, int x, int y);
 int					array_append(char ***map, char *line, int currentlength);
 int					map_line_sanitize(char **line);
-
 
 void				clear_frame_color_sky_floor(t_data *data, int sky,
 											int ftfloor);
@@ -226,13 +223,11 @@ void				calc_distance_norm(t_world *world, t_caster *caster,
 void				draw_texture_column(t_data *frame, t_ray *ray,
 											int frame_column, t_data *tex);
 
-
 int					create_trgb(int t, int r, int g, int b);
 double				ray_angle(double lookdir, double raydir);
 int					check_ray_bounds(t_world *world, t_ray *ray);
 int					ft_abs(int x);
 void				get_tan_a(double a, double *tan_a, int *taniszero);
-
 
 void				detect_sprites(t_ray *ray, t_ray *near, t_world *world,
 											t_caster *caster);
@@ -243,13 +238,11 @@ void				draw_sprites(t_caster *caster, t_vars *vars);
 void				check_sprite_map(t_world *world, int gridy, int gridx);
 t_sprite			*select_furthest(t_sprite **lst);
 
-
 void				do_movement(t_world *world, t_movement *move);
 void				adjust_speed(double lookdir, double movedir,
 											t_movement *move);
 void				adjust_look(double *lookdir, t_movement *move);
 int					check_collision(t_world *world, t_movement *move, int xy);
-
 
 int					write_bmp(t_data *data);
 int					write_bitmapfileheader(t_data *data, int fd);

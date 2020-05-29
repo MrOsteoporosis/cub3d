@@ -6,12 +6,11 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 13:43:54 by averheij      ########   odam.nl         */
+/*   Updated: 2020/05/29 15:44:22 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <unistd.h>
 #include <libft.h>
 #include "cub3d.h"
 
@@ -74,9 +73,6 @@ int		map_line_sanitize(char **line)
 			return (1);
 		i++;
 	}
-	res = ft_strjoin(*line, " ");
-	free(*line);
-	*line = res;
 	return (0);
 }
 

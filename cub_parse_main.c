@@ -6,13 +6,13 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 13:43:39 by averheij      ########   odam.nl         */
+/*   Updated: 2020/05/29 16:02:33 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <stdlib.h>
 #include <fcntl.h>
+#include <stdlib.h>
 #include <get_next_line.h>
 #include <libft.h>
 #include "cub3d.h"
