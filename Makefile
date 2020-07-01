@@ -6,7 +6,7 @@
 #    By: averheij <averheij@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/05/29 15:42:33 by averheij      #+#    #+#                  #
-#    Updated: 2020/05/29 15:42:34 by averheij      ########   odam.nl          #
+#    Updated: 2020/07/01 13:34:00 by averheij      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,15 +19,17 @@ OFILES	=	$(CFILES:%.c=objects/%.o)
 FLAGS	=	#-Werror -Wall -Wextra
 FLAGS	+= 	-g
 CC		=	gcc $(FLAGS)
+OBJDIR	=	./objects
+GNLDIR	=	./objects/get_next_line
 
 # LINUX	
-MLX_DIR	=	mlxlinux
-MLX_NAME=	mlx_Linux
+MLX_DIR		=	mlxlinux
+MLX_NAME	=	mlx_Linux
 MLX_INCLUDE	=	mlxlinux
 EXTRA_FLAGS	=	-lz -lm -lX11 -lXext
 #MAC
-#MLX_DIR	=	mlx
-#MLX_NAME=	mlx
+#MLX_DIR		=	mlx
+#MLX_NAME	=	mlx
 #MLX_INCLUDE	=	mlx
 #EXTRA_FLAGS	=	-framework OpenGL -framework AppKit libmlx.dylib -fsanitize=address
 
@@ -36,18 +38,23 @@ CLEAR	=	\033[0m
 
 all: $(NAME)
 
-$(NAME): $(OFILES)
+$(NAME): $(OBJDIR) $(GNLDIR) $(OFILES)
 	@echo "$(BOLD)/--------     mlx     --------\\ $(CLEAR)"
 	make -C $(MLX_DIR)
-	#cp $(MLX_DIR)/libmlx.dylib .
+	@#cp $(MLX_DIR)/libmlx.dylib .
 	@echo ""
 	@echo "$(BOLD)/--------    libft    --------\\ $(CLEAR)"
 	make -C libft
 	@echo ""
 	$(CC) -o $(NAME) $(OFILES) -L$(MLX_DIR) -l$(MLX_NAME) -Llibft -lft $(EXTRA_FLAGS)
 
+$(OBJDIR):
+	mkdir -p $@
+
+$(GNLDIR):
+	mkdir -p $@
+
 objects/%.o: %.c
-	@printf "Compiling $<	| "
 	$(CC) -I$(MLX_INCLUDE) -Ilibft -Iget_next_line -c $< -o $@
 
 clean:
