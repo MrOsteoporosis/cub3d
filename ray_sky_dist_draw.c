@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 13:44:48 by averheij      ########   odam.nl         */
+/*   Updated: 2020/07/01 14:50:25 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,6 @@ void	draw_texture_column(t_data *frame, t_ray *ray, int frame_column,
 
 void	calc_distance(t_world *world, t_caster *cast, double *distarr)
 {
-	double	temp;
-	double	dist;
-	int		height;
-
 	if (!cast->taniszero)
 	{
 		cast->trig_a = sin(cast->a);
@@ -65,10 +61,10 @@ void	calc_distance(t_world *world, t_caster *cast, double *distarr)
 		cast->near = cast->ftprev;
 	distarr[cast->column] = cast->near->dist;
 	cast->ftprev = cast->near;
-	calc_distance_norm(world, cast, distarr);
+	calc_distance_norm(world, cast);
 }
 
-void	calc_distance_norm(t_world *world, t_caster *caster, double *distarr)
+void	calc_distance_norm(t_world *world, t_caster *caster)
 {
 	caster->near->dist = caster->near->dist * cos(caster->raydir);
 	caster->near->tex_column = (caster->near->tex->resx *

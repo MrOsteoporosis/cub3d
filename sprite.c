@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 13:44:58 by averheij      ########   odam.nl         */
+/*   Updated: 2020/07/01 14:52:41 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,7 @@ void	calculate_sprites(t_caster *caster, t_vars *vars)
 	}
 }
 
-void	detect_sprites(t_ray *ray, t_ray *near, t_world *world,
-															t_caster *caster)
+void	detect_sprites(t_ray *ray, t_ray *near, t_world *world)
 {
 	double	x;
 	double	y;

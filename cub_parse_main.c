@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 16:02:33 by averheij      ########   odam.nl         */
+/*   Updated: 2020/07/01 14:51:44 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 int		free_spritemap(t_world *world)
 {
 	int		y;
-	int		x;
+	size_t	x;
 
 	y = 0;
 	while (world->spritemap && world->spritemap[y] && y < world->map_height)
@@ -77,6 +77,7 @@ int		call_element_parser(t_vars *vars, char *line, int *elecount)
 		}
 		i++;
 	}
+	return (0);
 }
 
 void	parse_cub(t_vars *vars, char *map_path)

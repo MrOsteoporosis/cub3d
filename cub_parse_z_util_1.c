@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 15:44:22 by averheij      ########   odam.nl         */
+/*   Updated: 2020/07/01 14:52:14 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ double	get_lookdir(char c)
 		return (DEG180);
 	else if (c == 'S')
 		return (DEG270);
+	return(0);
 }
 
 int		map_line_sanitize(char **line)
 {
-	char	*res;
 	int		i;
 
 	i = 0;

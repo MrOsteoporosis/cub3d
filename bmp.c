@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 13:42:42 by averheij      ########   odam.nl         */
+/*   Updated: 2020/07/01 14:55:02 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,23 @@ int		write_bitmaprgb(t_data *data, int fd)
 	int			y;
 	int			x;
 	const void	*linestart;
+	char		zero;
 
+	zero = 0;
 	y = data->resy;
 	while (y > 0)
 	{
 		y--;
 		linestart = data->addr + (data->line_length * y);
-		if (write(fd, linestart, data->resx *
-											(data->bits_per_pixel >> 3)) == -1)
-			return (1);
+		x = 0;
+		while (x < data->resx)
+		{
+			if (write(fd, linestart + x, data->bits_per_pixel >> 3) == -1)
+				return (1);
+			if (write(fd, &zero, 1) == -1)
+				return (1);
+			x++;
+		}
 	}
 	return (0);
 }
@@ -40,7 +48,7 @@ int		write_bitmapinfoheader(t_data *data, int fd)
 
 	header[1] = data->resx;
 	header[2] = data->resy;
-	header[4] = data->bits_per_pixel;
+	header[4] = data->bits_per_pixel + 8;
 	i = 0;
 	while (i < 11)
 	{
@@ -57,7 +65,8 @@ int		write_bitmapfileheader(t_data *data, int fd)
 	static int	size[5] = {2, 4, 2, 2, 4};
 	int			i;
 
-	header[1] = (data->resx * data->resy * (data->bits_per_pixel >> 3)) + 55;
+	header[1] = (data->resx * data->resy * ((data->bits_per_pixel >> 3) + 1))
+					+ 55;
 	i = 0;
 	while (i < 5)
 	{
@@ -71,7 +80,6 @@ int		write_bitmapfileheader(t_data *data, int fd)
 int		write_bmp(t_data *data)
 {
 	int		fd;
-	int		ret;
 
 	fd = open("./save.bmp", O_CREAT | O_WRONLY);
 	if (fd == -1)

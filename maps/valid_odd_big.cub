@@ -1,0 +1,22 @@
+R 1911 1067
+NO ./textures/colorstone.png
+SO ./textures/cage.png
+WE ./textures/mossy.png
+
+EA ./textures/mossy.png
+S ./textures/barrel.png
+F 220,100,0
+C 225,30,0
+1111111111  111
+1000000001 11011
+1002220001110001
+1002220000100001
+1002220000000001
+1100000000000001
+ 110000000000011
+  1111111111011
+           101
+           101
+           101
+           1N1
+            1

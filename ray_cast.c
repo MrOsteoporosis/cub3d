@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 13:44:46 by averheij      ########   odam.nl         */
+/*   Updated: 2020/07/01 14:53:15 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ void	cast_ray(t_vars *vars)
 		calc_distance(&(vars->world), &caster, vars->distarr);
 		draw_texture_column(&(vars->img), caster.near, caster.column,
 				caster.near->tex);
-		detect_sprites(&(caster.v), caster.near, &(vars->world), &(caster));
-		detect_sprites(&(caster.h), caster.near, &(vars->world), &(caster));
+		detect_sprites(&(caster.v), caster.near, &(vars->world));
+		detect_sprites(&(caster.h), caster.near, &(vars->world));
 		caster.raydir -= vars->world.radians_per_pixel;
 		caster.column++;
 	}

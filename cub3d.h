@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 16:09:24 by averheij      ########   odam.nl         */
+/*   Updated: 2020/07/01 14:52:58 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,8 +218,7 @@ void				cast_vertical(t_world *world, t_ray *ray, double a,
 void				extend_vertical(t_world *world, t_ray *ray);
 void				calc_distance(t_world *world, t_caster *caster,
 											double *distarr);
-void				calc_distance_norm(t_world *world, t_caster *caster,
-											double *distarr);
+void				calc_distance_norm(t_world *world, t_caster *caster);
 void				draw_texture_column(t_data *frame, t_ray *ray,
 											int frame_column, t_data *tex);
 
@@ -229,8 +228,7 @@ int					check_ray_bounds(t_world *world, t_ray *ray);
 int					ft_abs(int x);
 void				get_tan_a(double a, double *tan_a, int *taniszero);
 
-void				detect_sprites(t_ray *ray, t_ray *near, t_world *world,
-											t_caster *caster);
+void				detect_sprites(t_ray *ray, t_ray *near, t_world *world);
 void				queue_sprite(t_world *world, int gridy, int gridx);
 void				calculate_sprites(t_caster *caster, t_vars *vars);
 void				draw_sprites(t_caster *caster, t_vars *vars);
