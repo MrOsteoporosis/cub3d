@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 12:41:39 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 14:25:01 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,32 +27,34 @@ void	print_map(t_vars *vars, char **map)
 	}
 }
 
+int		validate_grid(int y, int x, char **map, t_vars *vars)
+{
+	if (ismap(y, x, &(vars->world)) && map[y][x] != ' ')
+		return (validate_map_edges(y, x, map, vars));
+	else
+		return (1);
+}
+
 int		validate_map_edges(int y, int x, char **map, t_vars *vars)
 {
 	int		invalid;
 
-	print_map(vars, map);
 	if (!iscset(map[y][x], "02"))
 		return ((iscset(map[y][x], "NSWE")));
-	if (iscset(map[y][x], "02"))
+	else
 		map[y][x] = (map[y][x] == '0') ? 'O' : 'I';
 	invalid = 0;
-	if (ismap(y - 1, x, &(vars->world)) && map[y - 1][x] != ' ')
-		invalid += validate_map_edges(y - 1, x, map, vars);
-	else
-		invalid = 1;
-	if (ismap(y + 1, x, &(vars->world)) && map[y + 1][x] != ' ')
-		invalid += validate_map_edges(y + 1, x, map, vars);
-	else
-		invalid = 1;
-	if (ismap(y, x - 1, &(vars->world)) && map[y][x - 1] != ' ')
-		invalid += validate_map_edges(y, x - 1, map, vars);
-	else
-		invalid = 1;
-	if (ismap(y, x + 1, &(vars->world)) && map[y][x + 1] != ' ')
-		invalid += validate_map_edges(y, x + 1, map, vars);
-	else
-		invalid = 1;
+	invalid += validate_grid(y - 1, x, map, vars);
+	invalid += validate_grid(y + 1, x, map, vars);
+	invalid += validate_grid(y, x - 1, map, vars);
+	invalid += validate_grid(y, x + 1, map, vars);
+	if (DIAGONAL)
+	{
+		invalid += validate_grid(y - 1, x - 1, map, vars);
+		invalid += validate_grid(y + 1, x + 1, map, vars);
+		invalid += validate_grid(y + 1, x - 1, map, vars);
+		invalid += validate_grid(y - 1, x + 1, map, vars);
+	}
 	return (invalid);
 }
 
@@ -69,12 +71,9 @@ int		validate_map(char **map, t_vars *vars)
 		x = 0;
 		while (map[y][x])
 		{
-			printf("%c", map[y][x]);
 			if (iscset(map[y][x], "NESW"))
 			{
 				vars->world.lookdir = get_lookdir(&(map[y][x]));
-				printf("\nvalidating edges\n");
-				printf("%s\n", map[y]);
 				if (playerfound || validate_map_edges(y, x, map, vars))
 					return (1);
 				playerfound = 1;
@@ -83,7 +82,6 @@ int		validate_map(char **map, t_vars *vars)
 			}
 			x++;
 		}
-		printf("\n");
 		y++;
 	}
 	return (!playerfound);
@@ -127,7 +125,6 @@ void	parse_map(t_vars *vars, int fd)
 	{
 		line = NULL;
 		ret = get_next_line(fd, &line);
-		printf("%s\n", line);
 		if (ret == 0 && !*line)
 			break ;
 		if (ret == -1)

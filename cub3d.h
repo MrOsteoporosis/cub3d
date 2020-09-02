@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 12:24:45 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 14:22:58 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define GRID   512
 # define GRIDPOW	9
 # define INVISIBLE	0x000000
+# define DIAGONAL	0
 
 /*
 ** linux keycodes
@@ -132,6 +133,7 @@ typedef struct		s_vars {
 	t_data			ea;
 	t_data			s;
 	double			*distarr;
+	int				save;
 }					t_vars;
 
 typedef struct		s_ray {
@@ -171,7 +173,7 @@ typedef int			(*t_isfunc)(int c);
 typedef int			(*t_efunc)(t_vars *vars, char *line);
 
 void				check_map_arg(int argc, char **argv, t_vars *vars);
-void				check_save_arg(int argc, char **argv, t_vars *vars);
+void				check_save_arg(t_vars *vars);
 void				filthy_hooker(t_vars *vars);
 int					render(t_vars *vars);
 
@@ -194,6 +196,7 @@ int					parse_rgb_partial(int *color, char **str, int notlast);
 void				parse_map(t_vars *vars, int fd);
 int					validate_map(char **map, t_vars *vars);
 int					validate_map_edges(int x, int y, char **map, t_vars *vars);
+int					validate_grid(int y, int x, char **map, t_vars *vars);
 int					create_sprite_map(t_world *world);
 
 int					ismap(int y, int x, t_world *world);
@@ -204,7 +207,7 @@ int					ft_iswhitespace(int c);
 int					skip_comma(char **str);
 int					skip_passed_func(char **str, t_isfunc is);
 int					create_sprite(t_sprite **sprite, int x, int y);
-void				set_grid(int *setx, int *sety, int x, int y);
+//void				set_grid(int *setx, int *sety, int x, int y);
 int					array_append(char ***map, char *line, int currentlength);
 int					map_line_sanitize(char **line);
 

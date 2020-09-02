@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 16:12:19 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 14:23:12 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,13 @@ void	check_map_arg(int argc, char **argv, t_vars *vars)
 	if (argc == 1 || (argc == 2 &&
 			ft_strncmp(argv[1] + (ft_strlen(argv[1]) - 4), ".cub", 4)))
 		print_error("No valid map path given", vars, 0, (void *)0);
+	if (argc == 3 && !ft_strncmp(argv[2], "--save", 6))
+		vars->save = 1;
 }
 
-void	check_save_arg(int argc, char **argv, t_vars *vars)
+void	check_save_arg(t_vars *vars)
 {
-	if (argc == 3 && !ft_strncmp(argv[2], "--save", 6))
+	if (vars->save)
 	{
 		clear_frame_color_sky_floor(&vars->img,
 				vars->world.colorceiling, vars->world.colorfloor);
@@ -76,7 +78,7 @@ int		main(int argc, char **argv)
 	vars.world.radians_per_pixel = (float)(FOV) / (float)(vars.img.resx);
 	vars.world.proj_plane_dist = (vars.img.resx / 2) / tan(HALF_FOV);
 	vars.distarr = (double *)ft_calloc(sizeof(double), vars.img.resx);
-	check_save_arg(argc, argv, &vars);
+	check_save_arg(&vars);
 	vars.win = mlx_new_window(vars.mlx, vars.img.resx, vars.img.resy, "cub3d");
 	if (!vars.win)
 		print_error("Failed to create window", &vars, 0, (void *)0);

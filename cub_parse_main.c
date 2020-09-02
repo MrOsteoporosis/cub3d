@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 11:56:11 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 14:25:30 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <get_next_line.h>
 #include <libft.h>
 #include "cub3d.h"
-
-#include <stdio.h>//REMOVE
 
 int		free_spritemap(t_world *world)
 {
@@ -100,7 +98,6 @@ void	parse_cub(t_vars *vars, char *map_path)
 		ret = get_next_line(fd, &line);
 		if (ret != 1)
 			print_error("Failed to read .cub/Unexpected EOF", vars, fd, line);
-		printf("%s\n", line);//DEBUG
 		if (call_element_parser(vars, line, &elecount))
 			print_error("Invalid .cub element", vars, fd, line);
 		free(line);

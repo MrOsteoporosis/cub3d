@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/29 14:26:33 by averheij      #+#    #+#                 */
-/*   Updated: 2020/08/31 14:13:15 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 14:27:58 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int					ft_atoi(const char *str)
 	{
 		res = res * 10 + (*str - '0');
 		str++;
-		if (res > 9223372036854775807UL && sign == 1)
+		if (res > 2147483647UL && sign == 1)
 			return (-1);
-		else if (res > 9223372036854775808UL && sign == -1)
+		else if (res > 2147483648UL && sign == -1)
 			return (0);
 	}
 	return (sign * (int)res);

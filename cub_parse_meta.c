@@ -6,15 +6,13 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 12:08:25 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 14:35:42 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <mlx.h>
 #include "cub3d.h"
-
-#include <stdio.h>//REMOVE
 
 int		parse_rgb_partial(int *color, char **str, int notlast)
 {
@@ -61,9 +59,9 @@ void	validate_res(t_vars *vars)
 
 	mlx_get_screen_size(vars->mlx, &max_resx, &max_resy);
 	max_resy -= 44;
-	if (vars->img.resx > max_resx)
+	if (vars->img.resx == -1 || vars->img.resx > max_resx)
 		vars->img.resx = max_resx;
-	if (vars->img.resy > max_resy)
+	if (vars->img.resy == -1 || vars->img.resy > max_resy)
 		vars->img.resy = max_resy;
 }
 
