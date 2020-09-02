@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 11:40:07 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 12:24:45 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@
 ** # define LAKEY  123
 ** # define RAKEY  124
 */
+
+# include <stdio.h>//REMOVE
 
 typedef struct		s_data {
 	void			*img;

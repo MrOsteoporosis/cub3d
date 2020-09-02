@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 11:41:59 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 12:41:39 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,22 @@
 #include <mlx.h>
 #include "cub3d.h"
 
+void	print_map(t_vars *vars, char **map)
+{
+	int y = 0;
+
+	while (y < vars->world.map_height)
+	{
+		printf("%s\n", map[y]);
+		y++;
+	}
+}
+
 int		validate_map_edges(int y, int x, char **map, t_vars *vars)
 {
 	int		invalid;
 
+	print_map(vars, map);
 	if (!iscset(map[y][x], "02"))
 		return ((iscset(map[y][x], "NSWE")));
 	if (iscset(map[y][x], "02"))
@@ -57,9 +69,12 @@ int		validate_map(char **map, t_vars *vars)
 		x = 0;
 		while (map[y][x])
 		{
+			printf("%c", map[y][x]);
 			if (iscset(map[y][x], "NESW"))
 			{
 				vars->world.lookdir = get_lookdir(&(map[y][x]));
+				printf("\nvalidating edges\n");
+				printf("%s\n", map[y]);
 				if (playerfound || validate_map_edges(y, x, map, vars))
 					return (1);
 				playerfound = 1;
@@ -68,6 +83,7 @@ int		validate_map(char **map, t_vars *vars)
 			}
 			x++;
 		}
+		printf("\n");
 		y++;
 	}
 	return (!playerfound);
@@ -107,11 +123,12 @@ void	parse_map(t_vars *vars, int fd)
 	char	*line;
 
 	vars->world.map_height = 0;
-	while (1)
+	while (ret != 0)
 	{
 		line = NULL;
 		ret = get_next_line(fd, &line);
-		if (ret == 0)
+		printf("%s\n", line);
+		if (ret == 0 && !*line)
 			break ;
 		if (ret == -1)
 			print_error("File read failed", vars, fd, line);
@@ -121,7 +138,8 @@ void	parse_map(t_vars *vars, int fd)
 			print_error("Failed to append map line", vars, fd, line);
 		vars->world.map_height++;
 	}
-	free(line);
+	if (!*line)
+		free(line);
 	vars->world.max_y = vars->world.map_height * GRID;
 	if (validate_map(vars->world.map, vars))
 		print_error("Broken map edges/Invalid player pos", vars, fd, NULL);
