@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 14:25:01 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 15:51:34 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	parse_map(t_vars *vars, int fd)
 	int		ret;
 	char	*line;
 
-	vars->world.map_height = 0;
+	ret = 0;
 	while (ret != 0)
 	{
 		line = NULL;
