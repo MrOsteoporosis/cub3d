@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/07/01 14:52:58 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 11:40:07 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ int					create_sprite_map(t_world *world);
 int					ismap(int y, int x, t_world *world);
 int					iscset(char c, char *set);
 int					is_valid_cub_char(char c);
-double				get_lookdir(char c);
+double				get_lookdir(char *c);
 int					ft_iswhitespace(int c);
 int					skip_comma(char **str);
 int					skip_passed_func(char **str, t_isfunc is);

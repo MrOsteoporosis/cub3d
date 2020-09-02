@@ -6,13 +6,15 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 13:43:48 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 12:08:25 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <mlx.h>
 #include "cub3d.h"
+
+#include <stdio.h>//REMOVE
 
 int		parse_rgb_partial(int *color, char **str, int notlast)
 {
@@ -95,10 +97,12 @@ int		parse_tex(t_vars *vars, char *line)
 		t = &(vars->no);
 	else if (!ft_strncmp(line, "SO", 2) || !ft_strncmp(line, "WE", 2))
 		t = !ft_strncmp(line, "SO", 2) ? &(vars->so) : &(vars->we);
-	else if (!ft_strncmp(line, "EA", 2) || !ft_strncmp(line, "S ", 2))
+	else if (!ft_strncmp(line, "EA", 2) || !ft_strncmp(line, "S", 1))
 		t = !ft_strncmp(line, "EA", 2) ? &(vars->ea) : &(vars->s);
-	line += 2;
-	if (skip_passed_func(&line, &ft_iswhitespace))
+	if (t != &(vars->s))
+		line++;
+	line++;
+	if (t->img || skip_passed_func(&line, &ft_iswhitespace))
 		return (1);
 	if (ft_strlen(line) > 4
 			&& !ft_strncmp((line + (ft_strlen(line) - 4)), ".png", 4))

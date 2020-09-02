@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/08/31 15:43:33 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 11:42:15 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,21 @@ int		array_append(char ***map, char *line, int currentlength)
 	return (0);
 }
 
-double	get_lookdir(char c)
+double	get_lookdir(char *c)
 {
-	if (c == 'N')
-		return (DEG90);
-	else if (c == 'E')
-		return (0);
-	else if (c == 'W')
-		return (DEG180);
-	else if (c == 'S')
-		return (DEG270);
-	return (0);
+	double	lookdir;
+
+	lookdir = -1;
+	if (*c == 'N')
+		lookdir = DEG90;
+	else if (*c == 'E')
+		lookdir = 0;
+	else if (*c == 'W')
+		lookdir = DEG180;
+	else if (*c == 'S')
+		lookdir = DEG270;
+	*c = '0';
+	return (lookdir);
 }
 
 int		map_line_sanitize(char **line)

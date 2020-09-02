@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 15:41:50 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 11:41:59 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int		validate_map_edges(int y, int x, char **map, t_vars *vars)
 {
 	int		invalid;
 
-	if (!iscset(map[y][x], "02NSWE"))
-		return (0);
+	if (!iscset(map[y][x], "02"))
+		return ((iscset(map[y][x], "NSWE")));
 	if (iscset(map[y][x], "02"))
 		map[y][x] = (map[y][x] == '0') ? 'O' : 'I';
 	invalid = 0;
@@ -59,7 +59,7 @@ int		validate_map(char **map, t_vars *vars)
 		{
 			if (iscset(map[y][x], "NESW"))
 			{
-				vars->world.lookdir = get_lookdir(map[y][x]);
+				vars->world.lookdir = get_lookdir(&(map[y][x]));
 				if (playerfound || validate_map_edges(y, x, map, vars))
 					return (1);
 				playerfound = 1;
