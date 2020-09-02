@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 15:49:26 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/02 15:50:08 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int		parse_tex(t_vars *vars, char *line)
 		t = !ft_strncmp(line, "SO", 2) ? &(vars->so) : &(vars->we);
 	else if (!ft_strncmp(line, "EA", 2) || !ft_strncmp(line, "S", 1))
 		t = !ft_strncmp(line, "EA", 2) ? &(vars->ea) : &(vars->s);
-	line = line + ((t != &(vars->s)) ? 1 : 2)
+	line = line + ((t != &(vars->s)) ? 1 : 2);
 	if (t->img || skip_passed_func(&line, &ft_iswhitespace))
 		return (1);
 	if (ft_strlen(line) > 4
