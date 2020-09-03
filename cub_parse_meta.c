@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 18:11:08 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/03 13:18:06 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int		parse_res(t_vars *vars, char *line)
 	vars->img.resy = ft_atoi(line);
 	if (!(vars->img.resx) || !(vars->img.resy))
 		return (1);
-	validate_res(vars);
+	if (!vars->save)
+		validate_res(vars);
 	vars->img.halfresy = vars->img.resy / 2;
 	return (0);
 }
