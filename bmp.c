@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 18:11:10 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/03 13:05:11 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int		write_bitmaprgb(t_data *data, int fd)
 	int			y;
 	int			x;
 	const void	*linestart;
-	char		zero;
+	char		buf[4];
 
-	zero = 0;
+	buf[3] = 0;
 	y = data->resy;
 	while (y > 0)
 	{
@@ -30,10 +30,10 @@ int		write_bitmaprgb(t_data *data, int fd)
 		x = 0;
 		while (x < data->resx)
 		{
-			if (write(fd, linestart + (x * data->bits_per_pixel >> 3),
-						data->bits_per_pixel >> 3) == -1)
-				return (1);
-			if (write(fd, &zero, 1) == -1)
+			buf[0] = *(char*)(linestart + (x * data->bits_per_pixel >> 3));
+			buf[1] = *(char*)(linestart + (x * data->bits_per_pixel >> 3) + 1);
+			buf[2] = *(char*)(linestart + (x * data->bits_per_pixel >> 3) + 2);
+			if (write(fd, &buf, data->bits_per_pixel >> 3) == -1)
 				return (1);
 			x++;
 		}
@@ -49,9 +49,7 @@ int		write_bitmapinfoheader(t_data *data, int fd)
 
 	header[1] = data->resx;
 	header[2] = data->resy;
-	header[4] = data->bits_per_pixel + 8;
-	/*header[4] = data->bits_per_pixel;*/
-	header[9] = 1 << data->bits_per_pixel;
+	header[4] = data->bits_per_pixel;
 	i = 0;
 	while (i < 11)
 	{
@@ -69,7 +67,6 @@ int		write_bitmapfileheader(t_data *data, int fd)
 	int			i;
 
 	header[1] = (data->resx * data->resy * ((data->bits_per_pixel >> 3) + 1))
-	/*header[1] = (data->resx * data->resy * ((data->bits_per_pixel >> 3)))*/
 					+ 54;
 	i = 0;
 	while (i < 5)
