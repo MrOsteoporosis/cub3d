@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/03 12:11:56 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/03 12:16:24 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	parse_map(t_vars *vars, int fd)
 	char	*line;
 
 	ret = 0;
-	while (ret != 0)
+	while (1)
 	{
 		line = NULL;
 		ret = get_next_line(fd, &line);
