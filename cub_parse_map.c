@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 15:51:34 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/03 12:11:56 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	parse_map(t_vars *vars, int fd)
 	{
 		line = NULL;
 		ret = get_next_line(fd, &line);
-		if (ret == 0 && !*line)
+		if (ret == 0 && line && !*line)
 			break ;
 		if (ret == -1)
 			print_error("File read failed", vars, fd, line);
@@ -135,7 +135,7 @@ void	parse_map(t_vars *vars, int fd)
 			print_error("Failed to append map line", vars, fd, line);
 		vars->world.map_height++;
 	}
-	if (!*line)
+	if (line && !*line)
 		free(line);
 	vars->world.max_y = vars->world.map_height * GRID;
 	if (validate_map(vars->world.map, vars))
