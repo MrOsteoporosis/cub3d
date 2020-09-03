@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 14:22:58 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/03 16:24:43 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,6 @@ int					ft_iswhitespace(int c);
 int					skip_comma(char **str);
 int					skip_passed_func(char **str, t_isfunc is);
 int					create_sprite(t_sprite **sprite, int x, int y);
-//void				set_grid(int *setx, int *sety, int x, int y);
 int					array_append(char ***map, char *line, int currentlength);
 int					map_line_sanitize(char **line);
 

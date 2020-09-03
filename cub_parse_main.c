@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/02 14:25:30 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/03 13:58:48 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void	parse_cub(t_vars *vars, char *map_path)
 		print_error("Failed to open .cub/Invalid path", vars, 0, NULL);
 	elecount = 0;
 	ret = 1;
+	vars->world.colorceiling = -1;
+	vars->world.colorfloor = -1;
 	while (elecount < 8)
 	{
 		line = NULL;

@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/03 13:18:06 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/03 13:59:08 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int		parse_color(t_vars *vars, char *line)
 		colorpointer = &(vars->world.colorceiling);
 	else if (!ft_strncmp(line, "F", 1))
 		colorpointer = &(vars->world.colorfloor);
+	if (*colorpointer != -1)
+		return (1);
 	line++;
 	if (skip_passed_func(&line, &ft_iswhitespace))
 		return (1);
