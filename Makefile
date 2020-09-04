@@ -6,7 +6,7 @@
 #    By: averheij <averheij@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/05/29 15:42:33 by averheij      #+#    #+#                  #
-#    Updated: 2020/09/01 11:38:06 by averheij      ########   odam.nl          #
+#    Updated: 2020/09/04 14:30:57 by averheij      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ else
 	MLX_DIR		=	mlx
 	MLX_NAME	=	mlx
 	MLX_INCLUDE	=	mlx
-	EXTRA_FLAGS	=	-framework OpenGL -framework AppKit libmlx.dylib -fsanitize=address
+	EXTRA_FLAGS	=	-framework OpenGL -framework AppKit libmlx.dylib
 endif
 
 BOLD	=	\033[1m
