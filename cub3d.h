@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/04 13:03:01 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/04 13:26:39 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define GRID   512
 # define GRIDPOW	9
 # define INVISIBLE	0x000000
-# define DIAGONAL	1
+# define DIAGONAL	3
 
 /*
 ** linux keycodes
@@ -36,19 +36,17 @@
 ** # define AKEY   97
 ** # define SKEY   115
 ** # define DKEY   100
-** # define QKEY   113
-** # define EKEY  101
 ** # define LAKEY  65361
 ** # define RAKEY  65363
+** # define ESC	65307
 */
 # define WKEY   119
 # define AKEY   97
 # define SKEY   115
 # define DKEY   100
-# define QKEY   113
-# define EKEY  101
 # define LAKEY  65361
 # define RAKEY  65363
+# define ESC	65307
 
 /*
 ** mac keycodes
@@ -58,9 +56,8 @@
 ** # define DKEY   2
 ** # define LAKEY  123
 ** # define RAKEY  124
+** # define ESC	53
 */
-
-# include <stdio.h>//REMOVE
 
 typedef struct		s_data {
 	void			*img;

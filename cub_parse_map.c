@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/03 12:16:24 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/04 13:54:10 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,6 @@
 #include <libft.h>
 #include <mlx.h>
 #include "cub3d.h"
-
-void	print_map(t_vars *vars, char **map)
-{
-	int y = 0;
-
-	while (y < vars->world.map_height)
-	{
-		printf("%s\n", map[y]);
-		y++;
-	}
-}
 
 int		validate_grid(int y, int x, char **map, t_vars *vars)
 {
@@ -92,7 +81,7 @@ int		create_sprite_map(t_world *w)
 	int		y;
 	int		x;
 
-	w->spritemap = (t_sprite ***)ft_calloc(sizeof(t_sprite **), w->map_height);
+	w->spritemap = (t_sprite ***)ft_calloc(sizeof(t_sprite **), w->map_height + 1);
 	if (!w->spritemap)
 		return (1);
 	y = 0;

@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/03 13:58:48 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/04 13:33:30 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,24 @@ int		free_spritemap(t_world *world)
 	size_t	x;
 
 	y = 0;
-	while (world->spritemap && world->spritemap[y] && y < world->map_height)
+	while (world->spritemap && world->spritemap[y])
 	{
 		x = 0;
 		while (x < ft_strlen(world->map[y]))
 		{
 			if (world->spritemap[y][x])
+			{
 				free(world->spritemap[y][x]);
+				world->spritemap[y][x] = NULL;
+			}
 			x++;
 		}
 		free(world->spritemap[y]);
+		world->spritemap[y] = NULL;
 		y++;
 	}
 	free(world->spritemap);
+	world->spritemap = NULL;
 	return (1);
 }
 
@@ -47,10 +52,12 @@ int		free_map(t_world *world)
 	while (world->map && y < world->map_height)
 	{
 		free(world->map[y]);
+		world->map[y] = NULL;
 		y++;
 	}
 	if (world->map)
 		free(world->map);
+	world->map = NULL;
 	return (1);
 }
 

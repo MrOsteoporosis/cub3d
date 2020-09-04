@@ -1,10 +1,10 @@
 R 1600 800
-NO cub3d_tester/textures/wall_1.png
-SO cub3d_tester/textures/wall_2.png
-WE cub3d_tester/textures/wall_3.png
-EA cub3d_tester/textures/wall_4.png
+NO test_maps/textures/wall_1.png
+SO test_maps/textures/wall_2.png
+WE test_maps/textures/wall_3.png
+EA test_maps/textures/wall_4.png
 
-S   cub3d_tester/textures/sprite_1.xpm
+S   test_maps/textures/sprite_1.xpm
 
 F 184,113,39
 C 51,198,227
