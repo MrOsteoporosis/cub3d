@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/04 13:54:10 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/04 14:42:59 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ int		create_sprite_map(t_world *w)
 	int		y;
 	int		x;
 
-	w->spritemap = (t_sprite ***)ft_calloc(sizeof(t_sprite **), w->map_height + 1);
+	w->spritemap = (t_sprite ***)ft_calloc(sizeof(t_sprite **),
+			w->map_height + 1);
 	if (!w->spritemap)
 		return (1);
 	y = 0;
