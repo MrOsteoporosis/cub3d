@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/04 13:33:30 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/07 12:10:03 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int		call_element_parser(t_vars *vars, char *line, int *elecount)
 	{
 		if (i == 8)
 			return (1);
+		while (*line && ft_iswhitespace(*line))
+			line++;
 		if (!ft_strncmp(line, ele[i], ft_strlen(ele[i])))
 		{
 			if (efuncs[i](vars, line))
@@ -96,7 +98,7 @@ void	parse_cub(t_vars *vars, char *map_path)
 
 	fd = open(map_path, O_RDONLY);
 	if (!fd)
-		print_error("Failed to open .cub/Invalid path", vars, 0, NULL);
+		print_error("Error\nFailed to open .cub/Invalid path", vars, 0, NULL);
 	elecount = 0;
 	ret = 1;
 	vars->world.colorceiling = -1;
@@ -106,9 +108,10 @@ void	parse_cub(t_vars *vars, char *map_path)
 		line = NULL;
 		ret = get_next_line(fd, &line);
 		if (ret != 1)
-			print_error("Failed to read .cub/Unexpected EOF", vars, fd, line);
+			print_error("Error\nFailed to read .cub/Unexpected EOF",
+					vars, fd, line);
 		if (call_element_parser(vars, line, &elecount))
-			print_error("Invalid .cub element", vars, fd, line);
+			print_error("Error\nInvalid .cub element", vars, fd, line);
 		free(line);
 	}
 	parse_map(vars, fd);

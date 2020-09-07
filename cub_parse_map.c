@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/04 14:42:59 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/07 12:11:21 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int		create_sprite_map(t_world *w)
 	return (0);
 }
 
-void	parse_map(t_vars *vars, int fd)
+void	parse_map(t_vars *v, int fd)
 {
 	int		ret;
 	char	*line;
@@ -118,18 +118,18 @@ void	parse_map(t_vars *vars, int fd)
 		if (ret == 0 && line && !*line)
 			break ;
 		if (ret == -1)
-			print_error("File read failed", vars, fd, line);
+			print_error("Error\nFile read failed", v, fd, line);
 		if (map_line_sanitize(&line))
-			print_error("Invalid map characters", vars, fd, line);
-		if (array_append(&(vars->world.map), line, vars->world.map_height))
-			print_error("Failed to append map line", vars, fd, line);
-		vars->world.map_height++;
+			print_error("Error\nInvalid map characters", v, fd, line);
+		if (array_append(&(v->world.map), line, v->world.map_height))
+			print_error("Error\nFailed to append map line", v, fd, line);
+		v->world.map_height++;
 	}
 	if (line && !*line)
 		free(line);
-	vars->world.max_y = vars->world.map_height * GRID;
-	if (validate_map(vars->world.map, vars))
-		print_error("Broken map edges/Invalid player pos", vars, fd, NULL);
-	if (create_sprite_map(&vars->world))
-		print_error("Failed to allocate sprites", vars, fd, NULL);
+	v->world.max_y = v->world.map_height * GRID;
+	if (validate_map(v->world.map, v))
+		print_error("Error\nBroken map edges/Invalid player pos", v, fd, NULL);
+	if (create_sprite_map(&v->world))
+		print_error("Error\nFailed to allocate sprites", v, fd, NULL);
 }

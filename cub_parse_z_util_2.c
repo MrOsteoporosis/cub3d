@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 13:44:08 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/07 11:44:16 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int		ft_iswhitespace(int c)
 {
-	if (c == 32 || (c >= 9 && c <= 13))
+	if (c == 32)
 		return (1);
 	else
 		return (0);

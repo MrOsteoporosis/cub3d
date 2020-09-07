@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/04 14:44:38 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/07 11:11:22 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,16 @@
 # define INVISIBLE	0x000000
 # define DIAGONAL	3
 
+# ifdef LINUX
+#  define WKEY   119
+#  define AKEY   97
+#  define SKEY   115
+#  define DKEY   100
+#  define LAKEY  65361
+#  define RAKEY  65363
+#  define ESC	65307
+# endif
+
 /*
 ** linux keycodes
 ** # define WKEY   119
@@ -40,13 +50,16 @@
 ** # define RAKEY  65363
 ** # define ESC	65307
 */
-# define WKEY   13
-# define AKEY   0
-# define SKEY   1
-# define DKEY   2
-# define LAKEY  123
-# define RAKEY  124
-# define ESC	53
+
+# ifdef MACOS
+#  define WKEY   13
+#  define AKEY   0
+#  define SKEY   1
+#  define DKEY   2
+#  define LAKEY  123
+#  define RAKEY  124
+#  define ESC	53
+# endif
 
 /*
 ** mac keycodes
