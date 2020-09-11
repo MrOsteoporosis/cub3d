@@ -3,7 +3,7 @@ NO ./textures/colorstone.png
 SO ./textures/greystone.xpm
 WE ./textures/mossy.xpm
 
-EA ./textures/mossy.xpm
+EA ./textures/purplestone.xpm
 S ./textures/cagev2.xpm
 F 220,100,0
 C 225,30,0

@@ -1,7 +1,7 @@
 R 480 280
-NO ./textures/colorstone.png
-SO ./textures/greystone.xpm
-WE ./textures/mossy.xpm
+NO ./textures/grid16.png
+SO ./textures/purplestone.xpm
+WE ./textures/bluestone.xpm
 
 EA ./textures/mossy.xpm
 S ./textures/cagev2.xpm

@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/05/29 13:44:50 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/11 13:04:57 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ void	set_tex(t_vars *vars, t_caster *caster)
 	else
 		caster->v.tex = &(vars->ea);
 	if (caster->a < DEG180 && caster->a > 0)
-		caster->h.tex = &(vars->so);
-	else
 		caster->h.tex = &(vars->no);
+	else
+		caster->h.tex = &(vars->so);
 }
 
 void	get_tan_a(double a, double *tan_a, int *taniszero)

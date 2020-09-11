@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/11 12:13:14 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/11 12:50:03 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@
 # define INVISIBLE	0x000000
 # define DIAGONAL	1
 # define RGBSPACE	1
-
-# include <stdio.h> //remvoe psl
 
 # ifdef LINUX
 #  define WKEY   119
