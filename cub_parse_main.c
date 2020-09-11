@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/11 10:52:11 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/11 11:49:15 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ int		call_element_parser(t_vars *vars, char *line, int *elecount)
 		return (0);
 	while (i < 9)
 	{
-		if (i == 8)
-			return (1);
 		while (*line && ft_iswhitespace(*line))
 			line++;
+		if (i == 8 || *line == '\0')
+			return ((*line == '\0') ? 0 : 1);
 		if (!ft_strncmp(line, ele[i], ft_strlen(ele[i])))
 		{
 			if (efuncs[i](vars, line))
