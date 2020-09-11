@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/11 14:33:22 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/11 14:34:55 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	check_map_arg(int argc, char **argv, t_vars *vars)
 	if (argc == 1 || (argc == 2 &&
 			ft_strncmp(argv[1] + (ft_strlen(argv[1]) - 4), ".cub", 4)))
 		print_error("Error\nNo valid map path given", vars, 0, (void *)0);
-	if (argc == 3 && !ft_strncmp(argv[2], "--save", 6) && ft_strlen(argv[2]) == 6)
+	if (argc == 3 && !ft_strncmp(argv[2], "--save", 6)
+			&& ft_strlen(argv[2]) == 6)
 		vars->save = 1;
 	else if (argc > 3)
 		print_error("Error\nInvalid arguements", vars, 0, (void *)0);
