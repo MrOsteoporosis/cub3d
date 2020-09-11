@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/07 11:11:22 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/11 10:49:01 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@
 # define GRID   512
 # define GRIDPOW	9
 # define INVISIBLE	0x000000
-# define DIAGONAL	3
+# define DIAGONAL	1
+# define RGBSPACE	1
+
+# include <stdio.h> //remvoe psl
 
 # ifdef LINUX
 #  define WKEY   119

@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/04 14:09:53 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/11 10:52:44 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,17 @@ int		parse_rgb_partial(int *color, char **str, int notlast)
 	*color = ft_atoi(*str);
 	if (notlast && skip_passed_func(str, &ft_isdigit))
 		return (1);
+	if (RGBSPACE && notlast && skip_passed_func(str, &ft_iswhitespace))
+		return (1);
 	if (notlast && skip_comma(str))
 		return (1);
+	if (RGBSPACE && notlast && skip_passed_func(str, &ft_iswhitespace))
+		return (1);
+	if (!notlast)
+	{
+		skip_passed_func(str, &ft_isdigit);
+		return (!skip_passed_func(str, &ft_iswhitespace));
+	}
 	return (0);
 }
 
@@ -83,6 +92,9 @@ int		parse_res(t_vars *vars, char *line)
 	if (!ft_isdigit(*line))
 		return (1);
 	vars->img.resy = ft_atoi(line);
+	skip_passed_func(&line, &ft_isdigit);
+	if (!skip_passed_func(&line, &ft_iswhitespace))
+		return (1);
 	if (!(vars->img.resx) || !(vars->img.resy))
 		return (1);
 	if (!vars->save)
@@ -105,11 +117,16 @@ int		parse_tex(t_vars *vars, char *line)
 	line = line + ((t != &(vars->s)) ? 2 : 1);
 	if (t->img || skip_passed_func(&line, &ft_iswhitespace))
 		return (1);
+	printf("%s\n", line);
 	if (ft_strlen(line) > 4
-			&& !ft_strncmp((line + (ft_strlen(line) - 4)), ".png", 4))
+			&& !ft_strncmp((line + (ft_strlen(line) - 4)), ".png", 4))//somehow trim whitespace off the end?
 		t->img = mlx_png_file_to_image(vars->mlx, line, &t->resx, &t->resy);
 	else
+	{
 		t->img = mlx_xpm_file_to_image(vars->mlx, line, &t->resx, &t->resy);
+		printf("found xpm\n");
+	}
+	printf("creating texture\n");
 	if (!t->img)
 		return (1);
 	t->addr = mlx_get_data_addr(t->img,
