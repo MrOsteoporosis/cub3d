@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/11 10:49:01 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/11 12:13:14 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,8 @@ int					skip_passed_func(char **str, t_isfunc is);
 int					create_sprite(t_sprite **sprite, int x, int y);
 int					array_append(char ***map, char *line, int currentlength);
 int					map_line_sanitize(char **line);
+t_data				*get_tex_pointer(t_vars *vars, char *line);
+int					detect_png_xpm(char *line);
 
 void				clear_frame_color_sky_floor(t_data *data, int sky,
 											int ftfloor);

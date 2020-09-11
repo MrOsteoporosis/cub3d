@@ -14,7 +14,7 @@ echo -e "\tShould print error for all\n";
 for val in $INVALID; do
 	echo "Testing: $val";
 	echo -e -n "\t";
-	$PREFIX ./cub3d $DIR/$val;
+	$PREFIX ./cub3D $DIR/$val;
 	echo ;
 done
 
@@ -23,6 +23,6 @@ echo -e "\tShould launch cleanly for all\n";
 for val in $VALID; do
 	echo "Testing: $val";
 	echo -e -n "\t";
-	$PREFIX ./cub3d $DIR/$val;
+	$PREFIX ./cub3D $DIR/$val;
 	echo ;
 done

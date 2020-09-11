@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/11 11:49:15 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/11 12:29:45 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ void	parse_cub(t_vars *vars, char *map_path)
 		if (ret != 1)
 			print_error("Error\nFailed to read .cub/Unexpected EOF",
 					vars, fd, line);
-		printf("%s\n", line);
 		if (call_element_parser(vars, line, &elecount))
 			print_error("Error\nInvalid .cub element", vars, fd, line);
 		free(line);

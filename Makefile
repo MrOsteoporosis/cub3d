@@ -6,14 +6,15 @@
 #    By: averheij <averheij@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/05/29 15:42:33 by averheij      #+#    #+#                  #
-#    Updated: 2020/09/10 14:26:29 by averheij      ########   odam.nl          #
+#    Updated: 2020/09/11 12:02:43 by averheij      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	cub3D
 CFILES	=	init.c bmp.c events.c movement.c ray_cast.c ray_sky_dist_draw.c\
 			ray_z_util.c cub_parse_main.c cub_parse_meta.c cub_parse_map.c\
-			cub_parse_z_util_1.c cub_parse_z_util_2.c sprite.c sprite_z_util.c
+			cub_parse_z_util_1.c cub_parse_z_util_2.c cub_parse_z_util_3.c\
+			sprite.c sprite_z_util.c
 OFILES	=	$(CFILES:%.c=objects/%.o)
 FLAGS	=	-Werror -Wall -Wextra
 CC		=	gcc $(FLAGS)

@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/11 10:52:44 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/11 12:43:11 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,26 +107,14 @@ int		parse_tex(t_vars *vars, char *line)
 {
 	t_data	*t;
 
-	t = NULL;
-	if (!ft_strncmp(line, "NO", 2))
-		t = &(vars->no);
-	else if (!ft_strncmp(line, "SO", 2) || !ft_strncmp(line, "WE", 2))
-		t = !ft_strncmp(line, "SO", 2) ? &(vars->so) : &(vars->we);
-	else if (!ft_strncmp(line, "EA", 2) || !ft_strncmp(line, "S", 1))
-		t = !ft_strncmp(line, "EA", 2) ? &(vars->ea) : &(vars->s);
+	t = get_tex_pointer(vars, line);
 	line = line + ((t != &(vars->s)) ? 2 : 1);
 	if (t->img || skip_passed_func(&line, &ft_iswhitespace))
 		return (1);
-	printf("%s\n", line);
-	if (ft_strlen(line) > 4
-			&& !ft_strncmp((line + (ft_strlen(line) - 4)), ".png", 4))//somehow trim whitespace off the end?
+	if (detect_png_xpm(line))
 		t->img = mlx_png_file_to_image(vars->mlx, line, &t->resx, &t->resy);
 	else
-	{
 		t->img = mlx_xpm_file_to_image(vars->mlx, line, &t->resx, &t->resy);
-		printf("found xpm\n");
-	}
-	printf("creating texture\n");
 	if (!t->img)
 		return (1);
 	t->addr = mlx_get_data_addr(t->img,
