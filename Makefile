@@ -6,7 +6,7 @@
 #    By: averheij <averheij@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/05/29 15:42:33 by averheij      #+#    #+#                  #
-#    Updated: 2020/09/11 12:02:43 by averheij      ########   odam.nl          #
+#    Updated: 2020/09/14 13:33:04 by averheij      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ clean:
 	rm -f $(OFILES)
 	@echo "$(BOLD)/--------     mlx     --------\\ $(CLEAR)"
 	make clean -C $(MLX_DIR)
+	rm -f libmlx.dylib
 	@echo ""
 	@echo "$(BOLD)/--------    libft    --------\\ $(CLEAR)"
 	make clean -C libft
