@@ -1,3 +1,9 @@
 *.o
 cub3D
 cub3d_destroyer/
+
+.../libmlx.a
+.../libmlx_Linux.a
+.../test/mlx-test
+mlxlinux/libmlx_Linux.a
+save.bmp
