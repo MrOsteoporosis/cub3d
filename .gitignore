@@ -7,3 +7,7 @@ cub3d_destroyer/
 .../test/mlx-test
 mlxlinux/libmlx_Linux.a
 save.bmp
+.ccls
+libft/libft.a
+mlxlinux/libmlx.a
+mlxlinux/test/mlx-test

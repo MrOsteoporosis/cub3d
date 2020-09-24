@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/15 12:23:40 by averheij      ########   odam.nl         */
+/*   Updated: 2020/09/24 16:24:58 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 
 int		render(t_vars *vars)
 {
-	mlx_sync(1, vars->img.img);
+	/*mlx_sync(1, vars->img.img);*/
 	clear_frame_color_sky_floor(&(vars->img),
 			vars->world.colorceiling, vars->world.colorfloor);
 	do_movement(&(vars->world), &(vars->move));
 	cast_ray(vars);
 	if (mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0))
 		print_error("Error\nFailed to put image to window", vars, 0, (void *)0);
-	mlx_sync(2, vars->win);
+	/*mlx_sync(2, vars->win);*/
 	return (0);
 }
 
