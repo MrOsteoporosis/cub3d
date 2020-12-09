@@ -6,7 +6,7 @@
 /*   By: averheij <averheij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/29 13:42:34 by averheij      #+#    #+#                 */
-/*   Updated: 2020/09/24 16:24:58 by averheij      ########   odam.nl         */
+/*   Updated: 2020/12/09 12:40:01 by averheij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int		render(t_vars *vars)
 	cast_ray(vars);
 	if (mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0))
 		print_error("Error\nFailed to put image to window", vars, 0, (void *)0);
+	mlx_do_sync(vars->mlx);
 	/*mlx_sync(2, vars->win);*/
 	return (0);
 }
